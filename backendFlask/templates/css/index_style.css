@@ -1,0 +1,38 @@
+.titolo {
+    height: fit-content;
+    width: fit-content;
+    margin: 0 auto 5% auto;
+    padding: 0%;
+    border: 0%;
+    -webkit-background-clip: text;
+    /*immagine di sfondo in trasparenza*/
+    -webkit-text-fill-color: transparent;
+    background-image: url(../img/poster-foglia-di-quercia.jpg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*l'elemento occupa tutto lo spazio del div*/
+    background-position: center;
+    position: relative;
+    z-index: -1;
+    /*comando che sovrappone gli elementi. il -1 lo mette al di sotto*/
+}
+
+.titolo h1 {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 400px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0%;
+    line-height: 730px;
+    /*modifica l'altzza occupata dall'elemento*/
+}
+
+.titolo h2 {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 100px;
+    margin-top: 0;
+    margin-bottom: 0;
+
+}
