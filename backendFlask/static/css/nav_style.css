@@ -160,3 +160,19 @@ footer  ul li a:visited{
 .social:hover{
     text-decoration: none;
 }
+
+
+/*---------------------------------------------------Form------------------------------------------------------------------*/
+
+.form {
+    display: flex;
+    position: relative;
+    left: auto;
+    right: auto;
+    align-items: center;
+    justify-content: center;
+    border: solid 4px darkgray;
+    margin-left: 30%;
+    margin-right: 30%; 
+    height: 400px;
+}
