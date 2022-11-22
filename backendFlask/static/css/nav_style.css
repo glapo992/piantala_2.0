@@ -90,10 +90,33 @@ nav .mainmenu{
     padding-left: 5%;
 
 }
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tendina {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    overflow: auto;
+    z-index: 1;
+  }
+  
+  .tendina a {
+    color: darkgray;
+    padding: 3px 3px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .show {display: block;}
 /*--------------footer------------*/
 
 footer {
-    background-image: url(/img/sea_storm_.jpg);
+    background-image: url(../img/close-up-fresh-grass.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

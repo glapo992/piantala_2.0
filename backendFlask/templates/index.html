@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../static/css/index_style.css" />
     <link rel="stylesheet" href="../static/css/nav_style.css" />
-    <title>home page</title>
+    <title>Piantala</title>
   </head>
   <body>
     <!------------------------------------NAVBAR-------------------------------------->
-    <!--IMPORTANTE : correggere tutti i link!!
-                     aggiungere il JS per il menù a tendina e barra ricerca-->
+    <!--IMPORTANTE : correggere i link che mi sono sfuggiti!!
+                     aggiungere il JS per barra ricerca-->
 
     <header>
       <nav>
@@ -24,22 +24,22 @@
         /></a>
         <div>
           <div class="mainmenu">
-            <div><a href="../html/index.html">home</a></div>
-            <div>
-              <a href="../html/projects-home.html">progetti</a>
-              <div class="tendina">
-                <a href="../html/projects/progetto1.html">progetto 1</a>
-                <a href="../html/projects/progetto1.html">progetto 2</a>
-                <a href="../html/projects/progetto1.html">progetto 3</a>
+            <div><a href="./index.html">home</a></div>
+            <div class="dropdown">
+              <a onclick="myFunction()" class="dropbtn">progetti</a>
+              <div id="myDropdown" class="tendina">
+                <a href="./pages/404.html">progetto 1</a>
+                <a href="./pages/404.html">progetto 2</a>
+                <a href="./pages/404.html">progetto 3</a>
               </div>
             </div>
-            <div><a href="../html/contatti.html">contatti</a></div>
+            <div><a href="./pages/about.html">contatti</a></div>
           </div>
           <div class="searchbar">
             <input id="in" type="text" placeholder="cerca" />
             <img
               id="lente"
-              src="./img/search_FILL0_wght400_GRAD0_opsz48.svg"
+              src="../static/img/search_FILL0_wght400_GRAD0_opsz48.svg"
               alt="find"
             />
           </div>
@@ -56,7 +56,6 @@
     <!--------------------------------------box grafici e mappa-------------------------------------->
 
     <!--------------------------------------FOOTER---------------------------------------->
-    <!-- vedi perché non funzionano i loghi-->
 
     <footer>
       <ul>
@@ -76,7 +75,7 @@
             target="_blank"
             title="twittwer"
             ><img
-              src="./img/icons8-twitter-64.png"
+              src="../static/img/icons8-twitter.svg"
               alt="twitter"
               width="30px"
               height="auto"
@@ -85,7 +84,7 @@
         <li class="social">
           <a href="https://www.instagram.com/" target="_blank" title="instagram"
             ><img
-              src="./img/icons8-instagram.svg"
+              src="../static/img/icons8-instagram.svg"
               alt="instagram"
               width="30px"
               height="auto"
@@ -94,7 +93,7 @@
         <li class="social">
           <a href="https://it.linkedin.com/" target="_blank" title="linkedin"
             ><img
-              src="./img/icons8-linkedin-cerchiato.svg"
+              src="../static/img/icons8-linkedin-cerchiato.svg"
               alt="linkedin"
               width="30px"
               height="auto"
@@ -103,4 +102,28 @@
       </ul>
     </footer>
   </body>
+  <!-----------------------------------------------SCRIPT------------------------------------------------------>
+  <script>
+    /* When the user clicks on the button, 
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+    
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("tendina");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+    </script>
+    
+
 </html>
