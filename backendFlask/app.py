@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from titolo import Titolo
+from plantnet import *
 
 app = Flask(__name__)
 
@@ -9,11 +10,13 @@ app = Flask(__name__)
 def index():
     #titolo dinamico fatto solo per vedere come funziona jinja e oggetti in py
     landing1 = Titolo('piantala', 'di rompere il cazzo')
+
     return render_template(
         'index.html',
         #rimuovere questa parte sotto e il landing1
         titolo_princ=landing1.primo_titolo,
-        sottotitolo=landing1.sottotitolo)
+        sottotitolo=landing1.sottotitolo,
+    )
 
 
 #reindirizzamento alla pagina aboutus
@@ -25,3 +28,7 @@ def about():
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
