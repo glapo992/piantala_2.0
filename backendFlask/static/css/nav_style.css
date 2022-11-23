@@ -164,15 +164,20 @@ footer  ul li a:visited{
 
 /*---------------------------------------------------Form------------------------------------------------------------------*/
 
-.form {
-    display: flex;
-    position: relative;
-    left: auto;
-    right: auto;
-    align-items: center;
-    justify-content: center;
-    border: solid 4px darkgray;
-    margin-left: 30%;
-    margin-right: 30%; 
-    height: 400px;
+.divform {
+    background-color: white;
+    font-size: 18px;
+    text-align: center; 
+    margin: 20%;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    border: 4px solid darkgray;
+    border-radius: 20px;
+    padding: 2%;
+    align-content: center;
+    width: 100;
+    text-align: center; 
+}
+.boximages{
+    background-image: url(../img/icons8-immagine.png);
 }

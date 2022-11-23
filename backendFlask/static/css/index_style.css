@@ -7,9 +7,10 @@
     -webkit-background-clip: text;
     /*immagine di sfondo in trasparenza*/
     -webkit-text-fill-color: transparent;
-    background-image: url(../img/poster-foglia-di-quercia.jpg.jpg);
+    background-image: url(../img/background.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
     /*l'elemento occupa tutto lo spazio del div*/
     background-position: center;
     position: relative;
