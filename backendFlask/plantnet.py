@@ -14,10 +14,10 @@ class PlantNet:
     def __init__(self, photos):
         self.photos = photos  #foto è una lista di max 5 immagini da inviare alla api
 
-
-#metodo deve leggere la lista di foto in entrata, e per ogni elemento estrarre il binario (con 'rb') salvato in img_data
-#poi deve riempire la lista 'file' con il path dell'immagine e relativo bianrio
-#il limite delle 5 foto lo mettiamo qui o nel form html? o entrambi?
+    '''metodo deve leggere la lista di foto in entrata, e per ogni elemento estrarre il binario (con 'rb') salvato in img_data
+    poi deve riempire la lista 'file' con il path dell'immagine e relativo bianrio
+    il limite delle 5 foto lo mettiamo qui o nel form html? o entrambi?
+    '''
 
     def readImg(photos):
         files = []

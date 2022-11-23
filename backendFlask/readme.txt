@@ -21,7 +21,7 @@ nel venv sono state settate le variabili d'ambiente:
     FLASK_ENV = development --> imposta l'ambiente come svilppo lanciando il deugger. permette di aggiornare il server senza riavviarlo ogni volta
 
 Per attivarlo --> . vFlask/bin/activate
-Per eseguire --> flask run
+Per eseguire --> python3 ./app
 Per uscire dal venv --> deactivate
 
 Flask crea un server locale su http://127.0.0.1:5000
