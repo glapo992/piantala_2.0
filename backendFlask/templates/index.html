@@ -52,14 +52,12 @@
       <h2>{{sottotitolo}}</h2>
     </div>
     <!--------------------------------------form-------------------------------------->
-    <div class="divform">
-      <p id="title"><b>Inserisci fino a 5 immagini:</b></p>
-      <img id="img" src="../static/img/icons8-immagine.png" >
-      <form id="form">
-        <input type="file" class="boximage" multiple accept="image/*"></br>
-        <input type="submit" id="submit">
-      </form>
-    </div>
+    <form action="{{ url_for('submitimages')}}" method="post">
+      <label for="firstname">First Name:</label>
+      <input type="text" id="firstname" name="fname" placeholder="firstname">
+      <label for="lastname">Last Name:</label>
+      <input type="text" id="lastname" name="lname" placeholder="lastname">
+      <button type="submit">Login</button>
     <!--------------------------------------box grafici e mappa-------------------------------------->
 
     <!--------------------------------------FOOTER---------------------------------------->
