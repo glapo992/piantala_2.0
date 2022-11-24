@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for
 from titolo import Titolo
 from plantnet import *
 
@@ -29,6 +29,18 @@ def about():
 def page_not_found(error):
     return render_template('404.html'), 404
 
+# A decorator used to tell the application
+# which URL is associated function
+@app.route('/', methods =["GET", "POST"])
+def form():
+    if request.method == "POST":
+       # getting input with name = lname in HTML form
+       image = request.form.getlist("images")
+       if len(image) > 5:
+          return  image[0:5]
+       elif len(image) < 5:
+          return image
+    return render_template("form.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

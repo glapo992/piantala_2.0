@@ -52,12 +52,9 @@
       <h2>{{sottotitolo}}</h2>
     </div>
     <!--------------------------------------form-------------------------------------->
-    <form action="{{ url_for('submitimages')}}" method="post">
-      <label for="firstname">First Name:</label>
-      <input type="text" id="firstname" name="fname" placeholder="firstname">
-      <label for="lastname">Last Name:</label>
-      <input type="text" id="lastname" name="lname" placeholder="lastname">
-      <button type="submit">Login</button>
+    <form action="{{ url_for('form')}}" method="post">
+      <input type="file" id="images" name="images" multiple="images/*">
+      <button type="submit">Submit</button>
     <!--------------------------------------box grafici e mappa-------------------------------------->
 
     <!--------------------------------------FOOTER---------------------------------------->
