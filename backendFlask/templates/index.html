@@ -15,7 +15,7 @@
 
     <header>
       <nav>
-        <a href="index.html"
+        <a href="{{ url_for('index') }}"
           ><img
             src="../static/img/poster-foglia-di-quercia.jpg.jpg"
             alt="logo"
@@ -24,16 +24,16 @@
         /></a>
         <div>
           <div class="mainmenu">
-            <div><a href="./index.html">home</a></div>
+            <div><a href="{{ url_for('index') }}">home</a></div>
             <div class="dropdown">
               <a onclick="myFunction()" class="dropbtn">progetti</a>
               <div id="myDropdown" class="tendina">
-                <a href="./pages/404.html">progetto 1</a>
-                <a href="./pages/404.html">progetto 2</a>
-                <a href="./pages/404.html">progetto 3</a>
+                <a href="{{ url_for('progetto1') }}">progetto 1</a>
+                <a href="./23">progetto 2</a>
+                <a href="./2345">progetto 3</a>
               </div>
             </div>
-            <div><a href="./pages/about.html">contatti</a></div>
+            <div><a href="{{ url_for('about') }}">about us</a></div>
           </div>
           <div class="searchbar">
             <input id="in" type="text" placeholder="cerca" />
@@ -48,16 +48,23 @@
     </header>
     <!------------------------------------TITOLO---------------------------------------->
     <div class="titolo">
-      <h1>{{titolo_princ}}</h1>
-      <h2>{{sottotitolo}}</h2>
+      <h1>piantala</h1>
+      <h2>di rompere</h2>
     </div>
     <!--------------------------------------form-------------------------------------->
+<<<<<<< HEAD
     <div class="divform">
       <form method="post" enctype="multipart/form-data">
         <p>Inserisci qui le tue immagini:</p>
         <img src="../static/img/icons8-immagine.png" id="foglie">
         <input type="file" id="images" name="images" multiple="images/*">
         <input type="submit" value="Upload">
+=======
+    <div id="form">
+      <form action="{{ url_for('form')}}" method="post">
+        <input type="file" id="images" name="images" multiple="images/*" />
+        <button type="submit">Submit</button>
+>>>>>>> 0c1ab2ff06b0f08cc5be9696e59034fa9a4b4139
       </form>
     </div>
     <!--------------------------------------box grafici e mappa-------------------------------------->
@@ -116,21 +123,19 @@
     function myFunction() {
       document.getElementById("myDropdown").classList.toggle("show");
     }
-    
+
     // Close the dropdown if the user clicks outside of it
-    window.onclick = function(event) {
-      if (!event.target.matches('.dropbtn')) {
+    window.onclick = function (event) {
+      if (!event.target.matches(".dropbtn")) {
         var dropdowns = document.getElementsByClassName("tendina");
         var i;
         for (i = 0; i < dropdowns.length; i++) {
           var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
+          if (openDropdown.classList.contains("show")) {
+            openDropdown.classList.remove("show");
           }
         }
       }
-    }
-    </script>
-    
-
+    };
+  </script>
 </html>
