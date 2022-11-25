@@ -35,12 +35,21 @@ def page_not_found(error):
 def form():
     if request.method == "POST":
        # getting input with name = lname in HTML form
-       image = request.form.getlist("images")
-       if len(image) > 5:
-          return  image[0:5]
-       elif len(image) < 5:
-          return image
+       image = request.files["images"]
+       #if len(image) > 5:
+       #    return  image[0:5] + printfile(image)
+       #elif len(image) < 5:
+       # return image #+ printfile(image) 
+       images=[]
+       images.append(image)
+       PlantNet.readImg(images)
     return render_template("form.html")
+
+def printfile(list):
+    y=[]
+    for x in list:
+        y.append(str(type(x)))
+    return y
 
 if __name__ == '__main__':
     app.run(debug=True)

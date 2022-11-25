@@ -178,6 +178,7 @@ footer  ul li a:visited{
     width: 100;
     text-align: center; 
 }
-.boximages{
-    background-image: url(../img/icons8-immagine.png);
+img.foglie{
+    width: 100px;
+    height: auto;
 }

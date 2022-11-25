@@ -52,9 +52,14 @@
       <h2>{{sottotitolo}}</h2>
     </div>
     <!--------------------------------------form-------------------------------------->
-    <form action="{{ url_for('form')}}" method="post">
-      <input type="file" id="images" name="images" multiple="images/*">
-      <button type="submit">Submit</button>
+    <div class="divform">
+      <form method="post" enctype="multipart/form-data">
+        <p>Inserisci qui le tue immagini:</p>
+        <img src="../static/img/icons8-immagine.png" id="foglie">
+        <input type="file" id="images" name="images" multiple="images/*">
+        <input type="submit" value="Upload">
+      </form>
+    </div>
     <!--------------------------------------box grafici e mappa-------------------------------------->
 
     <!--------------------------------------FOOTER---------------------------------------->
