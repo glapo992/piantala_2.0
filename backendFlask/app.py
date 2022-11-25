@@ -41,8 +41,8 @@ import os
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/Piantala/backendFLask/tmp/uploads'
-ALLOWED_EXTENSIONS = {'raw', 'png', 'jpg', 'jpeg', 'gif'}
+UPLOAD_FOLDER = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -66,8 +66,9 @@ def upload_file():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('download_file', name=filename))
+            upload=os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(upload)
+    return redirect(url_for(index.html))
     return '''
     <!doctype html>
     <title>Upload new File</title>
@@ -77,6 +78,7 @@ def upload_file():
       <input type=submit value=Upload>
     </form>
     '''
+
 #-----------------------------------------------------
 
 if __name__ == '__main__':
