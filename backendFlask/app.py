@@ -26,10 +26,10 @@ def about():
     imagesList = [image1, image2, image3, image4]
 
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
-    #risposta = esegui.ottieniRisposta(imagesList=imagesList)
+    risposta = esegui.ottieniRisposta(imagesList=imagesList)
 
-    #    return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
-    return render_template('about.html', tagGPS=tagGPS)
+    return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
+    #return render_template('about.html', tagGPS=tagGPS)
 
 
 @app.errorhandler(404)
