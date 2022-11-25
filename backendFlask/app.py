@@ -19,16 +19,17 @@ def progetto1():
 
 @app.route('/about')
 def about():
-    image1 = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/img/piante/img1.jpg'
-    image2 = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/img/piante/img2.jpg'
-    image3 = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/img/piante/img3.jpg'
-    image4 = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/img/piante/img4.jpg'
+    image1 = 'static/img/piante/img1.JPG'
+    image2 = 'static/img/piante/img2.JPG'
+    image3 = 'static/img/piante/img3.JPG'
+    image4 = 'static/img/piante/img4.JPG'
     imagesList = [image1, image2, image3, image4]
 
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
-    risposta = esegui.ottieniRisposta(imagesList=imagesList)
+    #risposta = esegui.ottieniRisposta(imagesList=imagesList)
 
-    return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
+    #    return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
+    return render_template('about.html', tagGPS=tagGPS)
 
 
 @app.errorhandler(404)

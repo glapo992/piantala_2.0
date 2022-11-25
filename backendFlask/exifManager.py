@@ -13,7 +13,8 @@ class ExifManager:
         exif_dict = piexif.load(im.info.get('exif'))
         return exif_dict
 
-    '''accetta un dizionario di exif e restituisce solo i tag relativi al GPS'''
+    '''accetta un dizionario di exif e restituisce solo i tag relativi al GPS
+    estrae sololatitudine e longitudine'''
 
     def exif_to_tag(exif_dict):
         exif_tag_dict = {}
@@ -30,4 +31,5 @@ class ExifManager:
                     element = exif_dict[ifd][tag]
 
                 exif_tag_dict[ifd][piexif.TAGS[ifd][tag]["name"]] = element
-        return exif_tag_dict['GPS']
+        return 'lat', exif_tag_dict['GPS'][
+            'GPSLatitude'], 'long', exif_tag_dict['GPS']['GPSLongitude']
