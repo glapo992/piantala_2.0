@@ -26,6 +26,7 @@ Per uscire dal venv --> deactivate
 
 Flask crea un server locale su http://127.0.0.1:5000
 
-
+per fare le cose fighe con le mappe. basta dargli in pasto un json o un csv
+KEPLER --> https://betterprogramming.pub/geo-data-visualization-with-kepler-gl-fbc15debbca4
 
 Flask-WTF ->estensione per la gestione dei form

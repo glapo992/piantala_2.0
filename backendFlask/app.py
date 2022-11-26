@@ -39,9 +39,8 @@ def about():
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
     '''accetta lista immaigni e restituisce un json con risposte api'''
     #risposta = esegui.ottieniRisposta(imagesList=imagesList)
-    '''accetta lista con lat e lon e restituisce oggetto html'''
-    map = dv.mappa_provv(tagGPS)
-
+    '''accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html'''
+    dv.mappa('fakedata.csv')
     #return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
     return render_template('about.html', tagGPS=tagGPS)
 
