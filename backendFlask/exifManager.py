@@ -1,16 +1,14 @@
-from pprint import pprint
 from PIL import Image
 import piexif
-from util import Util as u
 
 codec = 'ISO-8859-1'  # or latin-1, serve a decodificare i tag exif
 
 
 class ExifManager:
+    '''converte le coordinate da radaili (come escono dai tagGPS)a decimali (come le vuole folium'''
 
     def gpsConverter(cooDeg):
-        cooDecimali = cooDeg[0] + ((cooDeg[1] + (cooDeg[2] / 60)) / 14)
-
+        cooDecimali = cooDeg[0] + ((cooDeg[1] + (cooDeg[2] / 60)) / 60)
         return cooDecimali
 
     '''accetta un immagine e restituisce il dizionario con gli exif
@@ -50,6 +48,10 @@ class ExifManager:
             (exif_tag_dict['GPS']['GPSLongitude'][1][0]),
             (exif_tag_dict['GPS']['GPSLongitude'][2][0] / 100),
         ]
+        print(latDeg)
+        print(lonDeg)
+        print(ExifManager.gpsConverter(latDeg), )
+        print(ExifManager.gpsConverter(lonDeg))
         return [
             ExifManager.gpsConverter(latDeg),
             ExifManager.gpsConverter(lonDeg)

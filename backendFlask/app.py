@@ -1,20 +1,31 @@
 from flask import Flask, render_template, request, url_for, redirect
-from titolo import Titolo
 from plantnet import *
 from Esegui import esegui
+from dataviz import Dataviz as dv
 
 app = Flask(__name__)
+'''il render_template apre il file all'interno della cartella templates'''
 
 
-#il render_template apre il file all'interno della cartella 'templates'
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
+'''pagina vuota dimostrativa'''
+
+
 @app.route('/progetto1')
 def progetto1():
     return render_template('progetto1.html')
+
+
+'''ogni volta che viene chiamato il metodo per generare la mappa, questo file html viene sovrscritto con i dati nuovi'''
+
+
+@app.route('/circle_map')
+def circle_map():
+    return render_template('circle_map.html')
 
 
 @app.route('/about')
@@ -24,12 +35,15 @@ def about():
     image3 = 'static/img/piante/img3.JPG'
     image4 = 'static/img/piante/img4.JPG'
     imagesList = [image1, image2, image3, image4]
-
+    '''accetta lista immagini, restituisce lista di 2 elementi gps lat e lon'''
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
-    risposta = esegui.ottieniRisposta(imagesList=imagesList)
+    '''accetta lista immaigni e restituisce un json con risposte api'''
+    #risposta = esegui.ottieniRisposta(imagesList=imagesList)
+    '''accetta lista con lat e lon e restituisce oggetto html'''
+    map = dv.mappa_provv(tagGPS)
 
-    return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
-    #return render_template('about.html', tagGPS=tagGPS)
+    #return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
+    return render_template('about.html', tagGPS=tagGPS)
 
 
 @app.errorhandler(404)

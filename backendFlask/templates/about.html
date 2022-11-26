@@ -10,13 +10,10 @@
     <div calss="risposte">
       <h1>prova per vedere se passo i dati al frontend</h1>
       <h3>esito app</h3>
-      <span>{{risposta}}</span>
+      <span> {{risposta}}</span>
       <h3>dati tagGPS</h3>
       <span>{{tagGPS}}</span>
     </div>
-    <div class="map">
-      <!--render dellla mappa di folium -->
-      <span>{{folium_map}}</span>
-    </div>
+    <iframe src=" {{ url_for('circle_map') }} " frameborder="0"></iframe>
   </body>
 </html>
