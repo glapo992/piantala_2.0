@@ -35,14 +35,15 @@ def about():
     image3 = 'static/img/piante/img3.JPG'
     image4 = 'static/img/piante/img4.JPG'
     imagesList = [image1, image2, image3, image4]
-    '''accetta lista immagini, restituisce lista di 2 elementi gps lat e lon'''
+    '''accetta lista immagini, restituisce lista di 2 elementi gps lat e lon
+    si può cancellare una volta fatto il collegamento al DB'''
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
     '''accetta lista immaigni e restituisce un json con risposte api'''
-    #risposta = esegui.ottieniRisposta(imagesList=imagesList)
+    risposta = esegui.ottieniRisposta(imagesList=imagesList)
     '''accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html'''
     dv.mappa('fakedata.csv')
-    #return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
-    return render_template('about.html', tagGPS=tagGPS)
+    return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
+    #return render_template('about.html')
 
 
 @app.errorhandler(404)
