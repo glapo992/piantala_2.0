@@ -40,7 +40,6 @@ def about():
         if max <= 5:
             imagesList.append(PATH + '/' + image)
             max + 1
-    clearfolder() #elimino tutte le immagini dalla cartella
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
     '''accetta lista immaigni e restituisce un json con risposte api'''
     risposta = esegui.ottieniRisposta(imagesList=imagesList)
@@ -74,6 +73,7 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+    clearfolder() #elimino tutte le immagini dalla cartella
     if request.method == 'POST':
         print(request.files)
         uploaded = request.files.getlist("file")
@@ -88,6 +88,7 @@ def upload_file():
                 filename = secure_filename(file.filename)
                 upload=os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(upload)
+    return about()
     return '''
     <!doctype html>
     <title>Upload new File</title>
