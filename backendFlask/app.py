@@ -1,15 +1,18 @@
 from flask import Flask, render_template, request, url_for, redirect
-from titolo import Titolo
 from plantnet import *
 from Esegui import esegui
+from dataviz import Dataviz as dv
 
 app = Flask(__name__)
+'''il render_template apre il file all'interno della cartella templates'''
 
 
-#il render_template apre il file all'interno della cartella 'templates'
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+'''pagina vuota dimostrativa'''
 
 
 @app.route('/progetto1')
@@ -17,18 +20,30 @@ def progetto1():
     return render_template('progetto1.html')
 
 
+'''ogni volta che viene chiamato il metodo per generare la mappa, questo file html viene sovrscritto con i dati nuovi'''
+
+
+@app.route('/circle_map')
+def circle_map():
+    return render_template('circle_map.html')
+
+
 @app.route('/about')
 def about():
-    image1 = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/img/piante/img1.jpg'
-    image2 = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/img/piante/img2.jpg'
-    image3 = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/img/piante/img3.jpg'
-    image4 = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/img/piante/img4.jpg'
+    image1 = 'static/img/piante/img1.JPG'
+    image2 = 'static/img/piante/img2.JPG'
+    image3 = 'static/img/piante/img3.JPG'
+    image4 = 'static/img/piante/img4.JPG'
     imagesList = [image1, image2, image3, image4]
-
+    '''accetta lista immagini, restituisce lista di 2 elementi gps lat e lon
+    si può cancellare una volta fatto il collegamento al DB'''
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
+    '''accetta lista immaigni e restituisce un json con risposte api'''
     risposta = esegui.ottieniRisposta(imagesList=imagesList)
-
+    '''accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html'''
+    dv.mappa('fakedata.csv')
     return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
+    #return render_template('about.html')
 
 
 @app.errorhandler(404)
@@ -36,20 +51,22 @@ def page_not_found(error):
     return render_template('404.html'), 404
 
 
-#--------------------------test form------------------
-import os
-from flask import Flask, flash, request, redirect, url_for
-from werkzeug.utils import secure_filename
+# #--------------------------test form------------------
+# import os
+# from flask import Flask, flash, request, redirect, url_for
+# from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
+# UPLOAD_FOLDER = '/Piantala/backendFLask/tmp/uploads'
+# ALLOWED_EXTENSIONS = {'raw', 'png', 'jpg', 'jpeg', 'gif'}
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# app = Flask(__name__)
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# def allowed_file(filename):
+#     return '.' in filename and \
+#            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
