@@ -1,0 +1,38 @@
+h1{
+    text-align: center;
+}
+
+div#box_risposte {
+    padding: 10%, 0;
+}
+
+div#box_risposte h2{
+    text-align: center;
+}
+
+div#box_risposte span{
+
+    margin: auto;
+    text-align: center;
+}
+
+span#listarisposta ul{
+    text-align: left;
+    list-style: none;
+}
+
+#box_mappa{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: auto;
+}
+
+div#box_mappa iframe{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80vw;
+    height: 60vw;
+}

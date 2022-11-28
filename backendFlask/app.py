@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, url_for, redirect
-from plantnet import *
+from flask import Flask, render_template, request, redirect, flash, url_for
+from plantnet import PlantNet
 from Esegui import esegui
 from dataviz import Dataviz as dv
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 '''il render_template apre il file all'interno della cartella templates'''
@@ -31,7 +33,7 @@ def circle_map():
 
 @app.route('/about')
 def about():
-    PATH='C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
+    PATH = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
     tmplist = os.listdir(PATH)
     imagesList = []
     max = 1
@@ -40,16 +42,18 @@ def about():
         if max <= 5:
             imagesList.append(PATH + '/' + image)
             max + 1
-    clearfolder() #elimino tutte le immagini dalla cartella
+    clearfolder()  #elimino tutte le immagini dalla cartella
+
+    #------------info da inviare al DB------------------------------------------
+    '''accetta la lista di immagini e restituisce lista con lat e lon'''
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
     '''accetta lista immaigni e restituisce un json con risposte api'''
     risposta = esegui.ottieniRisposta(imagesList=imagesList)
+    #---------------------------------------------------------------------------
     '''accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html'''
     dv.mappa('fakedata.csv')
     return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
     #return render_template('about.html', tagGPS=tagGPS)
-
-    
 
 
 @app.errorhandler(404)
@@ -58,21 +62,22 @@ def page_not_found(error):
 
 
 # #--------------------------test form------------------
-import os
-from flask import Flask, flash, request, redirect, url_for
-from werkzeug.utils import secure_filename
 
+#da mettere il path relativo
 UPLOAD_FOLDER = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
 
 #app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 @app.route('/', methods=['GET', 'POST'])
+#da spostare in un altra classe
 def upload_file():
     if request.method == 'POST':
         print(request.files)
@@ -86,7 +91,7 @@ def upload_file():
                 return redirect(request.url)
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                upload=os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                upload = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(upload)
     return '''
     <!doctype html>
@@ -97,11 +102,12 @@ def upload_file():
       <input type=submit value=Upload>
     </form>
     '''
-    
+
 
 #-----------------------------------------------------
-def clearfolder(): #delete all files in folder
-    PATH='C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
+#mettere in altra classe
+def clearfolder():  #delete all files in folder
+    PATH = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
     tmplist = os.listdir(PATH)
     for image in tmplist:
         os.remove(PATH + '/' + image)
