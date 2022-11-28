@@ -44,6 +44,6 @@ class PlantNet:
             'scientificNameWithoutAuthor']
         commonName = json_result['results'][0]['species']['commonNames'][0]
 
-        identificazione = [specie, affidabilità, genus, family, commonName]
+        identificazione = specie, affidabilità, genus, family, commonName
 
         return identificazione

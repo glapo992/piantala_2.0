@@ -19,9 +19,8 @@ class ExifManager:
         exif_dict = piexif.load(im.info.get('exif'))
         return exif_dict
 
-    '''accetta un dizionario di exif e restituisce solo i tag relativi al GPS in formato decimale
-    estrae sololatitudine e longitudine
-    --> da inviare al DB'''
+    '''accetta un dizionario di exif e restituisce solo i tag relativi al GPS
+    estrae sololatitudine e longitudine'''
 
     def exif_to_tag(exif_dict):
         exif_tag_dict = {}
@@ -37,18 +36,6 @@ class ExifManager:
                 except AttributeError:
                     element = exif_dict[ifd][tag]
 
-                    exif_tag_dict[ifd][piexif.TAGS[ifd][tag]["name"]] = element
-        latDeg = [
-            (exif_tag_dict['GPS']['GPSLatitude'][0][0]),
-            (exif_tag_dict['GPS']['GPSLatitude'][1][0]),
-            (exif_tag_dict['GPS']['GPSLatitude'][2][0] / 100),
-        ]
-        lonDeg = [
-            (exif_tag_dict['GPS']['GPSLongitude'][0][0]),
-            (exif_tag_dict['GPS']['GPSLongitude'][1][0]),
-            (exif_tag_dict['GPS']['GPSLongitude'][2][0] / 100),
-        ]
-        return [
-            ExifManager.gpsConverter(latDeg),
-            ExifManager.gpsConverter(lonDeg)
-        ]
+                exif_tag_dict[ifd][piexif.TAGS[ifd][tag]["name"]] = element
+        return 'lat', exif_tag_dict['GPS'][
+            'GPSLatitude'], 'long', exif_tag_dict['GPS']['GPSLongitude']
