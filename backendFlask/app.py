@@ -5,10 +5,13 @@ from dataviz import Dataviz as dv
 import os
 from werkzeug.utils import secure_filename
 
+#da mettere il path relativo
+UPLOAD_FOLDER = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
+
 app = Flask(__name__)
 '''il render_template apre il file all'interno della cartella templates'''
-
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 #il render_template apre il file all'interno della cartella 'templates'
 @app.route('/')
 def index():
@@ -40,15 +43,10 @@ def about():
     # carico solo le prime 5 foto salvat epresenti in cartella
     for image in tmplist:
         if max <= 5:
-            imagesList.append(PATH + '/' + image)
-            max + 1
-<<<<<<< HEAD
-    clearfolder()  #elimino tutte le immagini dalla cartella
-
+            imagesList.append(PATH + '/' + image) 
+            max + 1       
     #------------info da inviare al DB------------------------------------------
     '''accetta la lista di immagini e restituisce lista con lat e lon'''
-=======
->>>>>>> 2b94814e86b55e6c6b49d6d4735e265f9f1169d2
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
     '''accetta lista immaigni e restituisce un json con risposte api'''
     risposta = esegui.ottieniRisposta(imagesList=imagesList)
@@ -63,24 +61,17 @@ def about():
 def page_not_found(error):
     return render_template('404.html'), 404
 
-
-# #--------------------------test form------------------
-
-#da mettere il path relativo
-UPLOAD_FOLDER = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
-
-#app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/', methods=['GET', 'POST'])
-#da spostare in un altra classe
+
+# Form: seleziona file dall'esplora risorse, puoi caricare qualsiasi tipo di file, 
+# questa funzione salverà in locale solo i formati accettati (ALLOWED_EXTENCTIONS) 
+# dopo aver salvato i file lancia about() 
+# al momento non gestisce nessuna eccezione
 def upload_file():
     clearfolder() #elimino tutte le immagini dalla cartella
     if request.method == 'POST':
@@ -98,24 +89,15 @@ def upload_file():
                 upload = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(upload)
     return about()
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype="multipart/form-data">
-      <input type=file name=file multiple="images/*">
-      <input type=submit value=Upload>
-    </form>
-    '''
 
-
-#-----------------------------------------------------
-#mettere in altra classe
-def clearfolder():  #delete all files in folder
+# cancella tutti i file presenti nella cartella definita in "PATH"
+def clearfolder():  
     PATH = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
     tmplist = os.listdir(PATH)
     for image in tmplist:
         os.remove(PATH + '/' + image)
+#-----------------------------------------------------
+
 
 
 if __name__ == '__main__':
