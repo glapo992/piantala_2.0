@@ -8,17 +8,13 @@ from werkzeug.utils import secure_filename
 #da mettere il path relativo
 UPLOAD_FOLDER = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
-
 app = Flask(__name__)
-'''il render_template apre il file all'interno della cartella templates'''
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-#il render_template apre il file all'interno della cartella 'templates'
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-'''pagina vuota dimostrativa'''
 
 
 @app.route('/progetto1')
@@ -26,10 +22,11 @@ def progetto1():
     return render_template('progetto1.html')
 
 
-'''ogni volta che viene chiamato il metodo per generare la mappa, questo file html viene sovrscritto con i dati nuovi'''
-
-
 @app.route('/circle_map')
+#
+#ogni volta che viene chiamato il metodo per generare la mappa,
+# questo file html viene sovrscritto con i dati nuovi
+#
 def circle_map():
     return render_template('circle_map.html')
 
@@ -58,16 +55,14 @@ def about():
 
 
 @app.errorhandler(404)
+#
+# catcha l'errore page not found e lancia la nostra pagina 404 
+#
 def page_not_found(error):
     return render_template('404.html'), 404
 
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @app.route('/', methods=['GET', 'POST'])
-
 # Form: seleziona file dall'esplora risorse, puoi caricare qualsiasi tipo di file, 
 # questa funzione salverà in locale solo i formati accettati (ALLOWED_EXTENCTIONS) 
 # dopo aver salvato i file lancia about() 
@@ -90,15 +85,26 @@ def upload_file():
                 file.save(upload)
     return about()
 
+#----------------------------UTILITIES--------------------------------------------
+
+#
+# verifica che il file passato abbia estensione accettata 
+# (compresa in ALLOWED_EXTENSIONS)
+#  
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+#
 # cancella tutti i file presenti nella cartella definita in "PATH"
+#
 def clearfolder():  
     PATH = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
     tmplist = os.listdir(PATH)
     for image in tmplist:
         os.remove(PATH + '/' + image)
-#-----------------------------------------------------
 
-
+#------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     app.run(debug=True)
