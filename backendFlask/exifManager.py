@@ -37,5 +37,19 @@ class ExifManager:
                     element = exif_dict[ifd][tag]
 
                 exif_tag_dict[ifd][piexif.TAGS[ifd][tag]["name"]] = element
-        return 'lat', exif_tag_dict['GPS'][
-            'GPSLatitude'], 'long', exif_tag_dict['GPS']['GPSLongitude']
+
+        lat = [
+            exif_tag_dict['GPS']['GPSLatitude'][0][0],
+            exif_tag_dict['GPS']['GPSLatitude'][1][0],
+            (exif_tag_dict['GPS']['GPSLatitude'][2][0] / 100)
+        ]
+
+        lon = [
+            exif_tag_dict['GPS']['GPSLongitude'][0][0],
+            exif_tag_dict['GPS']['GPSLongitude'][1][0],
+            (exif_tag_dict['GPS']['GPSLongitude'][2][0] / 100)
+        ]
+        cooDec = [ExifManager.gpsConverter(lat), ExifManager.gpsConverter(lon)]
+        print(cooDec)
+
+        return cooDec
