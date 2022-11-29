@@ -4,9 +4,8 @@ import json
 API_KEY = "2b10vOWpgAoY62YLF1X5UiDzu"  # API_KEY dal mio account plantNet
 PROJECT = "weurope"  #identifica la zona di interesse in cui fare la ricerca
 api_endpoint = f"https://my-api.plantnet.org/v2/identify/{PROJECT}?api-key={API_KEY}"  #url a cui fare la richiesta
-data = {
-    'organs': ['leaf', 'leaf', 'leaf', 'leaf']
-}  #deve esere della stessa lunghezza della lista di immagini
+# data = {
+#    'organs': ['leaf', 'leaf', 'leaf', 'leaf']}  #deve esere della stessa lunghezza della lista di immagini
 
 
 class PlantNet:
@@ -25,9 +24,14 @@ class PlantNet:
             for photo in photos:
                 image_data = open(photo, 'rb')
                 files.append(('images', (photo, image_data)))
+        print(files)
         return files
 
     def sendImg(files):
+        data = {'organs': []}
+        organ = 'leaf'
+        for file in files:
+            data['organs'].append(organ)
         req = requests.Request('POST',
                                url=api_endpoint,
                                files=files,
