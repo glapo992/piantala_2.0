@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, url_for
 from Esegui import esegui
 from dataviz import Dataviz as dv
 import os
@@ -86,7 +86,7 @@ def upload_file():
                 filename = secure_filename(file.filename)
                 upload = UPLOAD_FOLDER + filename
                 file.save(upload)
-    return about()
+    return redirect(url_for('about'))
 
 
 #----------------------------UTILITIES--------------------------------------------

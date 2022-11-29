@@ -58,13 +58,13 @@
             <li>genere: {{risposta[2]}}</li>
             <li>famiglia: {{risposta[3]}}</li>
             <li>affidabilità della rilevazione: {{risposta[1]}}</li>
+            <li>latitudine: {{tagGPS[0]}}</li>
+            <li>longitudine: {{tagGPS[1]}}</li>
           </ul>
         </span>
       </p>
     </div>
     <div id="box_mappa">
-      <h3>dati tagGPS</h3>
-      <span>{{tagGPS}}</span>
       <div>
         <iframe src=" {{ url_for('circle_map') }} " frameborder="0"></iframe>
       </div>
