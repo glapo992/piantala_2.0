@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../static/css/nav_style.css" />
+    <link rel="stylesheet" href="../static/css/resp_sytle.css" /> 
     <title>risultato</title>
   </head>
   <body>
@@ -41,24 +42,57 @@
         </div>
       </nav>
     </header>
-    <h1>identificazione</h1>
-    <div>
-      <h2>la pianta che vuoi identificare è:</h2>
-      <h3>esito:</h3>
-      <span>
-        <ul>
-          <li>nome comune {{risposta[4]}}</li>
-          <li>nome scientifico:<i> {{risposta[0]}}</i></li>
-          <li>genere: {{risposta[2]}}</li>
-          <li>famiglia: {{risposta[3]}}</li>
-          <li>affidabilità della rilevazione: {{risposta[1]}}</li>
-        </ul>
-      </span>
+
+    <div id="title">
+      <h1>identificazione</h1>
+    </div>
+    <div id=box_risposte>
+      <p id="risposta">
+        <h2>la pianta che vuoi identificare è:</h2>
+      </p>
+      <p id="listarisposta">
+        <span>
+          <ul>
+            <li>nome comune {{risposta[4]}}</li>
+            <li>nome scientifico:<i> {{risposta[0]}}</i></li>
+            <li>genere: {{risposta[2]}}</li>
+            <li>famiglia: {{risposta[3]}}</li>
+            <li>affidabilità della rilevazione: {{risposta[1]}}</li>
+          </ul>
+        </span>
+      </p>
+    </div>
+    <div id="box_mappa">
       <h3>dati tagGPS</h3>
       <span>{{tagGPS}}</span>
-      <div id="mappa">
+      <div>
         <iframe src=" {{ url_for('circle_map') }} " frameborder="0"></iframe>
       </div>
     </div>
   </body>
+ <!-----------------------------------------------SCRIPT------------------------------------------------------>
+ <script>
+  /* When the user clicks on the button, 
+  toggle between hiding and showing the dropdown content */
+  function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function (event) {
+    if (!event.target.matches(".dropbtn")) {
+      var dropdowns = document.getElementsByClassName("tendina");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains("show")) {
+          openDropdown.classList.remove("show");
+        }
+      }
+    }
+  };
+
+</script>
+
+
 </html>
