@@ -41,24 +41,29 @@ def about():
     #PATH = UPLOAD_FOLDER
     tmplist = os.listdir(UPLOAD_FOLDER)
     imagesList = []
+    convertedImagesList = []
     max = 1
     # carico solo le prime 5 foto salvate presenti in cartella
     for image in tmplist:
         if max <= 5:
-            convertedjpg = conv.convertJpg(UPLOAD_FOLDER + image)
-            imagesList.append(convertedjpg)
+            #litsa da inviare al lettore GPS
+            imagePath = (UPLOAD_FOLDER + image)
+            #lista da inviare alla api
+            imagesList.append(UPLOAD_FOLDER + image)
+            convertedJpg = conv.convertJpg(imagePath)
+            convertedImagesList.append(convertedJpg)
             max + 1
-    print('IO SONO QUI!!!!!!')
-    print(imagesList)
+
     #------------info da inviare al DB------------------------------------------
-    '''accetta la lista di immagini e restituisce lista con lat e lon'''
+    #accetta la lista di immagini e restituisce lista con lat e lon
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
-    '''accetta lista immaigni e restituisce un json con risposte api'''
-    risposta = esegui.ottieniRisposta(imagesList=imagesList)
+    #accetta lista immaigni e restituisce un json con risposte api
+    risposta = esegui.ottieniRisposta(imagesList=convertedImagesList)
+    #cancella immagini nelle cartelle tmp
     clearfolder(UPLOAD_FOLDER)
     clearfolder(CONVERTED_FOLDER)
-    #---------------------------------------------------------------------------
-    '''accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html'''
+    #------------mappa---------------------------------------------------------------
+    #accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html
     dv.mappa('fakedata.csv')
     return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
 
@@ -77,7 +82,7 @@ def page_not_found(error):
 # dopo aver salvato i file lancia about()
 # al momento non gestisce nessuna eccezione
 def upload_file():
-    # clearfolder()  #elimino tutte le immagini dalla cartella
+    # clearfolder()  #elimino tutte le immagini dalla cartella(spostato dopo risposte)
     if request.method == 'POST':
         print(request.files)
         uploaded = request.files.getlist("file")
