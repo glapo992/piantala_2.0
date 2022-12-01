@@ -3,7 +3,7 @@
 from PIL import Image
 import os
 
-image = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/tmp/upload/IMG_2074.JPG'
+#image = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/tmp/upload/IMG_2074.JPG'
 
 
 def convertJpg(image):
@@ -23,4 +23,4 @@ def convertJpg(image):
     return converted_image_path
 
 
-convertJpg(image=image)
+#convertJpg(image=image)
