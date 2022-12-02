@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
-from plantnet import PlantNet
-from Esegui import esegui
-from dataviz import Dataviz as dv
+import Esegui as esegui
+import dataviz as dv
 import os
 from werkzeug.utils import secure_filename
+import toDB as db
 
 #da mettere il path relativo
 UPLOAD_FOLDER = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
@@ -40,13 +40,18 @@ def about():
     # carico solo le prime 5 foto salvat epresenti in cartella
     for image in tmplist:
         if max <= 5:
-            imagesList.append(PATH + '/' + image) 
-            max + 1       
+            imagesList.append(UPLOAD_FOLDER + image)
+            max = max + 1 # Potrebbe essere una cazzata, in caso riscrivere max + 1
     #------------info da inviare al DB------------------------------------------
     '''accetta la lista di immagini e restituisce lista con lat e lon'''
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
     '''accetta lista immaigni e restituisce un json con risposte api'''
     risposta = esegui.ottieniRisposta(imagesList=imagesList)
+    '''invio dati a firestore'''
+    if type(risposta[1]) is float:
+        db.sendCompleteData(tagGPS, risposta)
+    else:
+        db.sendPartialData(tagGPS, risposta)
     #---------------------------------------------------------------------------
     '''accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html'''
     dv.mappa('fakedata.csv')

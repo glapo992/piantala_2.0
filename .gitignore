@@ -1,4 +1,4 @@
 backendFlask/__pycache__/
 backendFlask/vFlask/
 backendFlask/tmp/upload/*
-firebase-auth.json
+backendFlask/firebase-auth.json
