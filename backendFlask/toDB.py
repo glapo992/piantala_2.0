@@ -1,8 +1,7 @@
 import firebase_admin as firebase
 from firebase_admin import credentials
 from firebase_admin import firestore
-import uuid
-import datetime as time
+from datetime import datetime
 # import json
 
 
@@ -23,7 +22,8 @@ def sendCompleteData(tagGPS, risposta):
         risultati di plantNET da caricare
     '''
     # Genera nuovo UUID
-    unique_id = str(uuid.uuid1())
+    now = datetime.now()
+    unique_id = datetime.strftime(now, '%y%m%d-%H%M%S-%f')
     # Aggiungi una nuova pianta a Firestore
     pianta = PIANTE_COLLECTION.document(unique_id)
     pianta.set({
@@ -49,7 +49,8 @@ def sendPartialData(tagGPS, risposta):
         risultati di plantNET da caricare
     '''
     # Genera nuovo UUID
-    unique_id = str(uuid.uuid1())
+    now = datetime.now()
+    unique_id = datetime.strftime(now, '%y%m%d-%H%M%S-%f')
     # Aggiungi una nuova pianta a Firestore
     pianta = PIANTE_COLLECTION.document(unique_id)
     pianta.set({
