@@ -1,22 +1,29 @@
+body{
+    display: block;
+}
 h1{
     text-align: center;
 }
 
 div#box_risposte {
+    display: flex;
+    justify-content: space-between;
     padding: 10%, 0;
+    margin: 10%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border: 6px solid darkgray;
+    border-radius: 20px;
+    width: 100;
 }
 
-div#box_risposte h2{
-    text-align: center;
-}
-
-div#box_risposte span{
-
+#box_risposte{
+    right:0%;
     margin: auto;
-    text-align: center;
+    text-align: left;
 }
 
-span#listarisposta ul{
+#listarisposta {
     text-align: left;
     list-style: none;
 }
@@ -25,8 +32,14 @@ span#listarisposta ul{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 100%;
     height: auto;
+    align-items: center;
+    margin: 10%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border: 6px solid darkgray;
+    border-radius: 20px;
+    padding: 2%;
 }
 
 div#box_mappa iframe{

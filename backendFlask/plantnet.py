@@ -4,9 +4,8 @@ import json
 API_KEY = "2b10vOWpgAoY62YLF1X5UiDzu"  # API_KEY dal mio account plantNet
 PROJECT = "weurope"  #identifica la zona di interesse in cui fare la ricerca
 api_endpoint = f"https://my-api.plantnet.org/v2/identify/{PROJECT}?api-key={API_KEY}"  #url a cui fare la richiesta
-data = {
-    'organs': ['leaf', 'leaf', 'leaf', 'leaf']
-}  #deve esere della stessa lunghezza della lista di immagini
+# data = {
+#    'organs': ['leaf', 'leaf', 'leaf', 'leaf']}  #deve esere della stessa lunghezza della lista di immagini
 
 
 def readImg(photos):
