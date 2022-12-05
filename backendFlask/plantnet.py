@@ -45,22 +45,22 @@ def sendImg(files):
     s = requests.Session()
     response = s.send(prepared)
     json_result = json.loads(response.text)
+    # TODO: rimuovere le due righe sotto, esistono per debuggare errori
+    with open('static/src/bestmatch.json', 'w') as file:
+         print(response.text, file=file)
     try:
         specie = json_result['results'][0]['species']['scientificName']
-        affidabilità = (json_result['results'][0]['score'])
-        genus = json_result['results'][0]['species']['genus'][
-            'scientificNameWithoutAuthor']
-        family = json_result['results'][0]['species']['family'][
-            'scientificNameWithoutAuthor']
+        affidabilità = json_result['results'][0]['score']
+        genus = json_result['results'][0]['species']['genus']['scientificNameWithoutAuthor']
+        family = json_result['results'][0]['species']['family']['scientificNameWithoutAuthor']
         commonName = json_result['results'][0]['species']['commonNames'][0]
 
     except:
-        specie = (json_result['bestMatch'])
+        specie = json_result['bestMatch']
         affidabilità = 'n.d.'
         genus = 'n.d.'
         family = 'n.d.'
         commonName = 'n.d.'
-        identificazione = [specie]
 
     finally:
         identificazione = [specie, affidabilità, genus, family, commonName]

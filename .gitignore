@@ -2,3 +2,4 @@ backendFlask/__pycache__/
 backendFlask/vFlask/
 backendFlask/tmp/upload/*
 backendFlask/firebase-auth.json
+backendFlask/static/src/bestmatch.json

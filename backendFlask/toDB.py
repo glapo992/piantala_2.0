@@ -61,7 +61,7 @@ def sendPartialData(tagGPS, risposta):
                })
 
 
-def retrieveData():
+def retrieveData(path):
     '''
     Crea un file .json in static/tmp/map con un array JSON con tutti i documenti del database e i relativi campi.
     Non ritorna e non richiede niente, è una funzione forte e indipendente del ventunesimo secolo.
@@ -72,14 +72,11 @@ def retrieveData():
     for pianta in piante:
         # Trasforma il singolo record in dizionario
         pianta_dict = pianta.to_dict()
-        # Trasforma il dizionario in JSON
-        pianta_json = json.dumps(pianta_dict)
         # Aggiunge il JSON all'array
-        piante_array.append(pianta_json)
+        piante_array.append(pianta_dict)
     # Scrive l'array in un file JSON
-    with open('static/tmp/map/data.json', 'w') as file:
+    with open(path + 'data.json', 'w') as file:
         json.dump(piante_array, file)
-        
 
 
 # Struttura liste passate

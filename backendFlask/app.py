@@ -11,6 +11,7 @@ ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 
 UPLOAD_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/upload/'
 CONVERTED_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/conv/'
+JSON_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/map/'
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
 
@@ -53,24 +54,28 @@ def about():
             imagesList.append(UPLOAD_FOLDER + image)
             convertedJpg = conv.convertJpg(imagePath)
             convertedImagesList.append(convertedJpg)
-            max + 1
+            max += 1 # Controllare se era il comportamento voluto
 
     #------------info da inviare al DB------------------------------------------
-    #accetta la lista di immagini e restituisce lista con lat e lon
+    # Accetta la lista di immagini e restituisce lista con lat e lon
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
-    #accetta lista immaigni e restituisce un json con risposte api
+    # Accetta lista immaigni e restituisce un json con risposte api
     risposta = esegui.ottieniRisposta(imagesList=convertedImagesList)
     # Invio dati a firestore
     if type(risposta[1]) is float:
         db.sendCompleteData(tagGPS, risposta)
     else:
         db.sendPartialData(tagGPS, risposta)
-    #cancella immagini nelle cartelle tmp
+    # Cancella immagini nelle cartelle tmp
     clearfolder(UPLOAD_FOLDER)
     clearfolder(CONVERTED_FOLDER)
     #------------mappa---------------------------------------------------------------
-    #accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html
-    dv.mappa('jsonfake.json')
+    # Crea il file JSON pullando dal database
+    db.retrieveData(JSON_FOLDER)
+    # Accetta un file JSON con i dati delle piante
+    dv.mappa(JSON_FOLDER + 'data.json')
+    # Cancella il file JSON
+    clearfolder(JSON_FOLDER)
     return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
 
 
