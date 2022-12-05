@@ -60,14 +60,14 @@ def about():
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
     #accetta lista immaigni e restituisce un json con risposte api
     risposta = esegui.ottieniRisposta(imagesList=convertedImagesList)
-    #cancella immagini nelle cartelle tmp
-    clearfolder(UPLOAD_FOLDER)
-    clearfolder(CONVERTED_FOLDER)
     # Invio dati a firestore
     if type(risposta[1]) is float:
         db.sendCompleteData(tagGPS, risposta)
     else:
         db.sendPartialData(tagGPS, risposta)
+    #cancella immagini nelle cartelle tmp
+    clearfolder(UPLOAD_FOLDER)
+    clearfolder(CONVERTED_FOLDER)
     #------------mappa---------------------------------------------------------------
     #accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html
     dv.mappa('fakedata.csv')

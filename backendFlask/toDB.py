@@ -2,7 +2,7 @@ import firebase_admin as firebase
 from firebase_admin import credentials
 from firebase_admin import firestore
 from datetime import datetime
-# import json
+import json
 
 
 CRED = credentials.Certificate('firebase-auth.json')
@@ -63,15 +63,24 @@ def sendPartialData(tagGPS, risposta):
 
 def retrieveData():
     '''
-    Stampa tutte le piante sul database, un giorno le passerà in formato JSON/CSV.
+    Crea un file .json in static/tmp/map con un array JSON con tutti i documenti del database e i relativi campi.
+    Non ritorna e non richiede niente, è una funzione forte e indipendente del ventunesimo secolo.
     '''
     # Scarica la lista dei dati e stampala
     piante = PIANTE_COLLECTION.stream()
+    piante_array = []
     for pianta in piante:
-        dati_pianta = pianta.to_dict()
-        print(f'{dati_pianta["nome comune"]}, con affidabilità {dati_pianta["affidabilità"]}')
-    #TODO: trasformare il dizionario in JSON invece di stamparlo a terminale
-    
+        # Trasforma il singolo record in dizionario
+        pianta_dict = pianta.to_dict()
+        # Trasforma il dizionario in JSON
+        pianta_json = json.dumps(pianta_dict)
+        # Aggiunge il JSON all'array
+        piante_array.append(pianta_json)
+    # Scrive l'array in un file JSON
+    with open('static/tmp/map/data.json', 'w') as file:
+        json.dump(piante_array, file)
+        
+
 
 # Struttura liste passate
 # tagGPS[0] = latitudine
