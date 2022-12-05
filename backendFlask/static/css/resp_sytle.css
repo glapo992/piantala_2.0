@@ -30,6 +30,7 @@ div#box_risposte {
 
 #box_mappa{
     display: block;
+    justify-content: center;
     margin-left: auto;
     margin-right: auto;
     height: auto;
@@ -42,10 +43,8 @@ div#box_risposte {
     padding: 2%;
 }
 
-div#box_mappa iframe{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 80vw;
-    height: 60vw;
+iframe{
+    margin: 2%;
+    padding: 2%;
+    border-radius: 20px;
 }
