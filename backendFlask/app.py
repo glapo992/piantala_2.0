@@ -64,7 +64,7 @@ def about():
     clearfolder(CONVERTED_FOLDER)
     #------------mappa---------------------------------------------------------------
     #accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html
-    dv.mappa('fakedata.csv')
+    dv.mappa('jsonfake.json')
     return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
 
 
