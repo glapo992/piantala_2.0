@@ -40,14 +40,23 @@ class PlantNet:
         s = requests.Session()
         response = s.send(prepared)
         json_result = json.loads(response.text)
-        specie = json_result['results'][0]['species']['scientificName']
-        affidabilità = (json_result['results'][0]['score']) * 100
-        genus = json_result['results'][0]['species']['genus'][
-            'scientificNameWithoutAuthor']
-        family = json_result['results'][0]['species']['family'][
-            'scientificNameWithoutAuthor']
-        commonName = json_result['results'][0]['species']['commonNames'][0]
+        try:
+            specie = json_result['results'][0]['species']['scientificName']
+            affidabilità = (json_result['results'][0]['score'])
+            genus = json_result['results'][0]['species']['genus'][
+                'scientificNameWithoutAuthor']
+            family = json_result['results'][0]['species']['family'][
+                'scientificNameWithoutAuthor']
+            commonName = json_result['results'][0]['species']['commonNames'][0]
 
-        identificazione = specie, affidabilità, genus, family, commonName
+        except:
+            specie = (json_result['bestMatch'])
+            affidabilità = 'n.d.'
+            genus = 'n.d.'
+            family = 'n.d.'
+            commonName = 'n.d.'
+            identificazione = [specie]
 
-        return identificazione
+        finally:
+            identificazione = specie, affidabilità, genus, family, commonName
+            return identificazione

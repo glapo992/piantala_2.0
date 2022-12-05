@@ -1,14 +1,16 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, url_for
 from Esegui import esegui
 from dataviz import Dataviz as dv
 import os
 from werkzeug.utils import secure_filename
+import convertImg as conv
 
 #da mettere il path relativo
 ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 
 UPLOAD_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/upload/'
-#backendFlask/static/tmp/upload
+CONVERTED_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/conv/'
+
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
 
 app = Flask(__name__)
@@ -39,22 +41,31 @@ def about():
     #PATH = UPLOAD_FOLDER
     tmplist = os.listdir(UPLOAD_FOLDER)
     imagesList = []
+    convertedImagesList = []
     max = 1
     # carico solo le prime 5 foto salvate presenti in cartella
     for image in tmplist:
         if max <= 5:
+            #litsa da inviare al lettore GPS
+            imagePath = (UPLOAD_FOLDER + image)
+            #lista da inviare alla api
             imagesList.append(UPLOAD_FOLDER + image)
+            convertedJpg = conv.convertJpg(imagePath)
+            convertedImagesList.append(convertedJpg)
             max + 1
+
     #------------info da inviare al DB------------------------------------------
-    '''accetta la lista di immagini e restituisce lista con lat e lon'''
+    #accetta la lista di immagini e restituisce lista con lat e lon
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
-    '''accetta lista immaigni e restituisce un json con risposte api'''
-    risposta = esegui.ottieniRisposta(imagesList=imagesList)
-    #---------------------------------------------------------------------------
-    '''accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html'''
-    dv.mappa('fakedata.csv')
+    #accetta lista immaigni e restituisce un json con risposte api
+    risposta = esegui.ottieniRisposta(imagesList=convertedImagesList)
+    #cancella immagini nelle cartelle tmp
+    clearfolder(UPLOAD_FOLDER)
+    clearfolder(CONVERTED_FOLDER)
+    #------------mappa---------------------------------------------------------------
+    #accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html
+    dv.mappa('jsonfake.json')
     return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
-    #return render_template('about.html', tagGPS=tagGPS)
 
 
 @app.errorhandler(404)
@@ -71,7 +82,7 @@ def page_not_found(error):
 # dopo aver salvato i file lancia about()
 # al momento non gestisce nessuna eccezione
 def upload_file():
-    clearfolder()  #elimino tutte le immagini dalla cartella
+    # clearfolder()  #elimino tutte le immagini dalla cartella(spostato dopo risposte)
     if request.method == 'POST':
         print(request.files)
         uploaded = request.files.getlist("file")
@@ -86,7 +97,7 @@ def upload_file():
                 filename = secure_filename(file.filename)
                 upload = UPLOAD_FOLDER + filename
                 file.save(upload)
-    return about()
+    return redirect(url_for('about'))
 
 
 #----------------------------UTILITIES--------------------------------------------
@@ -104,11 +115,11 @@ def allowed_file(filename):
 #
 # cancella tutti i file presenti nella cartella definita in "PATH"
 #
-def clearfolder():
-    #PATH = UPLOAD_FOLDER
-    tmplist = os.listdir(UPLOAD_FOLDER)
+def clearfolder(path):
+    '''cancella contenuto della cartella indicata nel percorso'''
+    tmplist = os.listdir(path)
     for image in tmplist:
-        os.remove(UPLOAD_FOLDER + image)
+        os.remove(path + image)
 
 
 #------------------------------------------------------------------------------------
