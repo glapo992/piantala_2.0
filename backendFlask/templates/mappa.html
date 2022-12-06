@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/css/index_style.css" />
+    <link rel="stylesheet" href="../static/css/nav_style.css" />
+    <title>mappa</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="{{ url_for('index') }}"
+          ><img
+            src="../static/img/poster-foglia-di-quercia.jpg.jpg"
+            alt="logo"
+            width="80px"
+            height="auto"
+        /></a>
+        <div>
+          <div class="mainmenu">
+            <div><a href="{{ url_for('index') }}">home</a></div>
+            <div class="dropdown">
+              <a onclick="myFunction()" class="dropbtn">progetti</a>
+              <div id="myDropdown" class="tendina">
+                <a href="{{ url_for('mappa') }}">mappa</a>
+                <a href="{{ url_for('progetto1') }}">progetto 1</a>
+                <a href="./2345">progetto 2</a>
+              </div>
+            </div>
+            <div><a href="{{ url_for('about') }}">about us</a></div>
+          </div>
+          <div class="searchbar">
+            <input id="in" type="text" placeholder="cerca" />
+            <img
+              id="lente"
+              src="../static/img/search_FILL0_wght400_GRAD0_opsz48.svg"
+              alt="find"
+            />
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div id="box_mappa">
+      <div>
+        <iframe
+          src=" {{ url_for('circle_map') }} "
+          frameborder="0"
+          style="width: 95%; height: 800px"
+        ></iframe>
+      </div>
+    </div>
+  </body>
+  <script>
+    /* When the user clicks on the button, 
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+      if (!event.target.matches(".dropbtn")) {
+        var dropdowns = document.getElementsByClassName("tendina");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains("show")) {
+            openDropdown.classList.remove("show");
+          }
+        }
+      }
+    };
+  </script>
+</html>

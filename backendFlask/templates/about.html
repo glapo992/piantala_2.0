@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/css/index_style.css" />
     <link rel="stylesheet" href="../static/css/nav_style.css" />
-    <link rel="stylesheet" href="../static/css/resp_sytle.css" /> 
-    <title>risultato</title>
+    <title>about us</title>
   </head>
   <body>
     <header>
@@ -24,9 +24,9 @@
             <div class="dropdown">
               <a onclick="myFunction()" class="dropbtn">progetti</a>
               <div id="myDropdown" class="tendina">
+                <a href="{{ url_for('mappa') }}">mappa</a>
                 <a href="{{ url_for('progetto1') }}">progetto 1</a>
-                <a href="./23">progetto 2</a>
-                <a href="./2345">progetto 3</a>
+                <a href="./2345">progetto 2</a>
               </div>
             </div>
             <div><a href="{{ url_for('about') }}">about us</a></div>
@@ -37,62 +37,32 @@
               id="lente"
               src="../static/img/search_FILL0_wght400_GRAD0_opsz48.svg"
               alt="find"
+              onClick="location.href='./404.html'"
             />
           </div>
         </div>
       </nav>
     </header>
-
-    <div id="title">
-      <h1>identificazione</h1>
-    </div>
-    <div id=box_risposte>
-      <p id="risposta">
-        <h2>la pianta che vuoi identificare è:</h2>
-      </p>
-      <p id="listarisposta">
-        <span>
-          <ul>
-            <li>nome comune {{risposta[4]}}</li>
-            <li>nome scientifico:<i> {{risposta[0]}}</i></li>
-            <li>genere: {{risposta[2]}}</li>
-            <li>famiglia: {{risposta[3]}}</li>
-            <li>affidabilità della rilevazione: {{risposta[1]}}</li>
-            <li>latitudine: {{tagGPS[0]}}</li>
-            <li>longitudine: {{tagGPS[1]}}</li>
-          </ul>
-        </span>
-      </p>
-    </div>
-    <div id="box_mappa">
-      <div>
-        <iframe src=" {{ url_for('circle_map') }} " frameborder="0" style="width: 95%; height: 800px;"></iframe>
-      </div>
-    </div>
   </body>
- <!-----------------------------------------------SCRIPT------------------------------------------------------>
- <script>
-  /* When the user clicks on the button, 
-  toggle between hiding and showing the dropdown content */
-  function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-  }
+  <script>
+    /* When the user clicks on the button, 
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
 
-  // Close the dropdown if the user clicks outside of it
-  window.onclick = function (event) {
-    if (!event.target.matches(".dropbtn")) {
-      var dropdowns = document.getElementsByClassName("tendina");
-      var i;
-      for (i = 0; i < dropdowns.length; i++) {
-        var openDropdown = dropdowns[i];
-        if (openDropdown.classList.contains("show")) {
-          openDropdown.classList.remove("show");
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+      if (!event.target.matches(".dropbtn")) {
+        var dropdowns = document.getElementsByClassName("tendina");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains("show")) {
+            openDropdown.classList.remove("show");
+          }
         }
       }
-    }
-  };
-
-</script>
-
-
+    };
+  </script>
 </html>

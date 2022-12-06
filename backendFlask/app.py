@@ -29,6 +29,16 @@ def progetto1():
     return render_template('progetto1.html')
 
 
+@app.route('/mappa')
+def mappa():
+    return render_template('mappa.html')
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
 @app.route('/circle_map')
 #
 #ogni volta che viene chiamato il metodo per generare la mappa,
@@ -38,8 +48,8 @@ def circle_map():
     return render_template('circle_map.html')
 
 
-@app.route('/about')
-def about():
+@app.route('/response')
+def response():
     #PATH = UPLOAD_FOLDER
     tmplist = os.listdir(UPLOAD_FOLDER)
     imagesList = []
@@ -54,7 +64,7 @@ def about():
             imagesList.append(UPLOAD_FOLDER + image)
             convertedJpg = conv.convertJpg(imagePath)
             convertedImagesList.append(convertedJpg)
-            max += 1 # Controllare se era il comportamento voluto
+            max += 1  # Controllare se era il comportamento voluto
 
     #------------info da inviare al DB------------------------------------------
     # Accetta la lista di immagini e restituisce lista con lat e lon
@@ -76,7 +86,7 @@ def about():
     dv.mappa(JSON_FOLDER + 'data.json')
     # Cancella il file JSON
     clearfolder(JSON_FOLDER)
-    return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
+    return render_template('response.html', risposta=risposta, tagGPS=tagGPS)
 
 
 @app.errorhandler(404)
@@ -90,7 +100,7 @@ def page_not_found(error):
 @app.route('/', methods=['GET', 'POST'])
 # Form: seleziona file dall'esplora risorse, puoi caricare qualsiasi tipo di file,
 # questa funzione salverà in locale solo i formati accettati (ALLOWED_EXTENCTIONS)
-# dopo aver salvato i file lancia about()
+# dopo aver salvato i file lancia response()
 # al momento non gestisce nessuna eccezione
 def upload_file():
     # clearfolder()  #elimino tutte le immagini dalla cartella(spostato dopo risposte)
@@ -108,7 +118,7 @@ def upload_file():
                 filename = secure_filename(file.filename)
                 upload = UPLOAD_FOLDER + filename
                 file.save(upload)
-    return redirect(url_for('about'))
+    return redirect(url_for('response'))
 
 
 #----------------------------UTILITIES--------------------------------------------
