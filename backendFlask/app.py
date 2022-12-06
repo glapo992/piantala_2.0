@@ -77,8 +77,7 @@ def response():
     else:
         db.sendPartialData(tagGPS, risposta)
     # Cancella immagini nelle cartelle tmp
-    clearfolder(UPLOAD_FOLDER)
-    clearfolder(CONVERTED_FOLDER)
+
     #------------mappa---------------------------------------------------------------
     # Crea il file JSON pullando dal database
     db.retrieveData(JSON_FOLDER)
@@ -86,6 +85,8 @@ def response():
     dv.mappa(JSON_FOLDER + 'data.json')
     # Cancella il file JSON
     clearfolder(JSON_FOLDER)
+    clearfolder(UPLOAD_FOLDER)
+    clearfolder(CONVERTED_FOLDER)
     return render_template('response.html', risposta=risposta, tagGPS=tagGPS)
 
 
