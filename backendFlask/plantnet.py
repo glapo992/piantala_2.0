@@ -32,7 +32,21 @@ def readImg(photos):
     print(files)
     return files
 
+
 def sendImg(files):
+    '''
+    Gestisce l'invio dei file a Pl@ntNET e la risposta dell'IA.
+    
+    Parameters:
+    ---
+    files : list
+        Lista dei path delle immagini da mandare
+
+    Returns:
+    ---
+    identificazione : list
+        Lista con i campi ottenuti dal riconoscimento
+    '''
     data = {'organs': []}
     organ = 'leaf'
     for file in files:
@@ -48,20 +62,27 @@ def sendImg(files):
     # TODO: rimuovere le due righe sotto, esistono per debuggare errori
     with open('static/src/bestmatch.json', 'w') as file:
          print(response.text, file=file)
+    # prova a inserire ogni valore, altrimenti usa un valore di default
     try:
         specie = json_result['results'][0]['species']['scientificName']
-        affidabilità = json_result['results'][0]['score']
-        genus = json_result['results'][0]['species']['genus']['scientificNameWithoutAuthor']
-        family = json_result['results'][0]['species']['family']['scientificNameWithoutAuthor']
-        commonName = json_result['results'][0]['species']['commonNames'][0]
-
     except:
-        specie = json_result['bestMatch']
-        affidabilità = 'n.d.'
-        genus = 'n.d.'
-        family = 'n.d.'
-        commonName = 'n.d.'
-
-    finally:
-        identificazione = [specie, affidabilità, genus, family, commonName]
-        return identificazione
+        specie = 'N/D'
+    try:
+        affidabilità = json_result['results'][0]['score']
+    except:
+        affidabilità = 'N/D'
+    try:
+        genus = json_result['results'][0]['species']['genus']['scientificNameWithoutAuthor']
+    except:
+        genus = 'N/D'
+    try:
+        family = json_result['results'][0]['species']['family']['scientificNameWithoutAuthor']
+    except:
+        family = 'N/D'
+    try:
+        commonName = json_result['results'][0]['species']['commonNames'][0]
+    except:
+        commonName = 'N/D'
+    # ritorna la lista con le informazioni
+    identificazione = [specie, affidabilità, genus, family, commonName]
+    return identificazione
