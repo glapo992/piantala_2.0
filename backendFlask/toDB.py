@@ -48,17 +48,18 @@ def sendPartialData(tagGPS, risposta):
     plantNET : list
         risultati di plantNET da caricare
     '''
-    # Genera nuovo UUID
-    now = datetime.now()
-    unique_id = datetime.strftime(now, '%y%m%d-%H%M%S-%f')
-    # Aggiungi una nuova pianta a Firestore
-    pianta = PIANTE_COLLECTION.document(unique_id)
-    pianta.set({
-                   u'specie': risposta[0],
-                   u'status': u'PARTIAL',
-                   u'lat': tagGPS[0],
-                   u'long': tagGPS[1],
-               })
+    if risposta[0] != 'N/D':
+        # Genera nuovo UUID
+        now = datetime.now()
+        unique_id = datetime.strftime(now, '%y%m%d-%H%M%S-%f')
+        # Aggiungi una nuova pianta a Firestore
+        pianta = PIANTE_COLLECTION.document(unique_id)
+        pianta.set({
+                       u'specie': risposta[0],
+                       u'status': u'PARTIAL',
+                       u'lat': tagGPS[0],
+                       u'long': tagGPS[1],
+                   })
 
 
 def retrieveData(path):
