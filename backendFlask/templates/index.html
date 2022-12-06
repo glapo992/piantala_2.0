@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../static/css/index_style.css" />
     <link rel="stylesheet" href="../static/css/nav_style.css" />
-    <title>Piantala</title>
+    <title>Piantala - Home</title>
   </head>
   <body>
     <!------------------------------------NAVBAR-------------------------------------->
@@ -27,9 +27,9 @@
             <div class="dropdown">
               <a onclick="myFunction()" class="dropbtn">progetti</a>
               <div id="myDropdown" class="tendina">
+                <a href="{{ url_for('mappa') }}">mappa</a>
                 <a href="{{ url_for('progetto1') }}">progetto 1</a>
-                <a href="./23">progetto 2</a>
-                <a href="./2345">progetto 3</a>
+                <a href="./2345">progetto 2</a>
               </div>
             </div>
             <div><a href="{{ url_for('about') }}">about us</a></div>

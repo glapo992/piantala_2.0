@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../static/css/index_style.css" />
     <link rel="stylesheet" href="../static/css/nav_style.css" />
-    <title>about us</title>
+    <title>mappa</title>
   </head>
   <body>
     <header>
@@ -37,12 +37,21 @@
               id="lente"
               src="../static/img/search_FILL0_wght400_GRAD0_opsz48.svg"
               alt="find"
-              onClick="location.href='./404.html'"
             />
           </div>
         </div>
       </nav>
     </header>
+
+    <div id="box_mappa">
+      <div>
+        <iframe
+          src=" {{ url_for('circle_map') }} "
+          frameborder="0"
+          style="width: 95%; height: 800px"
+        ></iframe>
+      </div>
+    </div>
   </body>
   <script>
     /* When the user clicks on the button, 
