@@ -20,6 +20,7 @@ def gpsConverter(cooDeg):
     cooDecimali = cooDeg[0] + ((cooDeg[1] + (cooDeg[2] / 60)) / 60)
     return cooDecimali
 
+
 def img_opener(image):
     '''
     Estrae i dati EXIF da un'immagine.
@@ -38,6 +39,7 @@ def img_opener(image):
     im = Image.open(image)
     exif_dict = piexif.load(im.info.get('exif'))
     return exif_dict
+
 
 def exif_to_tag(exif_dict):
     '''
@@ -80,6 +82,5 @@ def exif_to_tag(exif_dict):
         (exif_tag_dict['GPS']['GPSLongitude'][2][0] / 100)
     ]
     cooDec = [gpsConverter(lat), gpsConverter(lon)]
-    print(cooDec)
 
     return cooDec

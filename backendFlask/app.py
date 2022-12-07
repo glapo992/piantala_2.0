@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 import toDB as db
 import convertImg as conv
 
-#da mettere il path relativo
 ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 
 UPLOAD_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/upload/'
@@ -40,17 +39,20 @@ def about():
 
 
 @app.route('/circle_map')
-#
-#ogni volta che viene chiamato il metodo per generare la mappa,
-# questo file html viene sovrscritto con i dati nuovi
-#
 def circle_map():
-    return render_template('circle_map.html')
+    '''
+    Ogni volta che viene chiamato il metodo per generare la mappa,
+    Questo file html viene sovrscritto con i dati nuovi
+    '''
+    try:
+        return render_template('circle_map.html')
+    except:
+        return redirect(404)
 
 
 @app.route('/response')
 def response():
-    #PATH = UPLOAD_FOLDER
+
     tmplist = os.listdir(UPLOAD_FOLDER)
     imagesList = []
     convertedImagesList = []
@@ -62,6 +64,7 @@ def response():
             imagePath = (UPLOAD_FOLDER + image)
             #lista da inviare alla api
             imagesList.append(UPLOAD_FOLDER + image)
+            #converte immagini in jpg da inviare alla api
             convertedJpg = conv.convertJpg(imagePath)
             convertedImagesList.append(convertedJpg)
             max += 1  # Controllare se era il comportamento voluto
@@ -76,14 +79,13 @@ def response():
         db.sendCompleteData(tagGPS, risposta)
     else:
         db.sendPartialData(tagGPS, risposta)
-    # Cancella immagini nelle cartelle tmp
 
     #------------mappa---------------------------------------------------------------
     # Crea il file JSON pullando dal database
     db.retrieveData(JSON_FOLDER)
     # Accetta un file JSON con i dati delle piante
     dv.mappa(JSON_FOLDER + 'data.json')
-    # Cancella il file JSON
+    # Cancella contenuto nelle cartelle tmp
     clearfolder(JSON_FOLDER)
     clearfolder(UPLOAD_FOLDER)
     clearfolder(CONVERTED_FOLDER)
@@ -102,9 +104,7 @@ def page_not_found(error):
 # Form: seleziona file dall'esplora risorse, puoi caricare qualsiasi tipo di file,
 # questa funzione salverà in locale solo i formati accettati (ALLOWED_EXTENCTIONS)
 # dopo aver salvato i file lancia response()
-# al momento non gestisce nessuna eccezione
 def upload_file():
-    # clearfolder()  #elimino tutte le immagini dalla cartella(spostato dopo risposte)
     if request.method == 'POST':
         print(request.files)
         uploaded = request.files.getlist("file")
@@ -125,18 +125,12 @@ def upload_file():
 #----------------------------UTILITIES--------------------------------------------
 
 
-#
-# verifica che il file passato abbia estensione accettata
-# (compresa in ALLOWED_EXTENSIONS)
-#
 def allowed_file(filename):
+    ''' verifica che il file passato abbia estensione accettata (compresa in ALLOWED_EXTENSIONS)'''
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-#
-# cancella tutti i file presenti nella cartella definita in "PATH"
-#
 def clearfolder(path):
     '''cancella contenuto della cartella indicata nel percorso'''
     tmplist = os.listdir(path)

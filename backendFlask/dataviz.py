@@ -23,12 +23,11 @@ def mappa(filejson):
                    height='100%',
                    width='100%',
                    tiles='cartoDB positron')
-    #'MapQuest Open Aerial'
-    # go through each observation in set, make circle, and add to map.
+    # Per ogni osservazione nel set, fa un cerchio e lo aggiunge alla mappa
     for i in range(len(df)):
         folium.Circle(location=[df.iloc[i]['lat'], df.iloc[i]['long']],
                       radius=1,
                       tooltip=[df.iloc[i]['specie']]).add_to(m)
 
-    # Same as before, we save it to file
+    # Salva la mappa come file html
     return m.save('templates/circle_map.html')

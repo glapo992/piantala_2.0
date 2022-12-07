@@ -10,7 +10,7 @@
   </head>
   <body>
     <!------------------------------------NAVBAR-------------------------------------->
-                    <!--aggiungere il JS per barra ricerca-->
+    <!--aggiungere il JS per barra ricerca-->
 
     <header>
       <nav>
@@ -54,19 +54,17 @@
     <!--------------------------------------FORM-------------------------------------->
     <div class="divform">
       <form method="post" enctype="multipart/form-data" id="formaggio">
+        <h1 class="titolo">ineserisci qui le tue immagini:</h1>
+        <p>accendi il gps del tuo telefono e</p>
+        <p>inserisci fino a 5 immagini per ogni richiesta di identificazione</p>
+        <span>
+          <img src="../static/img/icons8-immagine.png" id="foglie" />
+        </span>
         <p>
-          <h1 class="titolo">INSERISCI QUI LE TUE IMMAGINI:</h1>
+          <input type="file" id="file" name="file" multiple="images/*" />
+          <input type="submit" value="Upload" />
         </p>
-        <p>
-          <img src="../static/img/icons8-immagine.png" id="foglie">
-        </p>
-        <p>
-          <input type="file" id="file" name="file" multiple="images/*">
-          <input type="submit" value="Upload">
-        </p>
-        <p style="color:darkgreen; font-size:70%;">
-          Powered by Pl@ntNet 
-        </p>
+        <p id="quote">Powered by Pl@ntNet</p>
       </form>
     </div>
 
@@ -138,6 +136,5 @@
         }
       }
     };
-
   </script>
 </html>

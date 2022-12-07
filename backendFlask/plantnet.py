@@ -4,8 +4,6 @@ import json
 API_KEY = "2b10vOWpgAoY62YLF1X5UiDzu"  # API_KEY dal mio account plantNet
 PROJECT = "weurope"  #identifica la zona di interesse in cui fare la ricerca
 api_endpoint = f"https://my-api.plantnet.org/v2/identify/{PROJECT}?api-key={API_KEY}"  #url a cui fare la richiesta
-# data = {
-#    'organs': ['leaf', 'leaf', 'leaf', 'leaf']}  #deve esere della stessa lunghezza della lista di immagini
 
 
 def readImg(photos):
@@ -22,14 +20,13 @@ def readImg(photos):
     Returns
     ---
     files : list
-        Non ho capito se è una lista di FileIO o BinaryIO
+        Lista di BinaryIO
     '''
     files = []
     if len(photos) <= 5:
         for photo in photos:
             image_data = open(photo, 'rb')
             files.append(('images', (photo, image_data)))
-    print(files)
     return files
 
 
@@ -49,19 +46,17 @@ def sendImg(files):
     '''
     data = {'organs': []}
     organ = 'leaf'
-    for file in files:
+    for file in files:  #riempie la lista organs con tanti organi 'leaf' quante foto nel ciclo
         data['organs'].append(organ)
-    req = requests.Request('POST',
-                           url=api_endpoint,
-                           files=files,
-                           data=data)
+
+    req = requests.Request('POST', url=api_endpoint, files=files, data=data)
+
     prepared = req.prepare()
     s = requests.Session()
     response = s.send(prepared)
+
     json_result = json.loads(response.text)
-    # TODO: rimuovere le due righe sotto, esistono per debuggare errori
-    with open('static/src/bestmatch.json', 'w') as file:
-         print(response.text, file=file)
+
     # prova a inserire ogni valore, altrimenti usa un valore di default
     try:
         specie = json_result['results'][0]['species']['scientificName']
@@ -72,11 +67,13 @@ def sendImg(files):
     except:
         affidabilità = 'N/D'
     try:
-        genus = json_result['results'][0]['species']['genus']['scientificNameWithoutAuthor']
+        genus = json_result['results'][0]['species']['genus'][
+            'scientificNameWithoutAuthor']
     except:
         genus = 'N/D'
     try:
-        family = json_result['results'][0]['species']['family']['scientificNameWithoutAuthor']
+        family = json_result['results'][0]['species']['family'][
+            'scientificNameWithoutAuthor']
     except:
         family = 'N/D'
     try:

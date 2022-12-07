@@ -49,11 +49,26 @@
     align-content: center;
     width: 100;
     text-align: center; 
+    text-transform:uppercase;
 }
+
+.divform p#quote{
+    color: darkgreen;
+    font-size: 70%;
+    font-weight: lighter;
+}
+.divform p{
+    color: darkgray;
+    text-decoration: double;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+} 
+
 
 #formaggio{
     display: block;
 }
+
 
 #foglie{
     width: 30%;
