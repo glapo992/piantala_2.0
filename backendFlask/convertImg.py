@@ -3,40 +3,24 @@
 from PIL import Image
 import os
 
-SAVED_IMAGE_PATH = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/img/tmp'
+#image = '/Users/giuliolapovich/Code/aws-azure/piantala/backendFlask/static/tmp/upload/IMG_2074.JPG'
 
 
-class ConvertImg:
+def convertJpg(image):
+    '''accetta string con path dell' immagine salvata in upload
+    converte immagine in jpg
+    salva immagine su cartella static/tmp/conv/
+    return: percorso nuova immagine'''
+    # importing the image
+    im = Image.open(image)
+    # converting to jpg
+    rgb_im = im.convert("RGB")
+    # change path for exporting
+    imageconv = image.replace('upload', 'conv')
+    # exporting the image
+    rgb_im.save(imageconv + '_conv.jpg')
+    converted_image_path = (imageconv + '_conv.jpg')
+    return converted_image_path
 
-    def __init__(self, photo):
-        self.photo = photo
 
-    def converti(photo):
-        im = Image.open(photo)
-        rgb_im = im.convert("RGB")
-        rgb_im.save(SAVED_IMAGE_PATH)
-
-
-'''
-# converting to jpg
-rgb_im = im.convert("RGB")
-
-
-# inserire path assoluto
-IMAGE_PATH = '/Users/giuliolapovich/Code/aws-azure/piantala/img/IMG_1980.jpg'
-
-# importing the image
-im = Image.open(IMAGE_PATH)
-print("The size of the image before conversion : ", end="")
-print(os.path.getsize(IMAGE_PATH))
-
-# converting to jpg
-rgb_im = im.convert("RGB")
-
-# ------------- facoltativo per stampa --------------------
-
-# exporting the image
-# SAVED_IMAGE_PATH = '/Users/giuliolapovich/Code/aws-azure/piantala/img/IMG_1980_JPG.jpg'
-# rgb_im.save(SAVED_IMAGE_PATH)
-# print("The size of the image after conversion : ", end="")
-# print(os.path.getsize(SAVED_IMAGE_PATH))'''
+#convertJpg(image=image)

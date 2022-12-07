@@ -1,19 +1,27 @@
-from flask import Flask, render_template, request, url_for, redirect
-from plantnet import *
-from Esegui import esegui
-from dataviz import Dataviz as dv
+from flask import Flask, render_template, request, redirect, flash, url_for
+import Esegui as esegui
+import dataviz as dv
+import os
+from werkzeug.utils import secure_filename
+import toDB as db
+import convertImg as conv
+
+#da mettere il path relativo
+ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
+
+UPLOAD_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/upload/'
+CONVERTED_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/conv/'
+JSON_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/map/'
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
 
 app = Flask(__name__)
-'''il render_template apre il file all'interno della cartella templates'''
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-#il render_template apre il file all'interno della cartella 'templates'
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-'''pagina vuota dimostrativa'''
 
 
 @app.route('/progetto1')
@@ -21,59 +29,82 @@ def progetto1():
     return render_template('progetto1.html')
 
 
-'''ogni volta che viene chiamato il metodo per generare la mappa, questo file html viene sovrscritto con i dati nuovi'''
-
-
-@app.route('/circle_map')
-def circle_map():
-    return render_template('circle_map.html')
+@app.route('/mappa')
+def mappa():
+    return render_template('mappa.html')
 
 
 @app.route('/about')
 def about():
-    PATH='C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
-    tmplist = os.listdir(PATH)
+    return render_template('about.html')
+
+
+@app.route('/circle_map')
+#
+#ogni volta che viene chiamato il metodo per generare la mappa,
+# questo file html viene sovrscritto con i dati nuovi
+#
+def circle_map():
+    return render_template('circle_map.html')
+
+
+@app.route('/response')
+def response():
+    #PATH = UPLOAD_FOLDER
+    tmplist = os.listdir(UPLOAD_FOLDER)
     imagesList = []
+    convertedImagesList = []
     max = 1
-    # carico solo le prime 5 foto salvat epresenti in cartella
+    # carico solo le prime 5 foto salvate presenti in cartella
     for image in tmplist:
         if max <= 5:
-            imagesList.append(PATH + '/' + image)
-            max + 1
-    tagGPS = esegui.leggiGPS(imagesList=imagesList)
-    '''accetta lista immaigni e restituisce un json con risposte api'''
-    risposta = esegui.ottieniRisposta(imagesList=imagesList)
-    '''accetta file CSV con lat e lon e e specie e restituisce la mappa come oggetto html'''
-    dv.mappa('fakedata.csv')
-    return render_template('about.html', risposta=risposta, tagGPS=tagGPS)
-    #return render_template('about.html', tagGPS=tagGPS)
+            #litsa da inviare al lettore GPS
+            imagePath = (UPLOAD_FOLDER + image)
+            #lista da inviare alla api
+            imagesList.append(UPLOAD_FOLDER + image)
+            convertedJpg = conv.convertJpg(imagePath)
+            convertedImagesList.append(convertedJpg)
+            max += 1  # Controllare se era il comportamento voluto
 
-    
+    #------------info da inviare al DB------------------------------------------
+    # Accetta la lista di immagini e restituisce lista con lat e lon
+    tagGPS = esegui.leggiGPS(imagesList=imagesList)
+    # Accetta lista immaigni e restituisce un json con risposte api
+    risposta = esegui.ottieniRisposta(imagesList=convertedImagesList)
+    # Invio dati a firestore
+    if type(risposta[1]) is float:
+        db.sendCompleteData(tagGPS, risposta)
+    else:
+        db.sendPartialData(tagGPS, risposta)
+    # Cancella immagini nelle cartelle tmp
+
+    #------------mappa---------------------------------------------------------------
+    # Crea il file JSON pullando dal database
+    db.retrieveData(JSON_FOLDER)
+    # Accetta un file JSON con i dati delle piante
+    dv.mappa(JSON_FOLDER + 'data.json')
+    # Cancella il file JSON
+    clearfolder(JSON_FOLDER)
+    clearfolder(UPLOAD_FOLDER)
+    clearfolder(CONVERTED_FOLDER)
+    return render_template('response.html', risposta=risposta, tagGPS=tagGPS)
 
 
 @app.errorhandler(404)
+#
+# catcha l'errore page not found e lancia la nostra pagina 404
+#
 def page_not_found(error):
     return render_template('404.html'), 404
 
 
-# #--------------------------test form------------------
-import os
-from flask import Flask, flash, request, redirect, url_for
-from werkzeug.utils import secure_filename
-
-UPLOAD_FOLDER = 'C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
-
-#app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 @app.route('/', methods=['GET', 'POST'])
+# Form: seleziona file dall'esplora risorse, puoi caricare qualsiasi tipo di file,
+# questa funzione salverà in locale solo i formati accettati (ALLOWED_EXTENCTIONS)
+# dopo aver salvato i file lancia response()
+# al momento non gestisce nessuna eccezione
 def upload_file():
-    clearfolder() #elimino tutte le immagini dalla cartella
+    # clearfolder()  #elimino tutte le immagini dalla cartella(spostato dopo risposte)
     if request.method == 'POST':
         print(request.files)
         uploaded = request.files.getlist("file")
@@ -86,27 +117,34 @@ def upload_file():
                 return redirect(request.url)
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                upload=os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                upload = UPLOAD_FOLDER + filename
                 file.save(upload)
-    return about()
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype="multipart/form-data">
-      <input type=file name=file multiple="images/*">
-      <input type=submit value=Upload>
-    </form>
-    '''
-    
+    return redirect(url_for('response'))
 
-#-----------------------------------------------------
-def clearfolder(): #delete all files in folder
-    PATH='C:/Users/mc--9/Documents/ITS_Volta/IOT/Piantala/backendFlask/tmp/upload'
-    tmplist = os.listdir(PATH)
+
+#----------------------------UTILITIES--------------------------------------------
+
+
+#
+# verifica che il file passato abbia estensione accettata
+# (compresa in ALLOWED_EXTENSIONS)
+#
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+#
+# cancella tutti i file presenti nella cartella definita in "PATH"
+#
+def clearfolder(path):
+    '''cancella contenuto della cartella indicata nel percorso'''
+    tmplist = os.listdir(path)
     for image in tmplist:
-        os.remove(PATH + '/' + image)
+        os.remove(path + image)
 
+
+#------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     app.run(debug=True)

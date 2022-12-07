@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../static/css/index_style.css" />
     <link rel="stylesheet" href="../static/css/nav_style.css" />
-    <title>Piantala</title>
+    <title>Piantala - Home</title>
   </head>
   <body>
     <!------------------------------------NAVBAR-------------------------------------->
-    <!--IMPORTANTE : correggere i link che mi sono sfuggiti!!
-                     aggiungere il JS per barra ricerca-->
+                    <!--aggiungere il JS per barra ricerca-->
 
     <header>
       <nav>
@@ -28,9 +27,9 @@
             <div class="dropdown">
               <a onclick="myFunction()" class="dropbtn">progetti</a>
               <div id="myDropdown" class="tendina">
+                <a href="{{ url_for('mappa') }}">mappa</a>
                 <a href="{{ url_for('progetto1') }}">progetto 1</a>
-                <a href="./23">progetto 2</a>
-                <a href="./2345">progetto 3</a>
+                <a href="./2345">progetto 2</a>
               </div>
             </div>
             <div><a href="{{ url_for('about') }}">about us</a></div>
@@ -41,6 +40,7 @@
               id="lente"
               src="../static/img/search_FILL0_wght400_GRAD0_opsz48.svg"
               alt="find"
+              onClick="location.href='./404.html'"
             />
           </div>
         </div>
@@ -49,47 +49,26 @@
     <!------------------------------------TITOLO---------------------------------------->
     <div class="titolo">
       <h1>piantala</h1>
-      <h2>di rompere</h2>
+      <h2>di romperti</h2>
     </div>
-    <!--------------------------------------form-------------------------------------->
+    <!--------------------------------------FORM-------------------------------------->
     <div class="divform">
-      <form method="post" enctype="multipart/form-data">
-        <p>Inserisci qui le tue immagini:</p>
-        <img src="../static/img/icons8-immagine.png" id="foglie">
-        <!-- <div id="fileDisplayArea"></div>
-          <img id="imgPreview" src="" alt="Preview">
-        </div> -->
-        <input type="file" id="file" name="file" multiple="images/*">
-        <input type="submit" value="Upload">
+      <form method="post" enctype="multipart/form-data" id="formaggio">
+        <p>
+          <h1 class="titolo">INSERISCI QUI LE TUE IMMAGINI:</h1>
+        </p>
+        <p>
+          <img src="../static/img/icons8-immagine.png" id="foglie">
+        </p>
+        <p>
+          <input type="file" id="file" name="file" multiple="images/*">
+          <input type="submit" value="Upload">
+        </p>
+        <p style="color:darkgreen; font-size:70%;">
+          Powered by Pl@ntNet 
+        </p>
       </form>
     </div>
-        <!-- <script>
-          document.querySelector("#file").addEventListener("change", function() {
-            console.log(this.files);
-            const reader = new FileReader();
-
-            reader.addEventListener("load", () => {
-              localStorage.setItem("recent-image", reader.result);
-            });
-
-            reader.readAsDataURL(this.files[0]);
-            location.reload();
-          });
-
-          document.addEventListener("DOMContentLoaded", () =>{
-            const recentImageDataUrl = localStorage.getItem("recent-image");
-
-            if (recentImageDataUrl){
-              document.querySelector("#imgPreview").setAttribute("src", recentImageDataUrl);
-            }
-          });
-
-          
-        </script> -->
-      
-
-    
-    <!--------------------------------------box grafici e mappa-------------------------------------->
 
     <!--------------------------------------FOOTER---------------------------------------->
 
@@ -159,5 +138,6 @@
         }
       }
     };
+
   </script>
 </html>

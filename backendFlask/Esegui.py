@@ -1,20 +1,43 @@
-from plantnet import PlantNet as pt
-from exifManager import ExifManager as em
+import plantnet as pt
+import exifManager as em
 
 
-class esegui:
+def leggiGPS(imagesList):
+    '''
+    Ritorna una lista di coordinate GPS
 
-    def __init__(self, imagesList):
-        self.imagesList = imagesList
+    Parameters
+    ---
+    imagesList : list[str]
+        Una lista di path di immagini
 
-    '''produce i dati da inviare al DB gia formattati'''
+    Returns
+    ---
+    gpsInfo : list[float]
+        Una lista con le coordinate GPS della prima immagine
+    '''
+    # Apre la prima immagine della lista in binario
+    openImg = em.img_opener(imagesList[0])
+    # Legge dati GPS
+    gpsInfo = em.exif_to_tag(openImg)
+    return gpsInfo
 
-    def leggiGPS(imagesList):
-        openImg = em.img_opener(imagesList[0])
-        gpsInfo = em.exif_to_tag(openImg)
-        return gpsInfo
+def ottieniRisposta(imagesList):
+    '''
+    Ritorna la risposta di Plant.NET
 
-    def ottieniRisposta(imagesList):
-        files = pt.readImg(imagesList)
-        result = pt.sendImg(files)
-        return result
+    Parameters
+    ---
+    imagesList : list[str]
+        Una lista di immagini
+
+    Results
+    ---
+    result : list[str]
+        Lista contenente i risultati dell'analisi
+    '''
+    # Apre le immagini in bianrio
+    files = pt.readImg(imagesList)
+    # Invia immagini alla API
+    result = pt.sendImg(files)
+    return result

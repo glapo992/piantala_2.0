@@ -1,0 +1,50 @@
+body{
+    display: block;
+}
+h1{
+    text-align: center;
+}
+
+div#box_risposte {
+    display: flex;
+    justify-content: space-between;
+    padding: 10%, 0;
+    margin: 10%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border: 6px solid darkgray;
+    border-radius: 20px;
+    width: 100;
+}
+
+#box_risposte{
+    right:0%;
+    margin: auto;
+    text-align: left;
+}
+
+#listarisposta {
+    text-align: left;
+    list-style: none;
+}
+
+#box_mappa{
+    display: block;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: auto;
+    align-items: center;
+    margin: 10%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border: 6px solid darkgray;
+    border-radius: 20px;
+    padding: 2%;
+}
+
+iframe{
+    margin: 2%;
+    padding: 2%;
+    border-radius: 20px;
+}
