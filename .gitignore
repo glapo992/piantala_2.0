@@ -1,6 +1,8 @@
-backendFlask/__pycache__/
-backendFlask/vFlask/
-backendFlask/venv/
-backendFlask/firebase-auth.json
-backendFlask/static/src/bestmatch.json
-backendFlask/templates/circle_map.html
+__pycache__/
+vFlask/
+venv/
+firebase-auth.json
+static/src/bestmatch.json
+templates/circle_map.html
+*/.DS_Store
+**/.DS_Store
