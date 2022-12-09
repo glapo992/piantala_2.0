@@ -20,6 +20,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
+    temp_folders = [ UPLOAD_FOLDER, CONVERTED_FOLDER, JSON_FOLDER ]
+    for folder in temp_folders:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
     return render_template('index.html')
 
 
