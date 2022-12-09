@@ -6,11 +6,11 @@ from werkzeug.utils import secure_filename
 import toDB as db
 import convertImg as conv
 
-ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
+ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '.'))
 
-UPLOAD_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/upload/'
-CONVERTED_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/conv/'
-JSON_FOLDER = ROOT_DIR + '/backendFlask/static/tmp/map/'
+UPLOAD_FOLDER = ROOT_DIR + '/static/tmp/upload/'
+CONVERTED_FOLDER = ROOT_DIR + '/static/tmp/conv/'
+JSON_FOLDER = ROOT_DIR + '/static/tmp/map/'
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
 
