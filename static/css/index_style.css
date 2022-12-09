@@ -1,0 +1,77 @@
+.titolo {
+    height: 100%;
+    width: 100%;
+    margin: 0 0 5% 0;
+    padding: 0%;
+    border: 0%;
+    -webkit-background-clip: text;
+    /*immagine di sfondo in trasparenza*/
+    -webkit-text-fill-color: transparent;
+    background-image: url(../img/background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    /*l'elemento occupa tutto lo spazio del div*/
+    background-position: center;
+    position: relative;
+    z-index: -1;
+    /*comando che sovrappone gli elementi. il -1 lo mette al di sotto*/
+}
+
+.titolo h1 {
+    text-transform: uppercase;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    font-size: 25vw;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0%;
+    line-height: 25vw;
+    /*modifica l'altzza occupata dall'elemento*/
+}
+
+.titolo h2 {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 10vw;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+/*---------------------------------------------------Form------------------------------------------------------------------*/
+.divform {
+    margin: 20%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border: 6px solid darkgray;
+    border-radius: 20px;
+    padding: 2%;
+    align-content: center;
+    width: 100;
+    text-align: center; 
+    text-transform:uppercase;
+}
+
+.divform p#quote{
+    color: darkgreen;
+    font-size: 70%;
+    font-weight: lighter;
+}
+.divform p{
+    color: darkgray;
+    text-decoration: double;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+} 
+
+
+#formaggio{
+    display: block;
+}
+
+
+#foglie{
+    width: 30%;
+    height: auto;
+    margin: 5%;
+}
