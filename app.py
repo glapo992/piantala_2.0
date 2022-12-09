@@ -20,6 +20,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
+    temp_folders = [ UPLOAD_FOLDER, CONVERTED_FOLDER, JSON_FOLDER ]
+    for folder in temp_folders:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
     return render_template('index.html')
 
 
@@ -83,8 +87,14 @@ def response():
     #------------mappa---------------------------------------------------------------
     # Crea il file JSON pullando dal database
     db.retrieveData(JSON_FOLDER)
-    # Accetta un file JSON con i dati delle piante
-    dv.mappa(JSON_FOLDER + 'data.json')
+    # Disegna una mappa
+    # la riempie con i dati spaziali dal file json (in blu)
+    # e quelli de''identificazone corrente (in rosso)
+    dv.mapPlot(
+        dv.circleID(tagGPS=tagGPS,
+                    m=dv.mappa(JSON_FOLDER + 'data.json'),
+                    specie=risposta[0]))
+
     # Cancella contenuto nelle cartelle tmp
     clearfolder(JSON_FOLDER)
     clearfolder(UPLOAD_FOLDER)
@@ -98,6 +108,14 @@ def response():
 #
 def page_not_found(error):
     return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+#
+# catcha l'errore internal server error lancia la nostra pagina 500
+#
+def internal_server_error(error):
+    return render_template('500.html'), 500
 
 
 @app.route('/', methods=['GET', 'POST'])
