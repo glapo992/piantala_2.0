@@ -3,10 +3,21 @@ from PIL import Image
 
 
 def convertJpg(image):
-    '''accetta string con path dell' immagine salvata in upload
+    '''
+    Accetta string con path dell' immagine salvata in upload
     converte immagine in jpg
     salva immagine su cartella static/tmp/conv/
-    return: percorso nuova immagine'''
+
+    Parameters:
+    ---
+    image : str
+        Path dell'immagine
+
+    Returns:
+    ---
+    converted_image_path : str
+        Percorso nuova immagine
+    '''
     # Importa l'immagine
     im = Image.open(image)
     # Converte in jpg

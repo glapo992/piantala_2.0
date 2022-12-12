@@ -5,7 +5,7 @@ from datetime import datetime
 import json
 import os
 
-
+# Nel caso non sia fornito un json per l'accesso prova a generarlo dalle variabili d'ambiente
 try:
     CRED = credentials.Certificate('firebase-auth.json')
 except:
@@ -98,14 +98,3 @@ def retrieveData(path):
     # Scrive l'array in un file JSON
     with open(path + 'data.json', 'w') as file:
         json.dump(piante_array, file)
-
-
-# Struttura liste passate
-# tagGPS[0] = latitudine
-# tagGPS[1] = longitudine
-# risposta:
-#         0 = specie
-#         1 = affidabilità risposta
-#         2 = genere
-#         3 = famiglia
-#         4 = nome comune

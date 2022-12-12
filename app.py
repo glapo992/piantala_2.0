@@ -6,13 +6,17 @@ from werkzeug.utils import secure_filename
 import toDB as db
 import convertImg as conv
 
+# Definisce la directory di base dove viene avviata l'app
 ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '.'))
 
+# Path vari
 UPLOAD_FOLDER = ROOT_DIR + '/static/tmp/upload/'
 CONVERTED_FOLDER = ROOT_DIR + '/static/tmp/conv/'
 JSON_FOLDER = ROOT_DIR + '/static/tmp/map/'
 
+# Estensioni accettate dal convertitore
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -20,6 +24,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
+    # Genera le cartelle temporanee non tracciate se non presenti
     temp_folders = [ UPLOAD_FOLDER, CONVERTED_FOLDER, JSON_FOLDER ]
     for folder in temp_folders:
         if not os.path.exists(folder):
@@ -44,41 +49,38 @@ def about():
 
 @app.route('/circle_map')
 def circle_map():
-    '''
-    Ogni volta che viene chiamato il metodo per generare la mappa,
-    Questo file html viene sovrscritto con i dati nuovi
-    '''
+    # Rigenera l'html della mappa
     try:
         return render_template('circle_map.html')
     except:
-        return redirect(404)
+        return redirect('/404')
 
 
 @app.route('/response')
 def response():
-
+    # Prepara le liste per l'upload
     tmplist = os.listdir(UPLOAD_FOLDER)
     imagesList = []
     convertedImagesList = []
     max = 1
-    # carico solo le prime 5 foto salvate presenti in cartella
+    # Carico solo le prime 5 foto salvate presenti in cartella
     for image in tmplist:
         if max <= 5:
-            #litsa da inviare al lettore GPS
+            # Lista da inviare al lettore GPS
             imagePath = (UPLOAD_FOLDER + image)
-            #lista da inviare alla api
+            # Lista da inviare alla api
             imagesList.append(UPLOAD_FOLDER + image)
-            #converte immagini in jpg da inviare alla api
+            # Converte immagini in jpg da inviare alla api
             convertedJpg = conv.convertJpg(imagePath)
             convertedImagesList.append(convertedJpg)
-            max += 1  # Controllare se era il comportamento voluto
+            max += 1
 
     #------------info da inviare al DB------------------------------------------
     # Accetta la lista di immagini e restituisce lista con lat e lon
     tagGPS = esegui.leggiGPS(imagesList=imagesList)
     # Accetta lista immaigni e restituisce un json con risposte api
     risposta = esegui.ottieniRisposta(imagesList=convertedImagesList)
-    # Invio dati a firestore
+    # Invio dati a Firestore
     if type(risposta[1]) is float:
         db.sendCompleteData(tagGPS, risposta)
     else:
@@ -87,7 +89,7 @@ def response():
     #------------mappa---------------------------------------------------------------
     # Crea il file JSON pullando dal database
     db.retrieveData(JSON_FOLDER)
-    # Disegna una mappa
+    # Disegna una mappa,
     # la riempie con i dati spaziali dal file json (in blu)
     # e quelli de''identificazone corrente (in rosso)
     dv.mapPlot(
@@ -103,17 +105,13 @@ def response():
 
 
 @app.errorhandler(404)
-#
-# catcha l'errore page not found e lancia la nostra pagina 404
-#
+# Intercetta l'errore page not found e lancia la nostra pagina 404
 def page_not_found(error):
     return render_template('404.html'), 404
 
 
 @app.errorhandler(500)
-#
-# catcha l'errore internal server error lancia la nostra pagina 500
-#
+# Intercetta l'errore internal server error lancia la nostra pagina 500
 def internal_server_error(error):
     return render_template('500.html'), 500
 
@@ -128,8 +126,8 @@ def upload_file():
         uploaded = request.files.getlist("file")
         for file in uploaded:
             print('file', file)
-            # If the user does not select a file, the browser submits an
-            # empty file without a filename.
+            # Se l'utente non seleziona almeno un file, il browser
+            # ritorna un file vuoto senza nome
             if file.filename == '':
                 flash('No selected file')
                 return redirect(request.url)
@@ -144,13 +142,25 @@ def upload_file():
 
 
 def allowed_file(filename):
-    ''' verifica che il file passato abbia estensione accettata (compresa in ALLOWED_EXTENSIONS)'''
+    '''
+    Verifica che il file passato abbia estensione accettata (compresa in ALLOWED_EXTENSIONS)
+
+    Parameters
+    ---
+    filename : str
+    '''
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def clearfolder(path):
-    '''cancella contenuto della cartella indicata nel percorso'''
+    '''
+    Cancella contenuto della cartella indicata nel percorso
+
+    Parameters
+    ---
+    path : str
+    '''
     tmplist = os.listdir(path)
     for image in tmplist:
         os.remove(path + image)

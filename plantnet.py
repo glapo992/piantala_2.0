@@ -8,13 +8,12 @@ api_endpoint = f"https://my-api.plantnet.org/v2/identify/{PROJECT}?api-key={API_
 
 def readImg(photos):
     '''
-    Questa funzione deve leggere la lista di foto in entrata, e per ogni elemento estrarre il binario (con 'rb') salvato in img_data
-    poi deve riempire la lista 'file' con il path dell'immagine e relativo bianrio
-    il limite delle 5 foto lo mettiamo qui o nel form html? o entrambi?
+    Legge una lista di path delle foto, per ognuna ne estrae il binario e
+    alla fine ritorna tutte le informazioni delle foto in una lista 
     
     Parameters
     ---
-    photos : list[str]
+    photos : list
         Lista di path delle foto
 
     Returns
@@ -46,7 +45,8 @@ def sendImg(files):
     '''
     data = {'organs': []}
     organ = 'leaf'
-    for file in files:  #riempie la lista organs con tanti organi 'leaf' quante foto nel ciclo
+    #riempie la lista organs con tanti organi 'leaf' quante foto nel ciclo
+    for file in files:
         data['organs'].append(organ)
 
     req = requests.Request('POST', url=api_endpoint, files=files, data=data)
@@ -57,7 +57,7 @@ def sendImg(files):
 
     json_result = json.loads(response.text)
 
-    # prova a inserire ogni valore, altrimenti usa un valore di default
+    # Prova a inserire ogni valore, altrimenti usa un valore di default
     try:
         specie = json_result['results'][0]['species']['scientificName']
     except:

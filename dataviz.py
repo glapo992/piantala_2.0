@@ -8,17 +8,17 @@ def mappa(filejson):
 
     Parameters
     ---
-    filecsv : str
+    filejson : str
         Path al json con i dati
 
-     Returns
+    Returns
     ---
-    m : oggetto folium 
-             con la mappa
+    m : folium obj
+        Oggetto con la mappa
     '''
     df = pd.read_json(filejson)
     m = folium.Map(location=[45.645434, 13.849094],
-                   zoom_start=17.3,
+                   zoom_start=17,
                    min_zoom=14,
                    height='100%',
                    width='100%',
@@ -37,21 +37,23 @@ def mappa(filejson):
 
 def circleID(tagGPS, m, specie):
     '''
-    accetta la mappa creata sopra e ci aggiunge l'osservazione corrente 
+    Accetta la mappa creata sopra e ci aggiunge l'osservazione corrente 
   
-   Parameters
+    Parameters
     ---
-    m : folium obj
+    tagGPS : list
+        Lista contenente i dati GPS
+
+    m : str
         Path al json con i dati
     
-    tagGPS : list
-
     specie : str
+        Specie della pianta
      
-     Returns
+    Returns
     ---
-    m : oggetto folium 
-             con la mappa
+    m : folium obj
+        Oggetto con la mappa
     '''
     try:
         folium.Circle(
@@ -68,9 +70,13 @@ def circleID(tagGPS, m, specie):
 
 
 def mapPlot(m):
-    ''' Returns
+    '''
+    Genera il file html contenente la mappa
+
+    Returns
     ---
     circle_map.html : file
-        File html con la mappa'''
+        File html con la mappa
+    '''
     # Salva la mappa come file html
     return m.save('templates/circle_map.html')
