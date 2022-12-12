@@ -6,7 +6,7 @@ codec = 'ISO-8859-1'  # or latin-1, serve a decodificare i tag exif
 
 def gpsConverter(cooDeg):
     '''
-    Converte le coordinate da radaili (come escono dai tagGPS)a decimali (come le vuole folium)
+    Converte le coordinate da radiali (come escono dai tagGPS) a decimali (come le vuole folium)
 
     Parameters
     ---

@@ -95,6 +95,7 @@ nav .mainmenu{
 .dropdown {
     position: relative;
     display: inline-block;
+    cursor: pointer;
  }
   
 .tendina {
