@@ -10,9 +10,6 @@ import os
 class ImageForm(FlaskForm):
     photo = FileField("photo")
     organ = SelectField(u'che parte di pianta sto guardando?',choices=[('foglia', 'leaf'), ('ramo', 'branch'), ('radice', 'root')] ) #TODO: add the correct choiches list
-
-class ImageList(FlaskForm):
-    images_list = FieldList(FormField(ImageForm), min_entries=1, max_entries=5)
     submit      = SubmitField ('invia')
 
     def upload(request):
@@ -20,7 +17,12 @@ class ImageList(FlaskForm):
         form = ImageList(request.POST)
         if form.image.data:
             image_data = request.FILES[form.image.name].read()
+            
             open(os.path.join(Config.UPLOAD_FOLDER), 'w').write(image_data)
+
+
+class ImageList(FlaskForm):
+    images_list = FieldList(FormField(ImageForm), min_entries=1, max_entries=5)
 
 
 

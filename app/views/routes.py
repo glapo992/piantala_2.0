@@ -3,15 +3,28 @@ import os
 from app.views import bp
 from utils.utils import generate_temp_folders
 from app.views.forms import ImageList, ImageForm
+from werkzeug.utils import secure_filename
+from config import Config
 
 
 @bp.route('/', methods = ['GET','POST'])
 def index():
-    form = ImageList()
-    if form.validate_on_submit():
+    form = ImageForm()
+    if form.validate_on_submit() and request.method == 'POST':
         generate_temp_folders()
-        form.upload()
-
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(Config.UPLOAD_FOLDER, filename)
+            flash('file uploaded!')
+            return redirect(url_for('views.index'))
     return render_template('index.html' , title='Home', form=form)
 
 @bp.route('/mappa')

@@ -1,8 +1,6 @@
 __pycache__/
-vFlask/
 venv/
-firebase-auth.json
-static/src/bestmatch.json
 templates/circle_map.html
 */.DS_Store
 **/.DS_Store
+static/tmp

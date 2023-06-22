@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-{% import 'bootstrap/wtf.html' as wtf %}
-
 {% block content %}
     <!------------------------------------TITOLO---------------------------------------->
     <div class="titolo">
@@ -12,9 +10,26 @@
 
     <div class="row">
       <div class="col-md-4">
-          {{ wtf.quick_form(form)}}
+        <form action="", method="post" novalidate> <!--action is the url where the post result are sent, if blank is the current page, novalidate bypass the browser valdation and allows the app to do it (just for this exemple)-->
+          {{ form.hidden_tag() }}
+          <p>
+              {{ form.photo.label }} <br>
+              {{ form.photo }} 
+              {% for error in form.photo.errors %}
+              <span style= "color : red"> {{ error }}</span>
+              {% endfor %}
+          </p>
+          <p>
+              {{ form.organ.label }} <br>
+              {{ form.organ }} 
+              {% for error in form.organ.errors %}
+                  <span style= "color : red"> {{ error }}</span>
+              {% endfor %}
+          </p>
+          <p>
+              {{ form.submit() }} 
+          </p>
+      </form>
       </div>
   </div>
-
-
 {% endblock content %}
