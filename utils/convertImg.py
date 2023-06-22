@@ -1,4 +1,4 @@
-# conversione di ogni tipo di immagine in jpg per mandarlo a plantnet
+"""# conversione di ogni tipo di immagine in jpg per mandarlo a plantnet
 from PIL import Image
 
 
@@ -28,3 +28,4 @@ def convertJpg(image):
     rgb_im.save(imageconv + '_conv.jpg')
     converted_image_path = (imageconv + '_conv.jpg')
     return converted_image_path
+"""

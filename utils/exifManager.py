@@ -1,60 +1,42 @@
-from PIL import Image
+'''from PIL import Image
 import piexif
 
 codec = 'ISO-8859-1'  # or latin-1, serve a decodificare i tag exif
 
 
-def gpsConverter(cooDeg):
-    '''
-    Converte le coordinate da radiali (come escono dai tagGPS) a decimali (come le vuole folium)
+def gpsConverter(cooDeg:list[])->list[float]:
+    """ Converts coordinates from rad to decimal
 
-    Parameters
-    ---
-    cooDeg : list
-        Litsa di coordinate radiali
-
-    Returns
-    ---
-    cooDecimali : list
-    '''
+    :param cooDeg: rad coordinates
+    :type cooDeg: list[]
+    :return: decimal coordinates
+    :rtype: list []
+    """
     cooDecimali = cooDeg[0] + ((cooDeg[1] + (cooDeg[2] / 60)) / 60)
     return cooDecimali
 
 
-def img_opener(image):
-    '''
-    Estrae i dati EXIF da un'immagine.
-    NB: i dati non sono pronti per essere inviati al database.
+def img_opener(image_path:str)->dict:
+    """ Extract EXIF file from an image
 
-    Parameters
-    ---
-    image : string
-        Il path di un'immagine
-
-    Returns
-    ---
-    exif_dict : dict
-        Un dizionario contenente i dati EXIF dell'immagine
-    '''
-    im = Image.open(image)
+    :param image_path: path oh the image
+    :type image_path: str
+    :return: dict with exif
+    :rtype: dict
+    """
+    im = Image.open(image_path)
     exif_dict = piexif.load(im.info.get('exif'))
     return exif_dict
 
 
-def exif_to_tag(exif_dict):
-    '''
-    Estrae da un dizionario di dati EXIF latitudine e longitudine
+def exif_to_tag(exif_dict:dict)->list[float]:
+    """ Extract lat e lon from the dict with EXIF
 
-    Parameters
-    ---
-    exif_dict : dict
-        Dizionario contenente i dati EXIF da parsare
-
-    Returns
-    ---
-    cooDec : list[float]
-        Coordinate GPS in formato radiale
-    '''
+    :param exif_dict: dict with exif datas
+    :type exif_dict: dict
+    :return: gps coo in rad format
+    :rtype: list[float]
+    """
     exif_tag_dict = {}
     thumbnail = exif_dict.pop('thumbnail')
     exif_tag_dict['thumbnail'] = thumbnail.decode(codec)
@@ -83,4 +65,4 @@ def exif_to_tag(exif_dict):
     ]
     cooDec = [gpsConverter(lat), gpsConverter(lon)]
 
-    return cooDec
+    return cooDec'''

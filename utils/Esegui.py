@@ -1,4 +1,4 @@
-import plantnet as pt
+"""import plantnet as pt
 import exifManager as em
 
 
@@ -41,3 +41,4 @@ def ottieniRisposta(imagesList):
     # Invia immagini alla API
     result = pt.sendImg(files)
     return result
+"""

@@ -1,4 +1,4 @@
-import requests
+"""import requests
 import json
 
 API_KEY = "2b10vOWpgAoY62YLF1X5UiDzu"  # API_KEY dal mio account plantNet
@@ -83,3 +83,4 @@ def sendImg(files):
     # ritorna la lista con le informazioni
     identificazione = [specie, affidabilità, genus, family, commonName]
     return identificazione
+"""

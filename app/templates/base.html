@@ -1,0 +1,71 @@
+{% extends 'bootstrap/base.html' %}
+
+<!--with the botstrap extension the tag title is no more required-->
+{% block title %}
+{% if title %}
+{{ title }}
+{% else %}
+welcome to the page
+{% endif %}
+{% endblock title %}
+
+
+{% block metas %}
+{% endblock metas %}
+
+{% block styles %}
+<link rel="stylesheet" href="../static/css/index_style.css" />
+<link rel="stylesheet" href="../static/css/nav_style.css" />
+{% endblock styles %}
+
+{% block navbar %}
+    <!--links with the url for method - redirect to the function and not the page-->
+    <div>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ url_for('views.index') }}"><img
+                        src="../static/img/poster-foglia-di-quercia.jpg.jpg"
+                        alt="logo"
+                        width="80px"
+                        height="auto"
+                    /></a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{{ url_for('views.index') }}">Home</a></li>
+                        <li><a href="{{ url_for('views.mappa') }}">mappa</a></li>
+                        <div><a href="{{ url_for('views.about') }}">about us</a></div>
+                    </ul>
+                    
+                </div>
+            </div>
+        </nav>
+{% endblock navbar %}
+
+
+{% block content %}
+    <!-- flash messages handler-->
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class = "alert alert-info", role="alert"> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% block app_content %}
+        {% endblock %}
+    </div>
+        
+{% endblock %}
+
+{% include '_footer.html' %}
+
+

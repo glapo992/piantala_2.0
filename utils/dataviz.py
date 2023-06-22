@@ -1,4 +1,4 @@
-import folium
+"""import folium
 import pandas as pd
 
 
@@ -80,3 +80,4 @@ def mapPlot(m):
     '''
     # Salva la mappa come file html
     return m.save('templates/circle_map.html')
+"""

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div id="title">
+      <h1>identificazione</h1>
+    </div>
+    <div id=box_risposte>
+      <p id="risposta">
+        <h2>la pianta che vuoi identificare è:</h2>
+      </p>
+      <p id="listarisposta">
+        <span>
+          <ul>
+            <li>nome comune {{risposta[4]}}</li>
+            <li>nome scientifico:<i> {{risposta[0]}}</i></li>
+            <li>genere: {{risposta[2]}}</li>
+            <li>famiglia: {{risposta[3]}}</li>
+            <li>affidabilità della rilevazione: {{risposta[1]}}</li>
+            <li>latitudine: {{tagGPS[0]}}</li>
+            <li>longitudine: {{tagGPS[1]}}</li>
+          </ul>
+        </span>
+      </p>
+    </div>
+    <div id="box_mappa">
+      <div>
+        <iframe src=" {{ url_for('circle_map') }} " frameborder="0" style="width: 95%; height: 800px;"></iframe>
+      </div>
+    </div>
+    
+{% endblock content %}
