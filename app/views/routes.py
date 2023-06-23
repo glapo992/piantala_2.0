@@ -1,32 +1,22 @@
-from flask import render_template, flash, redirect, url_for, request, current_app
-import os
+from flask import render_template, flash, redirect, url_for, request
 from app.views import bp
-from utils.utils import generate_temp_folders
-from app.views.forms import ImageList, ImageForm
+from app.views.forms import ImageForm
+#from app import images
 from werkzeug.utils import secure_filename
 from config import Config
+import os
+
 
 
 @bp.route('/', methods = ['GET','POST'])
 def index():
     form = ImageForm()
-    if form.validate_on_submit() and request.method == 'POST':
-        generate_temp_folders()
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file:
-            filename = secure_filename(file.filename)
-            file.save(Config.UPLOAD_FOLDER, filename)
-            flash('file uploaded!')
-            return redirect(url_for('views.index'))
-    return render_template('index.html' , title='Home', form=form)
-
+    if form.validate_on_submit():
+        filename = secure_filename(form.photo.data.filename)
+        form.photo.data.save(os.path.join(Config.UPLOAD_FOLDER, filename))
+        flash('File caricati!')
+        return redirect(url_for('views.index'))
+    return render_template('index.html' , title='Home', form = form)
 @bp.route('/mappa')
 def mappa():
     return render_template('mappa.html',title='Mappa')

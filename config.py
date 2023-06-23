@@ -1,6 +1,5 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
-print ('basedir: ',basedir)
 class Config(object):
     # flask general vars
     FLASK_ENV   = os.environ.get('FLASK_ENV')
@@ -9,5 +8,6 @@ class Config(object):
     UPLOAD_FOLDER    = os.path.join(basedir, os.environ.get('UPLOAD_FOLDER'))
     CONVERTED_FOLDER = os.path.join(basedir, os.environ.get('CONVERTED_FOLDER'))
     JSON_FOLDER      = os.path.join(basedir, os.environ.get('JSON_FOLDER'))
-
+    UPLOADED_IMAGES_DEST = UPLOAD_FOLDER
+    print ('upload: ',UPLOADED_IMAGES_DEST)
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
