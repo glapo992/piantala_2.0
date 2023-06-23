@@ -1,25 +1,20 @@
 
 <div class="row">
 <div class="col-md-4">
-    <form action="", method="POST", enctype="multipart/form-data", novalidate> <!--action is the url where the post result are sent, if blank is the current page, novalidate bypass the browser valdation and allows the app to do it (just for this exemple)-->
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.photo.label }} <br>
-            {{ form.photo }} 
-            {% for error in form.photo.errors %}
-            <span style= "color : red"> {{ error }}</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.organ.label }} <br>
-            {{ form.organ }} 
-            {% for error in form.organ.errors %}
-                <span style= "color : red"> {{ error }}</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.submit() }} 
-        </p>
-    </form>
+    <div class="divform">
+        <form method="post" enctype="multipart/form-data" id="formaggio">
+          <h1 class="titolo">ineserisci qui le tue immagini:</h1>
+          <p>accendi il gps del tuo telefono e</p>
+          <p>inserisci fino a 5 immagini per ogni richiesta di identificazione</p>
+          <span>
+            <img src="../static/img/icons8-immagine.png" id="foglie" />
+          </span>
+          <p>
+            <input type="file" id="file" name="file" multiple="images/*" />
+            <input type="submit" value="Upload" />
+          </p>
+       
+        </form>
+      </div>
     </div>
 </div>
