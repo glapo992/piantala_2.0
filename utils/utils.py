@@ -3,7 +3,11 @@ from config import Config
 
 
 def generate_temp_folders()->None:
-    """generate temporary folders 
+    """ generate folders where store temporary files
+    * UPLOAD_FOLDER='static/tmp/upload'
+    * CONVERTED_FOLDER='static/tmp/conv'
+    * JSON_FOLDER='static/tmp/map'
+
     """
     temp_folders = [ Config.UPLOAD_FOLDER, Config.CONVERTED_FOLDER, Config.JSON_FOLDER ]
     for folder in temp_folders:
