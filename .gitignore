@@ -1,6 +1,7 @@
-__pycache__/
+*/__pycache__/
 venv/
 templates/circle_map.html
 */.DS_Store
 **/.DS_Store
 static/tmp
+app.db

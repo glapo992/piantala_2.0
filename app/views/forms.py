@@ -3,6 +3,8 @@ from flask_wtf.file import FileField
 from wtforms import  SubmitField, FieldList, FormField, SelectField
 from wtforms.validators import DataRequired, ValidationError
 from config import Config
+from werkzeug.utils import secure_filename
+from utils.utils import allowed_file
 
 import os
 
@@ -13,21 +15,13 @@ class ImageForm(FlaskForm):
     organ = SelectField(u'che parte di pianta sto guardando?',choices=[('foglia', 'leaf'), ('ramo', 'branch'), ('radice', 'root')] ) #TODO: add the correct choiches list
     submit= SubmitField ('invia')
 
-    def upload(request):
+    def upload(self):
         """ write the images from the form in the specified folder """
-        form = ImageList(request.POST)
-        if form.image.data:
-            image_data = request.FILES[form.image.name].read()
-            
-            open(os.path.join(Config.UPLOAD_FOLDER), 'w').write(image_data)
+        if self.photo.data and allowed_file(self.photo.data.filename):
+            filename = secure_filename(self.photo.data.filename)
+            self.photo.data.save(os.path.join(Config.UPLOAD_FOLDER, filename))
 
 
 class ImageList(FlaskForm):
     images_list = FieldList(FormField(ImageForm), min_entries=1, max_entries=5)
 
-
-
-
-class EmtyForm(FlaskForm):
-    """allows to generate a form with only a button, so you can integrate it as a POST request and send data without make them appear in the url like a GET"""
-    submit = SubmitField('Submit')

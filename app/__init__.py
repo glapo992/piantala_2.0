@@ -1,13 +1,15 @@
 from flask import Flask
 from config import Config
-#from flask_uploads import configure_uploads, IMAGES, UploadSet
 
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 from flask_bootstrap import Bootstrap
+
 bootstrap = Bootstrap() 
 
-# uploads = configure_uploads()
-# images = UploadSet('images', IMAGES)
+db = SQLAlchemy()    
+migrate = Migrate()
 
 def create_app(config_class = Config):
     """creation of the app istance. Allows the use of custom configuration for each istance
@@ -18,9 +20,11 @@ def create_app(config_class = Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    bootstrap.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
     
-    #uploads.init_app(app, images)
+    bootstrap.init_app(app)
+
     
     #BLUEPRINT CONFIG------------------------------
     from app.errors import bp as errors_bp
