@@ -1,10 +1,13 @@
+from app import db
 from flask import render_template, flash, redirect, url_for, request
 from app.views import bp
 from app.views.forms import ImageForm
 
 
 from config import Config
-from utils.utils import clearfolder
+from utils.utils import clearfolder, store_pics
+
+from app.models import Identification_mini
 
 
 organs =[]
@@ -13,16 +16,21 @@ organs =[]
 def index():
     form = ImageForm()
     if form.validate_on_submit():
-        form.upload() 
+        source = form.upload(Config.UPLOAD_FOLDER) # save files in temp folder and return the path
+
+        # send to api.... 
+        ident = Identification_mini()
+        ident.img_1 = source # path to the image
+        ident.organ_1 = form.organ.data
+        db.session.add(ident)
+        db.session.commit()
         flash('File caricati!')
-        #temp code----
-        organs.append(form.organ.data)
-        print(organs)
-        # save on db and send to api 
+        store_pics()
+
         # .....
-        # .....
+        # after moved pict to final destination ...
         #! clearfolder()
-        return redirect(url_for('views.index'))
+        return redirect(url_for('views.index')) #TODO redirect to result page
     return render_template('index.html' , title='Home', form = form)
 
 

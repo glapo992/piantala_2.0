@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 from wtforms import  SubmitField, FieldList, FormField, SelectField
 from wtforms.validators import DataRequired, ValidationError
-from config import Config
 from werkzeug.utils import secure_filename
 from utils.utils import allowed_file
 
@@ -15,11 +14,16 @@ class ImageForm(FlaskForm):
     organ = SelectField(u'che parte di pianta sto guardando?',choices=[('foglia', 'leaf'), ('ramo', 'branch'), ('radice', 'root')] ) #TODO: add the correct choiches list
     submit= SubmitField ('invia')
 
-    def upload(self):
-        """ write the images from the form in the specified folder """
+    def upload(self, up_folder:str)->str: # TODO refacor and move logic somewhere else
+        """ write the images from the form in the temp folder
+        
+        :return: path to the source
+        :rtype:str
+        """
         if self.photo.data and allowed_file(self.photo.data.filename):
             filename = secure_filename(self.photo.data.filename)
-            self.photo.data.save(os.path.join(Config.UPLOAD_FOLDER, filename))
+            self.photo.data.save(os.path.join(up_folder, filename))
+        return os.path.join(up_folder, filename)
 
 
 class ImageList(FlaskForm):

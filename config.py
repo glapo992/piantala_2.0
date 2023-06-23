@@ -1,5 +1,6 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
+
 class Config(object):
     # flask general vars
     FLASK_ENV   = os.environ.get('FLASK_ENV')
