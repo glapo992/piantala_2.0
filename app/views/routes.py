@@ -5,9 +5,10 @@ from app.views.forms import ImageForm
 
 
 from config import Config
-from utils.utils import clearfolder, store_pics
+from utils.utils import clearfolder
 
 from app.models import Identification_mini
+import os
 
 
 organs =[]
@@ -16,20 +17,17 @@ organs =[]
 def index():
     form = ImageForm()
     if form.validate_on_submit():
-        source = form.upload(Config.UPLOAD_FOLDER) # save files in temp folder and return the path
-
+        filename = form.upload(Config.UPLOAD_FOLDER) # save files in temp folder
+        
         # send to api.... 
+        source = form.store_pics()
         ident = Identification_mini()
-        ident.img_1 = source # path to the image
+        ident.img_1 = os.path.join(source, filename ) # path to the image
         ident.organ_1 = form.organ.data
         db.session.add(ident)
         db.session.commit()
         flash('File caricati!')
-        store_pics()
-
-        # .....
-        # after moved pict to final destination ...
-        #! clearfolder()
+        clearfolder(Config.UPLOAD_FOLDER)
         return redirect(url_for('views.index')) #TODO redirect to result page
     return render_template('index.html' , title='Home', form = form)
 
