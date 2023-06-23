@@ -1,22 +1,33 @@
 from flask import render_template, flash, redirect, url_for, request
 from app.views import bp
 from app.views.forms import ImageForm
-#from app import images
-from werkzeug.utils import secure_filename
+
+
 from config import Config
-import os
+from utils.utils import clearfolder
 
 
+organs =[]
 
 @bp.route('/', methods = ['GET','POST'])
 def index():
     form = ImageForm()
     if form.validate_on_submit():
-        filename = secure_filename(form.photo.data.filename)
-        form.photo.data.save(os.path.join(Config.UPLOAD_FOLDER, filename))
+        form.upload() 
         flash('File caricati!')
+        #temp code----
+        organs.append(form.organ.data)
+        print(organs)
+        # save on db and send to api 
+        # .....
+        # .....
+        #! clearfolder()
         return redirect(url_for('views.index'))
     return render_template('index.html' , title='Home', form = form)
+
+
+
+
 @bp.route('/mappa')
 def mappa():
     return render_template('mappa.html',title='Mappa')

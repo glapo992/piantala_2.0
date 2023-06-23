@@ -1,0 +1,26 @@
+from app import db
+from datetime import datetime
+
+from flask import current_app
+
+
+class Identification(db.Model):
+    id          = db.Column(db.Integer, primary_key = True)
+    timestamp   = db.Column(db.DateTime, index = True, default=datetime.utcnow)
+    img_1       = db.Column(db.LargeBinary, nullable = False)
+    img_2       = db.Column(db.LargeBinary, nullable = True)
+    img_3       = db.Column(db.LargeBinary, nullable = True)
+    img_4       = db.Column(db.LargeBinary, nullable = True)
+    img_5       = db.Column(db.LargeBinary, nullable = True)
+    organ_1     = db.Column(db.String(30), nullable = False)
+    organ_2     = db.Column(db.String(30), nullable = True)
+    organ_3     = db.Column(db.String(30), nullable = True)
+    organ_4     = db.Column(db.String(30), nullable = True)
+    organ_5     = db.Column(db.String(30), nullable = True)
+    reliability = db.Column(db.Float())
+    specie      = db.Column(db.String(50))
+    genus       = db.Column(db.String(50))
+    family      = db.Column(db.String(50))
+    commonName  = db.Column(db.String(50))
+    lat         = db.Column(db.String(30))
+    long        = db.Column(db.String(30))
