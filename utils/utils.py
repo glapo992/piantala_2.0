@@ -1,6 +1,7 @@
 import os
-from config import Config, basedir
-import shutil
+from config import Config
+from datetime import datetime
+
 
 def generate_temp_folders()->None:
     """ generate folders where store temporary files
@@ -35,12 +36,24 @@ def clearfolder(path:str)->None:
     """
     tmplist = os.listdir(path)
     for image in tmplist:
-        os.remove(path + image)
+        os.remove(os.path.join(path, image))
 
 
-def store_pics():
-    """move all the content of the temp folde to a definitive one in fileserver"""
+'''def store_pics():
+    """move all the content of the temp folder to a definitive one in fileserver"""
     root = os.path.join(basedir, 'fileserver')
     upload_folder = Config.UPLOAD_FOLDER
-    dest_folder = os.path.join(root, 'folder1')
-    shutil.copytree(upload_folder, root)
+    folder_counter = 0
+    # build folder name
+    folder_name = datetime.strftime(datetime.now(), '%Y_%m_%d')+'_'+ str(folder_counter)
+    dest_folder = os.path.join(root,folder_name)
+    # add a numnber after the folder name 
+
+    while os.path.isdir(dest_folder):
+        folder_counter += 1
+        folder_name = datetime.strftime(datetime.now(), '%Y_%m_%d')+'_'+ str(folder_counter)
+        dest_folder = os.path.join(root,folder_name)    
+    # copy upload folder in dest folder
+    shutil.copytree(upload_folder, dest_folder)
+    return dest_folder
+'''
