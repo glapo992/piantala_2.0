@@ -1,6 +1,6 @@
 import os
-from config import Config
-
+from config import Config, basedir
+import shutil
 
 def generate_temp_folders()->None:
     """ generate folders where store temporary files
@@ -36,3 +36,11 @@ def clearfolder(path:str)->None:
     tmplist = os.listdir(path)
     for image in tmplist:
         os.remove(path + image)
+
+
+def store_pics():
+    """move all the content of the temp folde to a definitive one in fileserver"""
+    root = os.path.join(basedir, 'fileserver')
+    upload_folder = Config.UPLOAD_FOLDER
+    dest_folder = os.path.join(root, 'folder1')
+    shutil.copytree(upload_folder, root)
