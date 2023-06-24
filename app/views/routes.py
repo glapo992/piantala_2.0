@@ -6,6 +6,7 @@ from app.views.forms import ImageForm
 
 from config import Config
 from utils.utils import clearfolder
+from utils.Esegui import ottieniRisposta
 
 from app.models import Identification_mini
 import os
@@ -18,17 +19,25 @@ def index():
     form = ImageForm()
     if form.validate_on_submit():
         filename = form.upload(Config.UPLOAD_FOLDER) # save files in temp folder
-        
+        # list of paths of images for the API
+        file_list = [] 
+        file_list.append(os.path.join(Config.UPLOAD_FOLDER,filename))
+        print (file_list)
         # send to api.... 
-        source = form.store_pics()
-        ident = Identification_mini()
-        ident.img_1 = os.path.join(source, filename ) # path to the image
-        ident.organ_1 = form.organ.data
-        db.session.add(ident)
+        result = ottieniRisposta(file_list)
+        print (result)
+        source = form.store_pics() #save images in store location, return path
+        
+        # write on DB --> should have both files path and API response
+        identfiy = Identification_mini()
+        identfiy.img_1 = os.path.join(source, filename ) # path to the image
+        identfiy.organ_1 = form.organ.data
+        db.session.add(identfiy)
         db.session.commit()
         flash('File caricati!')
-        clearfolder(Config.UPLOAD_FOLDER)
+        clearfolder(Config.UPLOAD_FOLDER) #clear temp folder
         return redirect(url_for('views.index')) #TODO redirect to result page
+    
     return render_template('index.html' , title='Home', form = form)
 
 

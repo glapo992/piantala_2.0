@@ -10,3 +10,4 @@ JSON_FOLDER='static/tmp/map'
 
 STORAGE_FOLDER='fileserver'
 
+PROJECT = "weurope"

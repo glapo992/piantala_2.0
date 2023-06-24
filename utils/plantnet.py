@@ -1,26 +1,16 @@
-"""import requests
+import requests
 import json
-
-API_KEY = "2b10vOWpgAoY62YLF1X5UiDzu"  # API_KEY dal mio account plantNet
-PROJECT = "weurope"  #identifica la zona di interesse in cui fare la ricerca
-api_endpoint = f"https://my-api.plantnet.org/v2/identify/{PROJECT}?api-key={API_KEY}"  #url a cui fare la richiesta
+from config import Config
 
 
-def readImg(photos):
-    '''
-    Legge una lista di path delle foto, per ognuna ne estrae il binario e
-    alla fine ritorna tutte le informazioni delle foto in una lista 
-    
-    Parameters
-    ---
-    photos : list
-        Lista di path delle foto
+def readImg(photos:list[str])->list:
+    """ Reads a list of pics path, extract binary and retun all info in a list
 
-    Returns
-    ---
-    files : list
-        Lista di BinaryIO
-    '''
+    :param photos: List of pics path
+    :type photos: list[str]
+    :return: list of BinaryIO
+    :rtype: list[str]
+    """
     files = []
     if len(photos) <= 5:
         for photo in photos:
@@ -29,27 +19,21 @@ def readImg(photos):
     return files
 
 
-def sendImg(files):
-    '''
-    Gestisce l'invio dei file a Pl@ntNET e la risposta dell'IA.
-    
-    Parameters:
-    ---
-    files : list
-        Lista dei path delle immagini da mandare
+def sendImg(files:list[str])->list[str]:
+    """ sends file to manage the answer
 
-    Returns:
-    ---
-    identificazione : list
-        Lista con i campi ottenuti dal riconoscimento
-    '''
+    :param files: list of piscs to send
+    :type files: list[str]
+    :return: list of fields with API response
+    :rtype: lsit[str]
+    """
     data = {'organs': []}
     organ = 'leaf'
     #riempie la lista organs con tanti organi 'leaf' quante foto nel ciclo
     for file in files:
         data['organs'].append(organ)
 
-    req = requests.Request('POST', url=api_endpoint, files=files, data=data)
+    req = requests.Request('POST', url=Config.API_ENDPOINT, files=files, data=data)
 
     prepared = req.prepare()
     s = requests.Session()
@@ -83,4 +67,3 @@ def sendImg(files):
     # ritorna la lista con le informazioni
     identificazione = [specie, affidabilità, genus, family, commonName]
     return identificazione
-"""

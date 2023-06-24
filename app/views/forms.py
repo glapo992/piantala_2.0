@@ -27,7 +27,7 @@ class ImageForm(FlaskForm):
             self.photo.data.save(os.path.join(up_folder, filename))
         return filename
 
-    def store_pics(self):
+    def store_pics(self): # TODO refactor somewhere else
         """move all the content of the temp folder to a definitive one in fileserver"""
         root = os.path.join(basedir, 'fileserver')
         upload_folder = Config.UPLOAD_FOLDER
@@ -35,9 +35,8 @@ class ImageForm(FlaskForm):
         # build folder name
         folder_name = datetime.strftime(datetime.now(), '%Y_%m_%d')+'_'+ str(folder_counter)
         dest_folder = os.path.join(root,folder_name)
-        # add a numnber after the folder name 
-
-        while os.path.isdir(dest_folder):
+        # check if the folder name already exists and increase the counter
+        while os.path.isdir(dest_folder): 
             folder_counter += 1
             folder_name = datetime.strftime(datetime.now(), '%Y_%m_%d')+'_'+ str(folder_counter)
             dest_folder = os.path.join(root,folder_name)    
