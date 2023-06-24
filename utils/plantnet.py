@@ -1,6 +1,8 @@
 import requests
 import json
 from config import Config
+from flask import current_app
+from threading import Thread
 
 
 def readImg(photos:list[str])->list:
@@ -18,29 +20,42 @@ def readImg(photos:list[str])->list:
             files.append(('images', (photo, image_data)))
     return files
 
-
-def sendImg(files:list[str])->list[str]:
-    """ sends file to manage the answer
-
-    :param files: list of piscs to send
-    :type files: list[str]
-    :return: list of fields with API response
-    :rtype: lsit[str]
-    """
-    data = {'organs': []}
-    organ = 'leaf'
-    #riempie la lista organs con tanti organi 'leaf' quante foto nel ciclo
-    for file in files:
-        data['organs'].append(organ)
-
+def send_async_data(files:list[str], data)->json:
     req = requests.Request('POST', url=Config.API_ENDPOINT, files=files, data=data)
+    print(data)
 
     prepared = req.prepare()
     s = requests.Session()
     response = s.send(prepared)
-
     json_result = json.loads(response.text)
+    print('async res:-->', json_result)
+    return json_result
 
+
+def sendImg(files:list[str], organs)->json:
+    """ sends file to manage the answer
+
+    :param files: list of piscs to send
+    :type files: list[str]
+    :return: json API response
+    :rtype: json
+    """
+    data = {'organs': organs}
+    
+    json_result = Thread(target=send_async_data, args=(files, data)).start()
+    
+    return json_result
+
+
+
+def plant_json_to_list(json_result:json)-> list[str]:
+    """parse json result of api response in a usable list
+
+    :param json_result: json response form api
+    :type json_result: json
+    :return: list with used datas
+    :rtype: list[str]
+    """
     # Prova a inserire ogni valore, altrimenti usa un valore di default
     try:
         specie = json_result['results'][0]['species']['scientificName']

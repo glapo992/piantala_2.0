@@ -22,7 +22,7 @@ def leggiGPS(imagesList):
     gpsInfo = exif_to_tag(openImg)
     return gpsInfo
 
-def ottieniRisposta(imagesList):
+def ottieniRisposta(imagesList, organs_list):
     '''
     Ritorna la risposta di Plant.NET
 
@@ -39,5 +39,5 @@ def ottieniRisposta(imagesList):
     # Apre le immagini in bianrio
     files = readImg(imagesList)
     # Invia immagini alla API
-    result = sendImg(files)
+    result = sendImg(files, organs=organs_list)
     return result

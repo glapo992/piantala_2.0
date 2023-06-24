@@ -10,10 +10,11 @@ import shutil
 import os
 
 
+
 # https://stackoverflow.com/questions/30121763/how-to-use-a-wtforms-fieldlist-of-formfields
 class ImageForm(FlaskForm):
     photo = FileField("image", validators=[DataRequired()])
-    organ = SelectField(u'che parte di pianta sto guardando?',choices=[('foglia', 'leaf'), ('ramo', 'branch'), ('radice', 'root')] ) #TODO: add the correct choiches list
+    organ = SelectField(u'che parte di pianta è?',choices=[('leaf', 'foglia'), ('flower', 'fiore'), ('fruit', 'frutto'),('bark', 'corteccia'),('', 'auto')] )
     submit= SubmitField ('invia')
 
     def upload(self, up_folder:str)->str: # TODO refacor and move logic somewhere else
