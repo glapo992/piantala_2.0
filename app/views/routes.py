@@ -21,13 +21,16 @@ def index():
         filename = form.upload(Config.UPLOAD_FOLDER) # save files in temp folder
         # list of paths of images for the API
         file_list = [] 
+        organs_lsit = []
         file_list.append(os.path.join(Config.UPLOAD_FOLDER,filename))
+        organs_lsit.append(form.organ.data)
         print (file_list)
         # send to api.... 
-        result = ottieniRisposta(file_list)
-        print (result)
+        result = ottieniRisposta(file_list, organs_lsit)
+        print ('result-->', result)
         source = form.store_pics() #save images in store location, return path
         
+        # TODO move in another module
         # write on DB --> should have both files path and API response
         identfiy = Identification_mini()
         identfiy.img_1 = os.path.join(source, filename ) # path to the image
