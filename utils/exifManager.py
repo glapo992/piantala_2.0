@@ -1,10 +1,10 @@
-'''from PIL import Image
+from PIL import Image
 import piexif
 
 codec = 'ISO-8859-1'  # or latin-1, serve a decodificare i tag exif
 
 
-def gpsConverter(cooDeg:list[])->list[float]:
+def gpsConverter(cooDeg:list)->list[float]:
     """ Converts coordinates from rad to decimal
 
     :param cooDeg: rad coordinates
@@ -65,4 +65,4 @@ def exif_to_tag(exif_dict:dict)->list[float]:
     ]
     cooDec = [gpsConverter(lat), gpsConverter(lon)]
 
-    return cooDec'''
+    return cooDec

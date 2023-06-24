@@ -1,5 +1,5 @@
-"""import plantnet as pt
-import exifManager as em
+from utils.plantnet import readImg, sendImg
+from  utils.exifManager import img_opener, exif_to_tag
 
 
 def leggiGPS(imagesList):
@@ -17,9 +17,9 @@ def leggiGPS(imagesList):
         Una lista con le coordinate GPS della prima immagine
     '''
     # Apre la prima immagine della lista in binario
-    openImg = em.img_opener(imagesList[0])
+    openImg = img_opener(imagesList[0])
     # Legge dati GPS
-    gpsInfo = em.exif_to_tag(openImg)
+    gpsInfo = exif_to_tag(openImg)
     return gpsInfo
 
 def ottieniRisposta(imagesList):
@@ -37,8 +37,7 @@ def ottieniRisposta(imagesList):
         Lista contenente i risultati dell'analisi
     '''
     # Apre le immagini in bianrio
-    files = pt.readImg(imagesList)
+    files = readImg(imagesList)
     # Invia immagini alla API
-    result = pt.sendImg(files)
+    result = sendImg(files)
     return result
-"""
