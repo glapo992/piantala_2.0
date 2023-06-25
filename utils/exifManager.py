@@ -1,7 +1,7 @@
 from PIL import Image
 import piexif
+from config import Config
 
-codec = 'ISO-8859-1'  # or latin-1, serve a decodificare i tag exif
 
 
 def gpsConverter(cooDeg:list)->list[float]:
@@ -13,6 +13,7 @@ def gpsConverter(cooDeg:list)->list[float]:
     :rtype: list []
     """
     cooDecimali = cooDeg[0] + ((cooDeg[1] + (cooDeg[2] / 60)) / 60)
+    print('Coo dec type-> ', type(cooDecimali))
     return cooDecimali
 
 
@@ -34,18 +35,18 @@ def exif_to_tag(exif_dict:dict)->list[float]:
 
     :param exif_dict: dict with exif datas
     :type exif_dict: dict
-    :return: gps coo in rad format
+    :return: gps coo in decimal format
     :rtype: list[float]
     """
     exif_tag_dict = {}
     thumbnail = exif_dict.pop('thumbnail')
-    exif_tag_dict['thumbnail'] = thumbnail.decode(codec)
+    exif_tag_dict['thumbnail'] = thumbnail.decode(Config.CODEC)
 
     for ifd in exif_dict:
         exif_tag_dict[ifd] = {}
         for tag in exif_dict[ifd]:
             try:
-                element = exif_dict[ifd][tag].decode(codec)
+                element = exif_dict[ifd][tag].decode(Config.CODEC)
 
             except AttributeError:
                 element = exif_dict[ifd][tag]
