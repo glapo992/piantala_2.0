@@ -20,13 +20,13 @@ def index():
     if form.validate_on_submit():
         filename = form.upload(Config.UPLOAD_FOLDER) # save files in temp folder
         # list of paths of images for the API
-        file_list = [] 
-        organs_lsit = []
-        file_list.append(os.path.join(Config.UPLOAD_FOLDER,filename))
-        organs_lsit.append(form.organ.data)
-        print (file_list)
+        files_list = [] 
+        organs_list = []
+        files_list.append(os.path.join(Config.UPLOAD_FOLDER,filename))
+        organs_list.append(form.organ.data)
+        print (files_list)
         # send to api.... 
-        result = ottieniRisposta(file_list, organs_lsit)
+        result = ottieniRisposta(files_list, organs_list)
         print ('result-->', result)
         source = form.store_pics() #save images in store location, return path
         
@@ -39,7 +39,7 @@ def index():
         db.session.commit()
         flash('File caricati!')
         clearfolder(Config.UPLOAD_FOLDER) #clear temp folder
-        return redirect(url_for('views.index')) #TODO redirect to result page
+        return redirect(url_for('views.response')) #TODO redirect to result page
     
     return render_template('index.html' , title='Home', form = form)
 
@@ -62,8 +62,6 @@ def circle_map():
 
 @bp.route('/response')
 def response():
-    return render_template('response.html')
-"""
     # Prepara le liste per l'upload
     tmplist = os.listdir(Config.UPLOAD_FOLDER)
     imagesList = []
@@ -107,7 +105,7 @@ def response():
     clearfolder(Config.JSON_FOLDER)
     clearfolder(Config.UPLOAD_FOLDER)
     clearfolder(Config.CONVERTED_FOLDER)
-    return render_template('response.html', risposta=risposta, tagGPS=tagGPS)"""
+    return render_template('response.html', risposta=risposta, tagGPS=tagGPS)
     
 
 """

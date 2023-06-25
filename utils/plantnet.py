@@ -1,8 +1,8 @@
 import requests
 import json
 from config import Config
-from flask import current_app
-from threading import Thread
+
+
 
 
 def readImg(photos:list[str])->list:
@@ -18,9 +18,18 @@ def readImg(photos:list[str])->list:
         for photo in photos:
             image_data = open(photo, 'rb')
             files.append(('images', (photo, image_data)))
-    return files
+    return files    
 
-def send_async_data(files:list[str], data)->json:
+
+def sendImg(files:list[str], organs)->list:
+    """ sends file to manage the answer
+
+    :param files: list of piscs to send
+    :type files: list[str]
+    :return: list API response
+    :rtype: list
+    """
+    data = {'organs': organs}
     req = requests.Request('POST', url=Config.API_ENDPOINT, files=files, data=data)
     print(data)
 
@@ -28,25 +37,12 @@ def send_async_data(files:list[str], data)->json:
     s = requests.Session()
     response = s.send(prepared)
     json_result = json.loads(response.text)
-    print('async res:-->', json_result)
-    return json_result
+    print('res:-->', json_result)
+    list_result = plant_json_to_list(json_result)
+    print('res:-->', list_result)
+    return list_result    
 
-
-def sendImg(files:list[str], organs)->json:
-    """ sends file to manage the answer
-
-    :param files: list of piscs to send
-    :type files: list[str]
-    :return: json API response
-    :rtype: json
-    """
-    data = {'organs': organs}
     
-    json_result = Thread(target=send_async_data, args=(files, data)).start()
-    
-    return json_result
-
-
 
 def plant_json_to_list(json_result:json)-> list[str]:
     """parse json result of api response in a usable list
