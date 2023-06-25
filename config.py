@@ -11,12 +11,13 @@ class Config(object):
     CONVERTED_FOLDER = os.path.join(basedir, os.environ.get('CONVERTED_FOLDER'))
     JSON_FOLDER      = os.path.join(basedir, os.environ.get('JSON_FOLDER'))
 
-
     PROJECT = os.environ.get('PROJECT')
     PLANTNET_API_KEY = os.environ.get('PLANTNET_API_KEY') 
     API_ENDPOINT = f"https://my-api.plantnet.org/v2/identify/{PROJECT}?api-key={PLANTNET_API_KEY}"  #url a cui fare la richiesta
 
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'heic'}
+
+    CODEC = 'ISO-8859-1'  # or latin-1, serve a decodificare i tag exif
 
     try:
         PASSWORD = os.environ.get('DB_PASSWORD') 

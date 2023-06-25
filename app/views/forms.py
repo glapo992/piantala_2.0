@@ -17,7 +17,7 @@ class ImageForm(FlaskForm):
     organ = SelectField(u'che parte di pianta è?',choices=[('leaf', 'foglia'), ('flower', 'fiore'), ('fruit', 'frutto'),('bark', 'corteccia'),('', 'auto')] )
     submit= SubmitField ('invia')
 
-    def upload(self, up_folder:str)->str: # TODO refacor and move logic somewhere else
+    def upload(self, up_folder:str)->str:
         """ write the images from the form in the temp folder
         
         :return: path to the source

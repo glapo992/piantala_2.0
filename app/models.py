@@ -22,8 +22,8 @@ class Identification(db.Model):
     genus       = db.Column(db.String(50))
     family      = db.Column(db.String(50))
     commonName  = db.Column(db.String(50))
-    lat         = db.Column(db.String(30))
-    long        = db.Column(db.String(30))
+    lat         = db.Column(db.Float())
+    long        = db.Column(db.Float())
 
 
 class Identification_mini(db.Model):
@@ -37,5 +37,7 @@ class Identification_mini(db.Model):
     genus       = db.Column(db.String(50))
     family      = db.Column(db.String(50))
     commonName  = db.Column(db.String(50))
+    lat         = db.Column(db.Float())
+    long        = db.Column(db.Float())
 
     

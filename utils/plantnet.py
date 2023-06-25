@@ -3,8 +3,6 @@ import json
 from config import Config
 
 
-
-
 def readImg(photos:list[str])->list:
     """ Reads a list of pics path, extract binary and retun all info in a list
 
