@@ -6,7 +6,7 @@ from app.views.forms import ImageForm
 
 from config import Config
 from utils.utils import clearfolder
-from utils.Esegui import ottieniRisposta
+from utils.Esegui import ottieniRisposta, leggiGPS
 
 from app.models import Identification_mini
 import os
@@ -35,11 +35,16 @@ def index():
         identfiy = Identification_mini()
         identfiy.img_1 = os.path.join(source, filename ) # path to the image
         identfiy.organ_1 = form.organ.data
+        identfiy.reliability = result[1]
+        identfiy.specie = result[0]
+        identfiy.genus = result[2]
+        identfiy.family = result[3]
+        identfiy.commonName = result[4]
         db.session.add(identfiy)
         db.session.commit()
         flash('File caricati!')
         clearfolder(Config.UPLOAD_FOLDER) #clear temp folder
-        return redirect(url_for('views.response')) #TODO redirect to result page
+        return redirect(url_for('views.index')) #TODO redirect to result page
     
     return render_template('index.html' , title='Home', form = form)
 
@@ -62,6 +67,8 @@ def circle_map():
 
 @bp.route('/response')
 def response():
+    return None
+"""
     # Prepara le liste per l'upload
     tmplist = os.listdir(Config.UPLOAD_FOLDER)
     imagesList = []
@@ -81,9 +88,9 @@ def response():
 
     #------------info da inviare al DB------------------------------------------
     # Accetta la lista di immagini e restituisce lista con lat e lon
-    tagGPS = esegui.leggiGPS(imagesList=imagesList)
+    tagGPS = leggiGPS(imagesList=imagesList)
     # Accetta lista immaigni e restituisce un json con risposte api
-    risposta = esegui.ottieniRisposta(imagesList=convertedImagesList)
+    risposta = ottieniRisposta(imagesList=convertedImagesList)
     # Invio dati a Firestore
     if type(risposta[1]) is float:
         db.sendCompleteData(tagGPS, risposta)
@@ -105,7 +112,7 @@ def response():
     clearfolder(Config.JSON_FOLDER)
     clearfolder(Config.UPLOAD_FOLDER)
     clearfolder(Config.CONVERTED_FOLDER)
-    return render_template('response.html', risposta=risposta, tagGPS=tagGPS)
+    return render_template('response.html', risposta=risposta, tagGPS=tagGPS)"""
     
 
 """

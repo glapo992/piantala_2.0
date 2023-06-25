@@ -40,4 +40,5 @@ def ottieniRisposta(imagesList, organs_list):
     files = readImg(imagesList)
     # Invia immagini alla API
     result = sendImg(files, organs=organs_list)
+    
     return result
