@@ -1,22 +1,70 @@
+from app import db
 from flask import render_template, flash, redirect, url_for, request
 from app.views import bp
 from app.views.forms import ImageForm
-#from app import images
-from werkzeug.utils import secure_filename
+
+
 from config import Config
+from utils.utils import clearfolder
+from utils.Esegui import ottieniRisposta, leggiGPS
+
+from app.models import Identification_mini
 import os
 
 
+organs =[]
 
-@bp.route('/', methods = ['GET','POST'])
-def index():
+@bp.route('/', methods = ['GET', 'POST'])
+def index():   
     form = ImageForm()
     if form.validate_on_submit():
-        filename = secure_filename(form.photo.data.filename)
-        form.photo.data.save(os.path.join(Config.UPLOAD_FOLDER, filename))
-        flash('File caricati!')
-        return redirect(url_for('views.index'))
+        plant_form(form=form)
     return render_template('index.html' , title='Home', form = form)
+
+
+def plant_form(form):
+    """manages the form result and write on database
+
+    :param form: form plant upload
+    :type form: FlaskForm
+    :return: response view
+    :rtype: view
+    """
+    filename = form.upload(Config.UPLOAD_FOLDER) # save files in temp folder
+    # list of paths of images for the API
+    files_list = [] 
+    organs_list = []
+    files_list.append(os.path.join(Config.UPLOAD_FOLDER,filename))
+    organs_list.append(form.organ.data)
+    print (files_list)
+    # send to api.... 
+    result = ottieniRisposta(files_list, organs_list)
+    print ('result-->', result)
+    source = form.store_pics() #save images in store location, return path
+    # read GPS tags
+    tagGPS = leggiGPS(imagesList=files_list)
+    print('GPS -> ', tagGPS)
+    # TODO move in another module
+    # write on DB --> should have both files path and API response
+    identfiy = Identification_mini()
+    identfiy.img_1      = os.path.join(source, filename ) # path to the image
+    identfiy.organ_1    = form.organ.data
+    identfiy.reliability= result[1]
+    identfiy.specie     = result[0]
+    identfiy.genus      = result[2]
+    identfiy.family     = result[3]
+    identfiy.commonName = result[4]
+    identfiy.lat        = tagGPS[0]
+    identfiy.long       = tagGPS[1]
+    db.session.add(identfiy)
+    db.session.commit()
+    flash('File caricati!')
+    clearfolder(Config.UPLOAD_FOLDER) #clear temp folder
+    return redirect(url_for('views.index')) #TODO redirect to result page
+
+
+
+
 @bp.route('/mappa')
 def mappa():
     return render_template('mappa.html',title='Mappa')
@@ -33,7 +81,7 @@ def circle_map():
 
 @bp.route('/response')
 def response():
-    return render_template('response.html')
+    return None
 """
     # Prepara le liste per l'upload
     tmplist = os.listdir(Config.UPLOAD_FOLDER)
@@ -54,9 +102,9 @@ def response():
 
     #------------info da inviare al DB------------------------------------------
     # Accetta la lista di immagini e restituisce lista con lat e lon
-    tagGPS = esegui.leggiGPS(imagesList=imagesList)
+    tagGPS = leggiGPS(imagesList=imagesList)
     # Accetta lista immaigni e restituisce un json con risposte api
-    risposta = esegui.ottieniRisposta(imagesList=convertedImagesList)
+    risposta = ottieniRisposta(imagesList=convertedImagesList)
     # Invio dati a Firestore
     if type(risposta[1]) is float:
         db.sendCompleteData(tagGPS, risposta)

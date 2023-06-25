@@ -1,5 +1,6 @@
 import os
 from config import Config
+from datetime import datetime
 
 
 def generate_temp_folders()->None:
@@ -35,4 +36,5 @@ def clearfolder(path:str)->None:
     """
     tmplist = os.listdir(path)
     for image in tmplist:
-        os.remove(path + image)
+        os.remove(os.path.join(path, image))
+
