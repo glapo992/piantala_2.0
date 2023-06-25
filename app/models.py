@@ -41,3 +41,7 @@ class Identification_mini(db.Model):
     long        = db.Column(db.Float())
 
     
+
+"""
+Identification_mini.query.delete
+"""
