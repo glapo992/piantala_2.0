@@ -5,3 +5,4 @@ templates/circle_map.html
 **/.DS_Store
 static/tmp
 app.db
+fileserver/*
