@@ -32,3 +32,10 @@ class Identification_mini(db.Model):
     timestamp   = db.Column(db.DateTime, index = True, default=datetime.utcnow)
     img_1       = db.Column(db.String(100), nullable = False)
     organ_1     = db.Column(db.String(30), nullable = False)
+    reliability = db.Column(db.Float())
+    specie      = db.Column(db.String(50))
+    genus       = db.Column(db.String(50))
+    family      = db.Column(db.String(50))
+    commonName  = db.Column(db.String(50))
+
+    

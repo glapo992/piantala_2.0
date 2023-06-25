@@ -56,25 +56,25 @@ def plant_json_to_list(json_result:json)-> list[str]:
     try:
         specie = json_result['results'][0]['species']['scientificName']
     except:
-        specie = 'N/D'
+        specie = None
     try:
         affidabilità = json_result['results'][0]['score']
     except:
-        affidabilità = 'N/D'
+        affidabilità = None
     try:
         genus = json_result['results'][0]['species']['genus'][
             'scientificNameWithoutAuthor']
     except:
-        genus = 'N/D'
+        genus = None
     try:
         family = json_result['results'][0]['species']['family'][
             'scientificNameWithoutAuthor']
     except:
-        family = 'N/D'
+        family = None
     try:
         commonName = json_result['results'][0]['species']['commonNames'][0]
     except:
-        commonName = 'N/D'
+        commonName = None
     # ritorna la lista con le informazioni
     identificazione = [specie, affidabilità, genus, family, commonName]
     return identificazione
