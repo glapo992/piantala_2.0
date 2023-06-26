@@ -10,40 +10,6 @@
   </head>
   <body>
     <!------------------------------------NAVBAR-------------------------------------->
-    <header>
-      <nav>
-        <a href="{{ url_for('index') }}"
-          ><img
-            src="../static/img/poster-foglia-di-quercia.jpg.jpg"
-            alt="logo"
-            width="80px"
-            height="auto"
-        /></a>
-        <div>
-          <div class="mainmenu">
-            <div><a href="{{ url_for('index') }}">home</a></div>
-            <div class="dropdown">
-              <a onclick="myFunction()" class="dropbtn">progetti</a>
-              <div id="myDropdown" class="tendina">
-                <a href="{{ url_for('mappa') }}">mappa</a>
-                <a href="https://github.com/Lasagnanator/piantala">GitHub</a>
-                <a href="https://trello.com/b/hGZ7Y1HF/piantala">Trello</a>
-              </div>
-            </div>
-            <div><a href="{{ url_for('about') }}">about us</a></div>
-          </div>
-          <div class="searchbar">
-            <input id="in" type="text" placeholder="cerca" />
-            <img
-              id="lente"
-              src="../static/img/search_FILL0_wght400_GRAD0_opsz48.svg"
-              alt="find"
-              onClick="location.href='./404.html'"
-            />
-          </div>
-        </div>
-      </nav>
-    </header>
     <div id="presentazione">
       <div
         style="
