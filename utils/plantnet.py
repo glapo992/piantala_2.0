@@ -1,7 +1,7 @@
 import requests
 import json
 from config import Config
-
+from identification_sample import IDENT_FULL, IDENT_PART
 
 def readImg(photos:list[str])->list:
     """ Reads a list of pics path, extract binary and retun all info in a list
@@ -31,13 +31,16 @@ def sendImg(files:list[str], organs)->list:
     req = requests.Request('POST', url=Config.API_ENDPOINT, files=files, data=data)
     print(data)
 
-    prepared = req.prepare()
-    s = requests.Session()
-    response = s.send(prepared)
-    json_result = json.loads(response.text)
-    print('res:-->', json_result)
+    #! imported static json just for testing
+    #prepared = req.prepare()
+    #s = requests.Session()
+    #response = s.send(prepared)
+    #json_result = json.loads(response.text)
+    json_result= IDENT_PART
+
+    print('res compete:-->', json_result)
     list_result = plant_json_to_list(json_result)
-    print('res:-->', list_result)
+    print('res list:-->', list_result)
     return list_result    
 
     
@@ -51,28 +54,45 @@ def plant_json_to_list(json_result:json)-> list[str]:
     :rtype: list[str]
     """
     # Prova a inserire ogni valore, altrimenti usa un valore di default
-    try:
-        specie = json_result['results'][0]['species']['scientificName']
-    except:
-        specie = None
-    try:
-        affidabilità = json_result['results'][0]['score']
-    except:
-        affidabilità = None
-    try:
-        genus = json_result['results'][0]['species']['genus'][
-            'scientificNameWithoutAuthor']
-    except:
-        genus = None
-    try:
-        family = json_result['results'][0]['species']['family'][
-            'scientificNameWithoutAuthor']
-    except:
-        family = None
-    try:
-        commonName = json_result['results'][0]['species']['commonNames'][0]
-    except:
-        commonName = None
-    # ritorna la lista con le informazioni
-    identificazione = [specie, affidabilità, genus, family, commonName]
-    return identificazione
+    if json_result['results']:
+        print('full ans')
+        try:
+            specie = json_result['results'][0]['species']['scientificName']
+        except:
+            specie = None
+        try:
+            affidabilità = json_result['results'][0]['score']
+        except:
+            affidabilità = None
+        try:
+            genus = json_result['results'][0]['species']['genus'][
+                'scientificNameWithoutAuthor']
+        except:
+            genus = None
+        try:
+            family = json_result['results'][0]['species']['family'][
+                'scientificNameWithoutAuthor']
+        except:
+            family = None
+        try:
+            commonName = json_result['results'][0]['species']['commonNames'][0]
+        except:
+            commonName = None
+        try:
+            remaining_requests = json_result['remainingIdentificationRequests']
+        except:
+            remaining_requests = None
+        # ritorna la lista con le informazioni
+        identificazione = [specie, affidabilità, genus, family, commonName, remaining_requests]
+        return identificazione
+    else:
+        print('part ans')
+        try:
+            specie = json_result['bestMatch'].split('(')[0]
+        except:
+            specie = None
+        try:
+            remaining_requests = json_result['remainingIdentificationRequests']
+        except:
+            remaining_requests = None
+        return [specie, remaining_requests]

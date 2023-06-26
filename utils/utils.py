@@ -17,7 +17,7 @@ def generate_temp_folders()->None:
 
 
 def allowed_file(filename:str)->bool:
-    """ Check that the input file has an allwed extension 
+    """ Check if the input file has an allwed extension 
 
     :param filename: input file name
     :type filename: str

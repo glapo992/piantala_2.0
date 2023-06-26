@@ -1,4 +1,4 @@
-{
+IDENT_FULL = {
     "query": {
         "project": "weurope",
         "images": [
@@ -13,7 +13,7 @@
             "leaf",
             "leaf"
         ],
-        "includeRelatedImages": false
+        "includeRelatedImages": False
     },
     "language": "en",
     "preferedReferential": "weurope",
@@ -829,4 +829,20 @@
     ],
     "version": "2022-10-24 (6.0)",
     "remainingIdentificationRequests": 495
+}
+
+
+IDENT_PART = {
+"query": {"project": "weurope", 
+           "images": ["b17e68a649e8be1e21188072db27e9bf"], 
+           "organs": ["leaf"], 
+           "includeRelatedImages": False
+    }, 
+"language": "en", 
+"switchToProject": 
+"the-plant-list", 
+"bestMatch": "Epipremnum aureum (Linden & André) G.S.Bunting", 
+"results": [],
+"version": "2022-10-24 (7.0)", 
+"remainingIdentificationRequests": 497
 }

@@ -2,6 +2,7 @@ from app import db
 from flask import render_template, flash, redirect, url_for, request
 from app.views import bp
 from app.views.forms import ImageForm
+#https://uiverse.io/
 
 
 from config import Config
@@ -49,11 +50,14 @@ def plant_form(form):
     identfiy = Identification_mini()
     identfiy.img_1      = os.path.join(source, filename ) # path to the image
     identfiy.organ_1    = form.organ.data
-    identfiy.reliability= result[1]
-    identfiy.specie     = result[0]
-    identfiy.genus      = result[2]
-    identfiy.family     = result[3]
-    identfiy.commonName = result[4]
+    if len(result) == 6:
+        identfiy.specie     = result[0]
+        identfiy.reliability= result[1]
+        identfiy.genus      = result[2]
+        identfiy.family     = result[3]
+        identfiy.commonName = result[4]
+    else:
+        identfiy.specie = result[0]
     identfiy.lat        = tagGPS[0]
     identfiy.long       = tagGPS[1]
     db.session.add(identfiy)
@@ -61,8 +65,6 @@ def plant_form(form):
     flash('File caricati!')
     clearfolder(Config.UPLOAD_FOLDER) #clear temp folder
     return redirect(url_for('views.index')) #TODO redirect to result page
-
-
 
 
 @bp.route('/mappa')
