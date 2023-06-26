@@ -14,20 +14,19 @@
       <p id="listarisposta">
         <span>
           <ul>
-            <li>nome comune {{risposta[4]}}</li>
-            <li>nome scientifico:<i> {{risposta[0]}}</i></li>
-            <li>genere: {{risposta[2]}}</li>
-            <li>famiglia: {{risposta[3]}}</li>
-            <li>affidabilità della rilevazione: {{risposta[1]}}</li>
-            <li>latitudine: {{tagGPS[0]}}</li>
-            <li>longitudine: {{tagGPS[1]}}</li>
+            <li>nome comune: {{plant.commonName}}</li>
+            <li>nome scientifico:<i> {{plant.specie}}</i></li>
+            <li>genere: {{plant.genus}}</li>
+            <li>famiglia: {{plant.family}}</li>
+            <li>affidabilità della rilevazione: {{plant.reliability}}</li>
+            <li>latitudine: {{plant.lat}}</li>
+            <li>longitudine: {{plant.long}}</li>
           </ul>
         </span>
       </p>
     </div>
     <div id="box_mappa">
-      <div>
-        <iframe src=" {{ url_for('circle_map') }} " frameborder="0" style="width: 95%; height: 800px;"></iframe>
+      <div><p>mappa</p>
       </div>
     </div>
     
