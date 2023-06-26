@@ -7,3 +7,4 @@ templates/circle_map.html
 static/tmp
 app.db
 fileserver/*
+.env
