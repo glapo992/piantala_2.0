@@ -8,6 +8,7 @@ from app.views.forms import ImageForm
 from config import Config
 from utils.utils import clearfolder
 from utils.Esegui import ottieniRisposta, leggiGPS
+from utils.convertImg import convertJpg
 
 from app.models import Identification_mini
 import os
@@ -35,11 +36,17 @@ def plant_form(form):
     # list of paths of images for the API
     files_list = [] 
     organs_list = []
-    files_list.append(os.path.join(Config.UPLOAD_FOLDER,filename))
-    organs_list.append(form.organ.data)
+    jpg_image_list = []
+
+    files_list.append(os.path.join(Config.UPLOAD_FOLDER,filename)) # list with original files only
+    organs_list.append(form.organ.data)                            # list with selected organs of the plant
     print (files_list)
-    # send to api.... 
-    result = ottieniRisposta(files_list, organs_list)
+
+    for file in files_list:
+        jpg_file = convertJpg(file, Config.CONVERTED_FOLDER)
+        jpg_image_list.append(jpg_file)                             # list with converted images
+    # send to api jpg version of images
+    result = ottieniRisposta(jpg_image_list, organs_list)
     print ('result-->', result)
     source = form.store_pics() #save images in store location, return path
     # read GPS tags
@@ -50,6 +57,8 @@ def plant_form(form):
     identfiy = Identification_mini()
     identfiy.img_1      = os.path.join(source, filename ) # path to the image
     identfiy.organ_1    = form.organ.data
+   
+    # check if the api returned full ans or partial only
     if len(result) == 6:
         identfiy.specie     = result[0]
         identfiy.reliability= result[1]
@@ -60,10 +69,14 @@ def plant_form(form):
         identfiy.specie = result[0]
     identfiy.lat        = tagGPS[0]
     identfiy.long       = tagGPS[1]
+
     db.session.add(identfiy)
     db.session.commit()
+
     flash('File caricati!')
     clearfolder(Config.UPLOAD_FOLDER) #clear temp folder
+    clearfolder(Config.CONVERTED_FOLDER) #clear temp folder
+
     return redirect(url_for('views.index')) #TODO redirect to result page
 
 
@@ -85,33 +98,6 @@ def circle_map():
 def response():
     return None
 """
-    # Prepara le liste per l'upload
-    tmplist = os.listdir(Config.UPLOAD_FOLDER)
-    imagesList = []
-    convertedImagesList = []
-    max = 1
-    # Carico solo le prime 5 foto salvate presenti in cartella
-    for image in tmplist:
-        if max <= 5:
-            # Lista da inviare al lettore GPS
-            imagePath = (Config.UPLOAD_FOLDER + image)
-            # Lista da inviare alla api
-            imagesList.append(Config.UPLOAD_FOLDER + image)
-            # Converte immagini in jpg da inviare alla api
-            convertedJpg = conv.convertJpg(imagePath)
-            convertedImagesList.append(convertedJpg)
-            max += 1
-
-    #------------info da inviare al DB------------------------------------------
-    # Accetta la lista di immagini e restituisce lista con lat e lon
-    tagGPS = leggiGPS(imagesList=imagesList)
-    # Accetta lista immaigni e restituisce un json con risposte api
-    risposta = ottieniRisposta(imagesList=convertedImagesList)
-    # Invio dati a Firestore
-    if type(risposta[1]) is float:
-        db.sendCompleteData(tagGPS, risposta)
-    else:
-        db.sendPartialData(tagGPS, risposta)
 
     #------------mappa---------------------------------------------------------------
     # Crea il file JSON pullando dal database
@@ -130,30 +116,6 @@ def response():
     clearfolder(Config.CONVERTED_FOLDER)
     return render_template('response.html', risposta=risposta, tagGPS=tagGPS)"""
     
-
-"""
-@bp.route('/', methods=['GET', 'POST'])
-# Form: seleziona file dall'esplora risorse, puoi caricare qualsiasi tipo di file,
-# questa funzione salverà in locale solo i formati accettati (ALLOWED_EXTENCTIONS)
-# dopo aver salvato i file lancia response()
-def upload_file():
-    if request.method == 'POST':
-        print(request.files)
-        uploaded = request.files.getlist("file")
-        for file in uploaded:
-            print('file', file)
-            # Se l'utente non seleziona almeno un file, il browser
-            # ritorna un file vuoto senza nome
-            if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                upload = Config.UPLOAD_FOLDER + filename
-                file.save(upload)
-    return redirect(url_for('views.response'))
-
-"""
 
 
 @bp.route('/about')

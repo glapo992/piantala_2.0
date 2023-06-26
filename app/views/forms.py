@@ -45,7 +45,3 @@ class ImageForm(FlaskForm):
         shutil.copytree(upload_folder, dest_folder)
         return dest_folder
 
-
-class ImageList(FlaskForm):
-    images_list = FieldList(FormField(ImageForm), min_entries=1, max_entries=5)
-

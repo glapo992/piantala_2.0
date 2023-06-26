@@ -32,11 +32,11 @@ def sendImg(files:list[str], organs)->list:
     print(data)
 
     #! imported static json just for testing
-    #prepared = req.prepare()
-    #s = requests.Session()
-    #response = s.send(prepared)
-    #json_result = json.loads(response.text)
-    json_result= IDENT_PART
+    prepared = req.prepare()
+    s = requests.Session()
+    response = s.send(prepared)
+    json_result = json.loads(response.text)
+    #json_result= IDENT_PART
 
     print('res compete:-->', json_result)
     list_result = plant_json_to_list(json_result)
