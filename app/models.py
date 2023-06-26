@@ -43,5 +43,5 @@ class Identification_mini(db.Model):
     
 
 """
-Identification_mini.query.delete
+Identification_mini.query.delete()
 """
