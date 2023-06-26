@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
-from wtforms import  SubmitField, FieldList, FormField, SelectField
-from wtforms.validators import DataRequired, ValidationError
+from wtforms import  SubmitField, SelectField
+from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
 from utils.utils import allowed_file
 from config import Config, basedir
@@ -14,7 +14,7 @@ import os
 # https://stackoverflow.com/questions/30121763/how-to-use-a-wtforms-fieldlist-of-formfields
 class ImageForm(FlaskForm):
     photo = FileField("image", validators=[DataRequired()])
-    organ = SelectField(u'che parte di pianta è?',choices=[('leaf', 'foglia'), ('flower', 'fiore'), ('fruit', 'frutto'),('bark', 'corteccia'),('auto', 'automatico')] )
+    organ = SelectField(u'che parte di pianta è?',choices=[('auto', 'automatico'), ('leaf', 'foglia'), ('flower', 'fiore'), ('fruit', 'frutto'),('bark', 'corteccia')] )
     submit= SubmitField ('invia')
 
     def upload(self, up_folder:str)->str:
