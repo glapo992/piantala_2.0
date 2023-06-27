@@ -1,9 +1,9 @@
 from app import db
 from flask import render_template, flash, redirect, url_for
-from app.models import Identification_mini
+from app.models import Plant_mini
 from app.plantnet import bp
 from app.plantnet.forms import ImageForm
-from utils.plantnet import manage_plant_form
+from app.plantnet.plantnet import manage_plant_form
 #https://uiverse.io/
 
 import os
@@ -20,8 +20,20 @@ def index():
 
 @bp.route('/response/<plant_id>')
 def response(plant_id):
-    plant = Identification_mini.query.filter_by(id=plant_id).first()
+    plant = Plant_mini.query.filter_by(id=plant_id).first()
+
     return render_template ('response.html', plant = plant)
+
+
+def search_specie(plant_id:int)->list[int]:
+    """Returns a list plants of the same specie of the identified one"""
+    plant = Plant_mini.query.filter_by(id=plant_id).first()
+    images_path = Plant_mini.query.filter_by(specie=plant.specie).all()
+
+    print('same specie paths-> ', images_path)
+
+
+
 
 
 

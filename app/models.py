@@ -1,8 +1,14 @@
 from app import db
 from datetime import datetime
 
+"""
+Plant_mini.query.delete()
+"""
 
-class Identification(db.Model):
+
+
+
+class Plant(db.Model):
     """table to use when I understand how to make the user to load 5 images and 5 organs"""
     id          = db.Column(db.Integer, primary_key = True)
     timestamp   = db.Column(db.DateTime, index = True, default=datetime.utcnow)
@@ -27,7 +33,7 @@ class Identification(db.Model):
     long        = db.Column(db.Float())
 
 
-class Identification_mini(db.Model):
+class Plant_mini(db.Model):
     """ temp class for dev, must find a solution to fill the big one above with just one form that repeats itself and datas from API response"""
     id          = db.Column(db.Integer, primary_key = True)
     timestamp   = db.Column(db.DateTime, index = True, default=datetime.utcnow)
@@ -70,8 +76,7 @@ class Identification_mini(db.Model):
         self.lat        = tagGPS[0]
         self.long       = tagGPS[1]
 
-"""
-Identification_mini.query.delete()
-"""
+
+
 
 
