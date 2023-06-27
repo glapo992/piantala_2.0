@@ -63,22 +63,27 @@ def sendImg(files:list[str], organs)->list:
     """
     data = {'organs': organs}
     req = requests.Request('POST', url=Config.API_ENDPOINT, files=files, data=data)
-    print(data)
 
     #! imported static json just for testing so the api is not called every time
-    #prepared = req.prepare()
-    #s = requests.Session()
-    #response = s.send(prepared)
-    #json_result = json.loads(response.text)
-    json_result= IDENT_FULL
+    prepared = req.prepare()
+    s = requests.Session()
+    response = s.send(prepared)
+    json_result = json.loads(response.text)
+    #json_result= IDENT_PART
 
     #print('res compete:-->', json_result)
     list_result = plant_json_to_list(json_result)
-    print('res list:-->', list_result)
+    #print('res list:-->', list_result)
     return list_result    
 
 def plant_json_to_list(json_result:json)-> list[str]:
     """ parse json result of api response in a usable list
+        content of the list:
+        specie      = result[0]
+        reliability = result[1]
+        genus       = result[2]
+        family      = result[3]
+        commonName  = result[4]
 
     :param json_result: json response form api
     :type json_result: json
@@ -88,7 +93,7 @@ def plant_json_to_list(json_result:json)-> list[str]:
     # tries to insert the value, else fills with null
     if json_result['results']:
         try:
-            specie = json_result['results'][0]['species']['scientificName']
+            specie = json_result['results'][0]['species']['scientificNameWithoutAuthor']
         except:
             specie = None
         try:
@@ -119,7 +124,6 @@ def plant_json_to_list(json_result:json)-> list[str]:
     else:
         try:
             specie = json_result['bestMatch'].split('(')[0].strip()
-            print('plantnet specie->|{}|'.format(specie))   # DB
         except:
             specie = None
         try:

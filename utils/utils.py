@@ -71,11 +71,8 @@ def convertJpg(image_path:str, dest_folder:str)->str:
     # Conversion to JPG
     rgb_im = im.convert("RGB")
     filename = image_path.split('/')[-1] # name of the image
-    print('filename: ', filename)
     converted_image_path = os.path.join(dest_folder, filename) + '_conv.jpg'
-    print('conv img path: ', converted_image_path)
     rgb_im.save(converted_image_path)
-
     return converted_image_path
 
 
@@ -88,7 +85,6 @@ def gpsConverter(cooDeg:list)->list[float]:
     :rtype: list []
     """
     cooDecimali = cooDeg[0] + ((cooDeg[1] + (cooDeg[2] / 60)) / 60)
-    print('Coo dec type-> ', type(cooDecimali))
     return cooDecimali
 
 

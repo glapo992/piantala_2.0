@@ -9,8 +9,6 @@ from datetime import datetime
 import shutil
 import os
 
-
-
 # https://stackoverflow.com/questions/30121763/how-to-use-a-wtforms-fieldlist-of-formfields
 class ImageForm(FlaskForm):
     photo = FileField("image", validators=[DataRequired()])
@@ -29,7 +27,8 @@ class ImageForm(FlaskForm):
         return filename
 
     def store_pics(self): # TODO refactor somewhere else
-        """move all the content of the temp folder to a definitive one in fileserver"""
+        """move all the content of the temp folder to a definitive one in fileserver
+        by now every picture has a folder --> for when more than one picture are accepted in the form"""
         root = os.path.join(basedir, 'static/fileserver') # the root of the fileserver
         upload_folder = Config.UPLOAD_FOLDER
         # build folder name
@@ -40,12 +39,12 @@ class ImageForm(FlaskForm):
         while os.path.isdir(dest_folder): 
             folder_counter += 1
             folder_name = datetime.strftime(datetime.now(), '%Y_%m_%d')+'_'+ str(folder_counter)
-            print('dest folder:', dest_folder)
             dest_folder = os.path.join(root,folder_name)    
+        print('dest folder:', dest_folder)
         # copy upload folder in dest folder
         shutil.copytree(upload_folder, dest_folder)
         final_path = os.path.join('/static/fileserver', folder_name) 
-        print('final paht:', final_path)
+        print('path saved on DB without filename:', final_path)
         return final_path
    
 

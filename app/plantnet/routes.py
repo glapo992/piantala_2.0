@@ -14,21 +14,29 @@ def index():
     if form.validate_on_submit():
         plant = manage_plant_form(form=form)
         flash('File caricati!')
- 
         return redirect(url_for('plantnet.response', plant_id = plant.id))
-    return render_template('index.html' , title='Home', form = form)
+    
+    return render_template('index.html' , title='Piantala - Home', form = form)
 
 @bp.route('/response/<plant_id>')
 def response(plant_id):
-    plant  = Plant_mini.query.filter_by(id=plant_id).first()
-    print('plant specie id-> ', plant.specie_id)
-    specie = Specie.query.filter_by(id=plant.specie_id).first()
-    genus  = Genus.query.filter_by(id=specie.genus_id).first()
-    family = Family.query.filter_by(id=genus.family_id).first()
-    images_list = plant.search_specie()
+    pl  = Plant_mini.query.filter_by(id=plant_id).first()
+    print('plant specie id-> ', pl.specie_id)
+    sp = Specie.query.filter_by(id=pl.specie_id).first()
+    print('retrieved genus id form sp-> ', sp.genus_id)
+    if pl.is_complete:
+        gen  = Genus.query.filter_by(id=sp.genus_id).first()
+        print('retrieved genus-> ', gen.genus_name)
+        fam = Family.query.filter_by(id=gen.family_id).first()
+        print('retrieved family-> ', fam.family_name)
+    else :
+        gen  = None
+        fam = None
+
+    images_list = pl.search_specie()
     print ('image list-> ', images_list)
     
-    return render_template ('response.html',title = 'response', plant = plant , specie = specie, family = family, genus = genus, images_list = images_list)
+    return render_template ('response.html',title = 'Piantala - response', plant = pl , specie = sp, family = fam, genus = gen, images_list = images_list)
 
 def search_specie(plant_id:int)->list[str]:
     """Returns a list plants of the same specie of the identified one"""
