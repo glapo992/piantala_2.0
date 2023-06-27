@@ -1,7 +1,7 @@
 import os
 import requests
 import json
-from app.models import Identification_mini
+from app.models import Plant_mini
 from config import Config
 from utils.utils import clearfolder, convertJpg, exif_reader, exif_to_tag, readImg
 from app import db
@@ -9,7 +9,7 @@ from app import db
 # for debug only -> send a static json so the api is not called every time
 from identification_sample import IDENT_FULL, IDENT_PART
 
-def manage_plant_form(form)-> Identification_mini:
+def manage_plant_form(form)-> Plant_mini:
     """ Manages the form result and writes on database
 
     :param form: form plant upload
@@ -17,7 +17,7 @@ def manage_plant_form(form)-> Identification_mini:
     :return: response view
     :rtype: view
     :return: identified plant object
-    :rtype: Identification_mini
+    :rtype: Plant_mini
     """
     filename = form.upload(Config.UPLOAD_FOLDER) # save files in temp folder
     # list of paths of images for the API
@@ -44,7 +44,7 @@ def manage_plant_form(form)-> Identification_mini:
     #print('GPS -> ', tagGPS)
 
     # write on DB --> should have both files path and API response
-    identfiy = Identification_mini()
+    identfiy = Plant_mini()
     identfiy.create_plant(os.path.join(source, filename), form.organ.data, result, tagGPS)
     db.session.add(identfiy)
     db.session.commit()
@@ -71,7 +71,7 @@ def sendImg(files:list[str], organs)->list:
     #s = requests.Session()
     #response = s.send(prepared)
     #json_result = json.loads(response.text)
-    json_result= IDENT_FULL
+    json_result= IDENT_PART
 
     #print('res compete:-->', json_result)
     list_result = plant_json_to_list(json_result)
@@ -90,7 +90,6 @@ def plant_json_to_list(json_result:json)-> list[str]:
     """
     # tries to insert the value, else fills with null
     if json_result['results']:
-        print('full ans')
         try:
             specie = json_result['results'][0]['species']['scientificName']
         except:
@@ -121,7 +120,6 @@ def plant_json_to_list(json_result:json)-> list[str]:
         identificazione = [specie, affidabilità, genus, family, commonName, remaining_requests]
         return identificazione
     else:
-        print('part ans')
         try:
             specie = json_result['bestMatch'].split('(')[0]
         except:
