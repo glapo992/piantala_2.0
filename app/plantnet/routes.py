@@ -1,6 +1,6 @@
 from app import db
 from flask import render_template, flash, redirect, url_for
-from app.models import Plant_mini
+from app.models import Plant_mini, Family, Genus, Specie
 from app.plantnet import bp
 from app.plantnet.forms import ImageForm
 from app.plantnet.plantnet import manage_plant_form
@@ -20,9 +20,12 @@ def index():
 
 @bp.route('/response/<plant_id>')
 def response(plant_id):
-    plant = Plant_mini.query.filter_by(id=plant_id).first()
+    plant  = Plant_mini.query.filter_by(id=plant_id).first()
+    specie = Specie.query.filter_by(id=plant.specie_id).first()
+    genus  = Genus.query.filter_by(id=specie.genus_id).first()
+    family = Family.query.filter_by(id=genus.family_id).first()
 
-    return render_template ('response.html', plant = plant)
+    return render_template ('response.html', plant = plant , specie = specie, family = family, genus = genus)
 
 
 def search_specie(plant_id:int)->list[int]:

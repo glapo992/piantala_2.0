@@ -53,7 +53,6 @@ def manage_plant_form(form)-> Plant_mini:
     clearfolder(Config.CONVERTED_FOLDER) #clear temp folder
     return identfiy
 
-
 def sendImg(files:list[str], organs)->list:
     """ sends file to manage the answer
 
@@ -71,14 +70,12 @@ def sendImg(files:list[str], organs)->list:
     #s = requests.Session()
     #response = s.send(prepared)
     #json_result = json.loads(response.text)
-    json_result= IDENT_PART
+    json_result= IDENT_FULL
 
     #print('res compete:-->', json_result)
     list_result = plant_json_to_list(json_result)
     print('res list:-->', list_result)
     return list_result    
-
-    
 
 def plant_json_to_list(json_result:json)-> list[str]:
     """ parse json result of api response in a usable list
@@ -121,7 +118,8 @@ def plant_json_to_list(json_result:json)-> list[str]:
         return identificazione
     else:
         try:
-            specie = json_result['bestMatch'].split('(')[0]
+            specie = json_result['bestMatch'].split('(')[0].strip()
+            print('plantnet specie->|{}|'.format(specie))   # DB
         except:
             specie = None
         try:
@@ -129,3 +127,4 @@ def plant_json_to_list(json_result:json)-> list[str]:
         except:
             remaining_requests = None
         return [specie, remaining_requests]
+    
