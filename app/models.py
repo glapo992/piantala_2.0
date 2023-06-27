@@ -73,13 +73,22 @@ class Plant_mini(db.Model):
         if len(result) == 6:
             self.reliability = result[1]
             self.is_complete = True  # store the status of the response, if complete or not
-
-            self.specie_id    = Specie.add_specie(result[0], result[4], result[2],result[3])
+            self.specie_id   = Specie.add_specie(result[0], result[4], result[2],result[3])
             print('models specie id:', self.specie_id)
         else:
             self.specie = result[0] #TODO save withouth author name!!
             self.is_complete = False
 
+    
+    def search_specie(self)->list[str]:
+        """ Returns a list plants of the same specie of the identified one"""
+        path_list = []
+        images_list = Plant_mini.query.filter_by(specie_id = self.specie_id).all()
+        for image in images_list:
+            path_list.append(image.img_1)
+        print('path list ->', path_list)
+        return path_list
+        
 
 class Specie(db.Model):
     id          = db.Column(db.Integer, primary_key = True) 

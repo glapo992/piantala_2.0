@@ -36,7 +36,7 @@ def manage_plant_form(form)-> Plant_mini:
     files  = readImg(jpg_image_list)
     result = sendImg(files, organs=organs_list)
 
-    #save images in store location, return path
+    #save images in store location, return relative path
     source = form.store_pics() 
     # read GPS tags
     openImg = exif_reader(files_list[0])
