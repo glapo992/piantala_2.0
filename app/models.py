@@ -49,11 +49,6 @@ class Plant_mini(db.Model):
     def create_plant(self, img_path:str, organ:str, result:list[str], tagGPS:list[str]):
         """ Assigns value from the result of an observation on the database colums
         result list content: 
-        specie      = result[0]
-        reliability = result[1]
-        genus       = result[2]
-        family      = result[3]
-        commonName  = result[4]
 
         :param img_path: path of the image in the fileserver
         :type img_path: str
@@ -70,23 +65,29 @@ class Plant_mini(db.Model):
         self.long       = tagGPS[1]
 
         # check if the api returned full ans or partial only
-        if len(result) == 6:
+        print('result len:' , len(result))
+        if len(result) > 5:
             self.reliability = result[1]
             self.is_complete = True  # store the status of the response, if complete or not
-            self.specie_id   = Specie.add_specie(result[0], result[4], result[2],result[3])
-            print('models specie id:', self.specie_id)
+            self.specie_id   = Specie.add_specie(specie_name=result[0], common_name=result[4],genus_name=result[2],family_name=result[3])
+            #print('models specie id:', self.specie_id)
         else:
-            self.specie = result[0] #TODO save withouth author name!!
+            self.specie_id = Specie.add_specie(specie_name=result[0])
             self.is_complete = False
 
     
     def search_specie(self)->list[str]:
-        """ Returns a list plants of the same specie of the identified one"""
+        """ search other pics in th DB of the same specie
+
+        :return: list of picture paths 
+        :rtype: list[str]
+        """
+
         path_list = []
         images_list = Plant_mini.query.filter_by(specie_id = self.specie_id).all()
         for image in images_list:
             path_list.append(image.img_1)
-        print('path list ->', path_list)
+        #print('path list ->', path_list)
         return path_list
         
 
@@ -118,7 +119,7 @@ class Specie(db.Model):
         else:
             if common_name: # if the api doest profide full identification there are no info to pass ahead
                 genus_id = Genus.add_genus(genus_name, family_name)
-                print('models genus id:', genus_id)
+                #print('models genus id:', genus_id)
                 s = Specie(specie_name = specie_name, common_name = common_name, genus_id = genus_id)
             else:
                 s = Specie(specie_name = specie_name)
@@ -169,14 +170,17 @@ class Family(db.Model):
         :return: id of the family
         :rtype: int
         """
+        print('models.family_name', family_name)
         f = Family.query.filter_by(family_name = family_name).first()
         if f:
+            print('if f -> f.id: ', f.id)
             return f.id
         else:
             f = Family(family_name = family_name)
             print('family class')
             db.session.add(f)
             db.session.commit()
+            print('else not f -> f.id', f.id)
             return f.id
             
 
