@@ -1,5 +1,5 @@
 from app import db
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, send_from_directory
 from app.models import Plant_mini, Family, Genus, Specie
 from app.plantnet import bp
 from app.plantnet.forms import ImageForm
@@ -21,14 +21,16 @@ def index():
 @bp.route('/response/<plant_id>')
 def response(plant_id):
     plant  = Plant_mini.query.filter_by(id=plant_id).first()
+    print('plant specie id-> ', plant.specie_id)
     specie = Specie.query.filter_by(id=plant.specie_id).first()
     genus  = Genus.query.filter_by(id=specie.genus_id).first()
     family = Family.query.filter_by(id=genus.family_id).first()
+    images_list = plant.search_specie()
+    print ('image list-> ', images_list)
+    
+    return render_template ('response.html',title = 'response', plant = plant , specie = specie, family = family, genus = genus, images_list = images_list)
 
-    return render_template ('response.html', plant = plant , specie = specie, family = family, genus = genus)
-
-
-def search_specie(plant_id:int)->list[int]:
+def search_specie(plant_id:int)->list[str]:
     """Returns a list plants of the same specie of the identified one"""
     plant = Plant_mini.query.filter_by(id=plant_id).first()
     images_path = Plant_mini.query.filter_by(specie=plant.specie).all()

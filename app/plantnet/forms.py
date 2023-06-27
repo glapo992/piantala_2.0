@@ -30,18 +30,22 @@ class ImageForm(FlaskForm):
 
     def store_pics(self): # TODO refactor somewhere else
         """move all the content of the temp folder to a definitive one in fileserver"""
-        root = os.path.join(basedir, 'fileserver')
+        root = os.path.join(basedir, 'static/fileserver') # the root of the fileserver
         upload_folder = Config.UPLOAD_FOLDER
-        folder_counter = 0
         # build folder name
+        folder_counter = 0
         folder_name = datetime.strftime(datetime.now(), '%Y_%m_%d')+'_'+ str(folder_counter)
         dest_folder = os.path.join(root,folder_name)
         # check if the folder name already exists and increase the counter
         while os.path.isdir(dest_folder): 
             folder_counter += 1
             folder_name = datetime.strftime(datetime.now(), '%Y_%m_%d')+'_'+ str(folder_counter)
+            print('dest folder:', dest_folder)
             dest_folder = os.path.join(root,folder_name)    
         # copy upload folder in dest folder
         shutil.copytree(upload_folder, dest_folder)
-        return dest_folder
+        final_path = os.path.join('/static/fileserver', folder_name) 
+        print('final paht:', final_path)
+        return final_path
+   
 
