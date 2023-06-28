@@ -91,15 +91,21 @@ class Plant_mini(db.Model):
         return path_list
     
     def location_specie(self)->dict:
+        """build a dict of the coordiantes of all plants to display on the map and the specie name
+
+        :return: dict lat, long, specie_name
+        :rtype: dict
+        """
         coo_dict = {}
         plants_list =  Plant_mini.query.filter_by(specie_id = self.specie_id).all() # search only plants of the same specie of the observed one
+        specie = Specie.query.filter_by(id = self.specie_id).first()
         #plants_list =  Plant_mini.query.all() # search all plants on db
         for plant in plants_list:
             #print ('location func - plant_id: ', plant.id)
             tmp_dict = {}
             tmp_dict['lat']  = plant.lat
             tmp_dict['long'] = plant.long
-            tmp_dict['specie_id'] = plant.specie_id
+            tmp_dict['specie_name'] = specie.specie_name
             coo_dict[plant.id] = tmp_dict
             
         return coo_dict
