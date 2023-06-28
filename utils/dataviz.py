@@ -1,8 +1,8 @@
-"""import folium
-import pandas as pd
+import folium
 
 
-def mappa(filejson):
+
+def mappa(coo_dict:dict)->folium:
     '''
     Crea la mappa
 
@@ -16,7 +16,7 @@ def mappa(filejson):
     m : folium obj
         Oggetto con la mappa
     '''
-    df = pd.read_json(filejson)
+
     m = folium.Map(location=[45.645434, 13.849094],
                    zoom_start=17,
                    min_zoom=14,
@@ -24,18 +24,18 @@ def mappa(filejson):
                    width='100%',
                    tiles='cartoDB positron')
     # Per ogni osservazione nel set, fa un cerchio e lo aggiunge alla mappa
-    for i in range(len(df)):
-        folium.Circle(location=[df.iloc[i]['lat'], df.iloc[i]['long']],
+    for key in coo_dict:
+        folium.Circle(location=[coo_dict[key]['lat'], coo_dict[key]['long']],
                       radius=3,
                       fill=True,
                       fill_color='blue',
                       color=False,
-                      tooltip=[df.iloc[i]['specie']]).add_to(m)
+                      tooltip=[coo_dict[key]['specie_id']]).add_to(m)
 
     return m
 
 
-def circleID(tagGPS, m, specie):
+def circleID(tagGPS:list[float], m:folium, specie:str)->folium:
     '''
     Accetta la mappa creata sopra e ci aggiunge l'osservazione corrente 
   
@@ -69,7 +69,7 @@ def circleID(tagGPS, m, specie):
         return m
 
 
-def mapPlot(m):
+def mapPlot(m:folium):
     '''
     Genera il file html contenente la mappa
 
@@ -79,5 +79,4 @@ def mapPlot(m):
         File html con la mappa
     '''
     # Salva la mappa come file html
-    return m.save('templates/circle_map.html')
-"""
+    return m.save('app/plantnet/templates/_circle_map.html')

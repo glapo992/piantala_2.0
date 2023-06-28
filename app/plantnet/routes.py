@@ -1,9 +1,10 @@
 from app import db
-from flask import render_template, flash, redirect, url_for, send_from_directory
+from flask import render_template, flash, redirect, url_for
 from app.models import Plant_mini, Family, Genus, Specie
 from app.plantnet import bp
 from app.plantnet.forms import ImageForm
 from app.plantnet.plantnet import manage_plant_form
+from utils.dataviz import mapPlot, mappa, circleID
 #https://uiverse.io/
 
 import os
@@ -13,6 +14,7 @@ def index():
     form = ImageForm()
     if form.validate_on_submit():
         plant = manage_plant_form(form=form)
+        print('routes - plant.id -> ', plant.id)
         flash('File caricati!')
         return redirect(url_for('plantnet.response', plant_id = plant.id))
     
@@ -26,29 +28,30 @@ def response(plant_id):
     print('retrieved genus id form sp-> ', sp.genus_id)
     if pl.is_complete:
         gen  = Genus.query.filter_by(id=sp.genus_id).first()
-        print('retrieved genus-> ', gen.genus_name)
+        print('retrieved genus_name-> ', gen.genus_name)
         fam = Family.query.filter_by(id=gen.family_id).first()
-        print('retrieved family-> ', fam.family_name)
+        print('retrieved family_name-> ', fam.family_name)
     else :
         gen  = None
         fam = None
 
     images_list = pl.search_specie()
-    print ('image list-> ', images_list)
-    
+    #print ('image list-> ', images_list)
+
+    coo_dict = pl.location_specie()
+    print('coo dict -> ', coo_dict)
+    mapPlot(circleID(tagGPS=[pl.lat, pl.long], m= mappa(coo_dict),specie = sp.specie_name) )
+
     return render_template ('response.html',title = 'Piantala - response', plant = pl , specie = sp, family = fam, genus = gen, images_list = images_list)
 
-def search_specie(plant_id:int)->list[str]:
-    """Returns a list plants of the same specie of the identified one"""
-    plant = Plant_mini.query.filter_by(id=plant_id).first()
-    images_path = Plant_mini.query.filter_by(specie=plant.specie).all()
 
-    print('same specie paths-> ', images_path)
-
-
-
-
-
+@bp.route('/circle_map')
+def circle_map():
+    # Rigenera l'html della mappa
+    try:
+        return render_template('_circle_map.html')
+    except:
+        return redirect('/404')
 
 """
 
@@ -65,6 +68,7 @@ def search_specie(plant_id:int)->list[str]:
 
 
     return render_template('response.html', risposta=risposta, tagGPS=tagGPS)"""
-    
 
+# display custom area on folium map   
+# https://gis.stackexchange.com/questions/378431/mapping-multiple-polygons-on-folium
 

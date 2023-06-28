@@ -84,12 +84,25 @@ class Plant_mini(db.Model):
         """
 
         path_list = []
-        images_list = Plant_mini.query.filter_by(specie_id = self.specie_id).all()
-        for image in images_list:
-            path_list.append(image.img_1)
+        plants_list = Plant_mini.query.filter_by(specie_id = self.specie_id).all()
+        for plant in plants_list:
+            path_list.append(plant.img_1)
         #print('path list ->', path_list)
         return path_list
-        
+    
+    def location_specie(self)->dict:
+        coo_dict = {}
+        plants_list =  Plant_mini.query.filter_by(specie_id = self.specie_id).all() # search only plants of the same specie of the observed one
+        #plants_list =  Plant_mini.query.all() # search all plants on db
+        for plant in plants_list:
+            #print ('location func - plant_id: ', plant.id)
+            tmp_dict = {}
+            tmp_dict['lat']  = plant.lat
+            tmp_dict['long'] = plant.long
+            tmp_dict['specie_id'] = plant.specie_id
+            coo_dict[plant.id] = tmp_dict
+            
+        return coo_dict
 
 class Specie(db.Model):
     id          = db.Column(db.Integer, primary_key = True) 

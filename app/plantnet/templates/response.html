@@ -18,33 +18,34 @@
             <li>nome scientifico:<i> {{specie.specie_name}}</i></li>
             <li>genere: {{genus.genus_name}}</li>
             <li>famiglia: {{family.family_name}}</li>
-            <li>affidabilità della rilevazione: {{plant.reliability*100}}%</li>
+            <li>affidabilità della rilevazione: {{(plant.reliability if plant.is_complete else 0 )*100}}%</li>
             <li>latitudine: {{plant.lat}}</li>
             <li>longitudine: {{plant.long}}</li>
           </ul>
         </span>
       </p>
+      <!-- Gallery -->
+  <div class="row">
+    <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+  
+      {% for image in images_list: %}
+      <img
+        src= '{{ image }}'
+        class="w-100 shadow-1-strong rounded mb-4"
+        alt=""
+      />
+      {% endfor %}
     </div>
-    <!-- Gallery -->
-<div class="row">
-  <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
-
-    {% for image in images_list: %}
-    <img
-      src= '{{ image }}'
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt=""
-    />
-    {% endfor %}
-    <img
-    src= 'static/fileserver/2023_06_27_0/bar3.jpg'
-    class="w-100 shadow-1-strong rounded mb-4"
-    alt=""
-  />
   </div>
-</div>
-<!-- Gallery -->
-    
+  <!-- Gallery -->
+  <div>
+    <iframe
+    src=" {{ url_for('plantnet.circle_map') }} "
+    frameborder="0"
+    style="width: 95%; height: 800px"
+  ></iframe>
+  </div>
+    </div>
+
 {% endblock content %}
 
-/static/fileserver/2023_06_27_0/bar4.jpg

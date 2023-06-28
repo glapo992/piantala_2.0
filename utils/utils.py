@@ -67,9 +67,9 @@ def convertJpg(image_path:str, dest_folder:str)->str:
     :rtype:str
     """ 
     # Import of the Image
-    im = Image.open(image_path)
-    # Conversion to JPG
-    rgb_im = im.convert("RGB")
+    with Image.open(image_path) as im:
+        # Conversion to JPG
+        rgb_im = im.convert("RGB")
     filename = image_path.split('/')[-1] # name of the image
     converted_image_path = os.path.join(dest_folder, filename) + '_conv.jpg'
     rgb_im.save(converted_image_path)
@@ -96,8 +96,8 @@ def exif_reader(image_path:str)->dict:
     :return: dict with exif
     :rtype: dict
     """
-    im = Image.open(image_path)
-    exif_dict = piexif.load(im.info.get('exif'))
+    with Image.open(image_path) as im:
+        exif_dict = piexif.load(im.info.get('exif'))
     return exif_dict
 
 

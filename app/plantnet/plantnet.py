@@ -19,7 +19,7 @@ def manage_plant_form(form)-> Plant_mini:
     :return: identified plant object
     :rtype: Plant_mini
     """
-    filename = form.upload(Config.UPLOAD_FOLDER) # save files in temp folder
+    filename=  form.upload(Config.UPLOAD_FOLDER)# save files in temp folder
     # list of paths of images for the API
     files_list = [] 
     organs_list = []
@@ -31,7 +31,7 @@ def manage_plant_form(form)-> Plant_mini:
     for file in files_list:
         jpg_file = convertJpg(file, Config.CONVERTED_FOLDER)
         jpg_image_list.append(jpg_file)                            # list with converted images
-    
+        
     # send to api jpg version of images
     files  = readImg(jpg_image_list)
     result = sendImg(files, organs=organs_list)
@@ -51,6 +51,7 @@ def manage_plant_form(form)-> Plant_mini:
 
     clearfolder(Config.UPLOAD_FOLDER) #clear temp folder
     clearfolder(Config.CONVERTED_FOLDER) #clear temp folder
+    print('identify plant id: ', identfiy.id)
     return identfiy
 
 def sendImg(files:list[str], organs)->list:
@@ -67,9 +68,9 @@ def sendImg(files:list[str], organs)->list:
     #! imported static json just for testing so the api is not called every time
     prepared = req.prepare()
     s = requests.Session()
-    response = s.send(prepared)
-    json_result = json.loads(response.text)
-    #json_result= IDENT_PART
+    #response = s.send(prepared)
+    #json_result = json.loads(response.text)
+    json_result= IDENT_FULL
 
     #print('res compete:-->', json_result)
     list_result = plant_json_to_list(json_result)
@@ -77,13 +78,13 @@ def sendImg(files:list[str], organs)->list:
     return list_result    
 
 def plant_json_to_list(json_result:json)-> list[str]:
-    """ parse json result of api response in a usable list
-        content of the list:
-        specie      = result[0]
-        reliability = result[1]
-        genus       = result[2]
-        family      = result[3]
-        commonName  = result[4]
+    """ parse json result of api response in a usable list\n
+    content of the list:\n
+    specie      = result[0]\n
+    reliability = result[1]\n
+    genus       = result[2]\n
+    family      = result[3]\n
+    commonName  = result[4]
 
     :param json_result: json response form api
     :type json_result: json
@@ -132,3 +133,5 @@ def plant_json_to_list(json_result:json)-> list[str]:
             remaining_requests = None
         return [specie, remaining_requests]
     
+
+
