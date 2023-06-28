@@ -30,7 +30,7 @@ def mappa(coo_dict:dict)->folium:
                       fill=True,
                       fill_color='blue',
                       color=False,
-                      tooltip=[coo_dict[key]['specie_id']]).add_to(m)
+                      tooltip=[coo_dict[key]['specie_name']]).add_to(m)
 
     return m
 
