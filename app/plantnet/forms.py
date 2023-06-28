@@ -24,7 +24,7 @@ class ImageForm(FlaskForm):
         if self.photo.data and allowed_file(self.photo.data.filename):
             filename = secure_filename(self.photo.data.filename)
             self.photo.data.save(os.path.join(up_folder, filename))
-        return filename
+            return filename
 
     def store_pics(self): # TODO refactor somewhere else
         """move all the content of the temp folder to a definitive one in fileserver
