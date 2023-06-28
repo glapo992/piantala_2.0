@@ -16,7 +16,7 @@ class ImageForm(FlaskForm):
     submit= SubmitField ('invia')
 
     def upload(self, up_folder:str)->str:
-        """ write the images from the form in the temp folder
+        """ Write the images from the form in the temp folder
         
         :return: path to the source
         :rtype:str
@@ -27,7 +27,7 @@ class ImageForm(FlaskForm):
             return filename
 
     def store_pics(self): # TODO refactor somewhere else
-        """move all the content of the temp folder to a definitive one in fileserver
+        """ Move all the content of the temp folder to a definitive one in fileserver
         by now every picture has a folder --> for when more than one picture are accepted in the form"""
         root = os.path.join(basedir, 'static/fileserver') # the root of the fileserver
         upload_folder = Config.UPLOAD_FOLDER
