@@ -1,7 +1,7 @@
 from app import db
 from datetime import datetime
 
-"""
+""" useful query:
 Plant_mini.query.delete()
 
 flask db stamp head
@@ -11,7 +11,7 @@ flask db upgrade
 
 
 class Plant(db.Model):
-    """table to use when I understand how to make the user to load 5 images and 5 organs"""
+    """ Table to use when I understand how to make the user to load 5 images and 5 organs"""
     id          = db.Column(db.Integer, primary_key = True)
     timestamp   = db.Column(db.DateTime, index = True, default=datetime.utcnow)
     # paths of the images saved in the filesystem
@@ -35,7 +35,7 @@ class Plant(db.Model):
     long        = db.Column(db.Float())
 
 class Plant_mini(db.Model):
-    """ temp class for dev, must find a solution to fill the big one above with just one form that repeats itself and datas from API response"""
+    """ Temp class for dev, must find a solution to fill the big one above with just one form that repeats itself and datas from API response"""
     id          = db.Column(db.Integer, primary_key = True)
     timestamp   = db.Column(db.DateTime, index = True, default=datetime.utcnow)
     img_1       = db.Column(db.String(100), nullable = False)
@@ -77,7 +77,7 @@ class Plant_mini(db.Model):
 
     
     def search_specie(self)->list[str]:
-        """ search other pics in th DB of the same specie
+        """ Search other pics in th DB of the same specie
 
         :return: list of picture paths 
         :rtype: list[str]
@@ -90,8 +90,8 @@ class Plant_mini(db.Model):
         #print('path list ->', path_list)
         return path_list
     
-    def location_specie(self)->dict:
-        """build a dict of the coordiantes of all plants to display on the map and the specie name
+    def locate_specie(self)->dict:
+        """ Build a dict of the coordiantes of all plants to display on the map and the specie name
 
         :return: dict lat, long, specie_name
         :rtype: dict
@@ -103,8 +103,8 @@ class Plant_mini(db.Model):
         for plant in plants_list:
             #print ('location func - plant_id: ', plant.id)
             tmp_dict = {}
-            tmp_dict['lat']  = plant.lat
-            tmp_dict['long'] = plant.long
+            tmp_dict['lat']  = plant.lat if plant.lat else None
+            tmp_dict['long'] = plant.long if plant.lon else None
             tmp_dict['specie_name'] = specie.specie_name
             coo_dict[plant.id] = tmp_dict
             
@@ -119,7 +119,7 @@ class Specie(db.Model):
 
     @staticmethod
     def add_specie(specie_name:str, common_name :str = None, genus_name:str = None, family_name:str = None )-> int:
-        """ check if the specie already exists, else it creates one. To do that must check on cascade also genus and family
+        """ Check if the specie already exists, else it creates one. To do that must check on cascade also genus and family
 
         :param specie_name: scientific name of the specie
         :type specie_name: str
@@ -155,7 +155,7 @@ class Genus(db.Model):
 
     @staticmethod
     def add_genus(genus_name:str = None, family_name:str = None)->int:
-        """check if the genus is already on the database, else creates new one. To do that must check on cascade also family
+        """ Check if the genus is already on the database, else creates new one. To do that must check on cascade also family
 
         :param genus_name: name of the genus
         :type genus_name: str
@@ -182,7 +182,7 @@ class Family(db.Model):
 
     @staticmethod
     def add_familiy(family_name:str = None)-> int:
-        """check if the family already exists, else creates it
+        """ Check if the family already exists, else creates it
 
         :param family_name: name of the family 
         :type family_name: str

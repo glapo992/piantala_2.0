@@ -1,22 +1,14 @@
 import folium
 
 
-
 def mappa(coo_dict:dict)->folium:
-    '''
-    Crea la mappa
+    """creates a Folium object located on Area di Ricerca, Basovizza and locates on it the observations in the given dictionary
 
-    Parameters
-    ---
-    filejson : str
-        Path al json con i dati
-
-    Returns
-    ---
-    m : folium obj
-        Oggetto con la mappa
-    '''
-
+    :param coo_dict: dict with lat, lon and tooltip to show
+    :type coo_dict: dict
+    :return: folium map
+    :rtype: folium
+    """
     m = folium.Map(location=[45.645434, 13.849094],
                    zoom_start=17,
                    min_zoom=14,
@@ -35,48 +27,40 @@ def mappa(coo_dict:dict)->folium:
     return m
 
 
-def circleID(tagGPS:list[float], m:folium, specie:str)->folium:
-    '''
-    Accetta la mappa creata sopra e ci aggiunge l'osservazione corrente 
-  
-    Parameters
-    ---
-    tagGPS : list
-        Lista contenente i dati GPS
+def circleID(tagGPS:list[float], m:folium, tooltip:str)->folium:
+    """ adds a poin on the map with a red circle
 
-    m : str
-        Path al json con i dati
-    
-    specie : str
-        Specie della pianta
-     
-    Returns
-    ---
-    m : folium obj
-        Oggetto con la mappa
-    '''
+    :param tagGPS: lat and lon of the point
+    :type tagGPS: list[float]
+    :param m: folium map where the point is added 
+    :type m: folium
+    :param specie: tooltip text
+    :type specie: str
+    :return: folium object with the red circle
+    :rtype: folium
+    """
     try:
         folium.Circle(
-            location=[tagGPS[0], tagGPS[1]],
+            location=tagGPS,
             radius=3,
             fill=True,
             fill_color='red',
             #color=True,
             color='red',
-            tooltip=[specie]).add_to(m)
+            tooltip=[tooltip]).add_to(m)
         return m
     except:
+        print('dataviz: no GPS tag')
         return m
 
 
 def mapPlot(m:folium):
-    '''
-    Genera il file html contenente la mappa
+    """ Generates the html file to display from folium map  
 
-    Returns
-    ---
-    circle_map.html : file
-        File html con la mappa
-    '''
+    :param m: folium obj with the map to display
+    :type m: folium
+    :return: html template saved in the location
+    :rtype: _type_
+    """
     # Salva la mappa come file html
     return m.save('app/plantnet/templates/_circle_map.html')
