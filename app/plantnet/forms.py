@@ -41,9 +41,9 @@ class ImageForm(FlaskForm):
             folder_counter += 1
             folder_name = datetime.strftime(datetime.now(), '%Y_%m_%d')+'_'+ str(folder_counter)
             dest_folder = os.path.join(root,folder_name)    
-        print('dest folder:', dest_folder)
-        # copy upload folder in dest folder
-        shutil.copytree(upload_folder, dest_folder)
+        #print('dest folder:', dest_folder)
+        
+        shutil.copytree(upload_folder, dest_folder)     # copy upload folder in dest folder
         final_path = os.path.join('fileserver', folder_name) 
         print('path saved on DB without filename:', final_path)
         return final_path
