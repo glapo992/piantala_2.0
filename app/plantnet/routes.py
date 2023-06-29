@@ -42,7 +42,7 @@ def response(plant_id):
     coo_dict = pl.locate_specie() # dict with coordinates of other plants
     print('coo dict -> ', coo_dict)
     # cration of the map
-    mapPlot(circleID(tagGPS=[pl.lat, pl.long], m= mappa(coo_dict),specie = sp.specie_name) )
+    mapPlot(circleID(tagGPS=[pl.lat, pl.long], m=mappa(coo_dict),tooltip=sp.specie_name) )
 
     return render_template ('response.html',title = 'Piantala - response', plant = pl , specie = sp, family = fam, genus = gen, images_list = images_list)
 

@@ -28,8 +28,9 @@ class ImageForm(FlaskForm):
 
     def store_pics(self): # TODO refactor somewhere else
         """ Move all the content of the temp folder to a definitive one in fileserver
+        for the moment in app/static/fileserver --> to move in an external source (apache webserver?)
         by now every picture has a folder --> for when more than one picture are accepted in the form"""
-        root = os.path.join(basedir, 'static/fileserver') # the root of the fileserver
+        root = os.path.join(basedir, 'app/static/fileserver') # the root of the fileserver
         upload_folder = Config.UPLOAD_FOLDER
         # build folder name
         folder_counter = 0
@@ -43,8 +44,9 @@ class ImageForm(FlaskForm):
         print('dest folder:', dest_folder)
         # copy upload folder in dest folder
         shutil.copytree(upload_folder, dest_folder)
-        final_path = os.path.join('/static/fileserver', folder_name) 
+        final_path = os.path.join('fileserver', folder_name) 
         print('path saved on DB without filename:', final_path)
         return final_path
    
 
+# src="/static/fileserver/2023_06_29_0/bar3.jpg"
