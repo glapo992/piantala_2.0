@@ -3,6 +3,9 @@ from datetime import datetime
 
 """ useful query:
 Plant_mini.query.delete()
+Specie.query.delete()
+Genus.query.delete()
+Family.query.delete()
 
 flask db stamp head
 flask db migrate
@@ -104,7 +107,7 @@ class Plant_mini(db.Model):
             #print ('location func - plant_id: ', plant.id)
             tmp_dict = {}
             tmp_dict['lat']  = plant.lat if plant.lat else None
-            tmp_dict['long'] = plant.long if plant.lon else None
+            tmp_dict['long'] = plant.long if plant.long else None
             tmp_dict['specie_name'] = specie.specie_name
             coo_dict[plant.id] = tmp_dict
             

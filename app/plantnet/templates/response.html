@@ -26,16 +26,16 @@
       </p>
       <!-- Gallery -->
   <div class="row">
-    <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
-  
-      {% for image in images_list: %}
+    {% for image in images_list: %}
+    <div class="column" style ="padding: 10px;">
       <img
-        src= '{{ image }}'
-        class="w-100 shadow-1-strong rounded mb-4"
-        alt=""
-      />
-      {% endfor %}
+      src= "{{ url_for('static', filename=image) }}"
+      class="w-100 shadow-1-strong rounded mb-4"
+      alt={{specie.common_name}}
+      style="width:128px;height:128px;"
+    />
     </div>
+      {% endfor %}
   </div>
   <!-- Gallery -->
   <div>

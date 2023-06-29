@@ -70,7 +70,7 @@ def sendImg(files:list[str], organs)->list:
     s = requests.Session()
     #response = s.send(prepared)
     #json_result = json.loads(response.text)
-    json_result= IDENT_FULL
+    json_result= IDENT_PART
 
     #print('res compete:-->', json_result)
     list_result = plant_json_to_list(json_result)
