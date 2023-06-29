@@ -1,5 +1,6 @@
 from app import db
 from datetime import datetime
+from config import Config
 
 """ useful query:
 Plant_mini.query.delete()
@@ -79,19 +80,18 @@ class Plant_mini(db.Model):
             self.is_complete = False
 
     
-    def search_specie(self)->list[str]:
+    def search_specie(self, page)->list:
         """ Search other pics in th DB of the same specie
 
         :return: list of picture paths 
-        :rtype: list[str]
+        :rtype: list[Plant_mini]
         """
 
-        path_list = []
-        plants_list = Plant_mini.query.filter_by(specie_id = self.specie_id).all()
-        for plant in plants_list:
-            path_list.append(plant.img_1)
+        plants_list = Plant_mini.query.filter_by(specie_id = self.specie_id).paginate(page=page, per_page=Config.IMG_PER_PAGE, error_out=False)
+        #for plant in plants_list:
+        #    path_list.append(plant.img_1)
         #print('path list ->', path_list)
-        return path_list
+        return plants_list
     
     def locate_specie(self)->dict:
         """ Build a dict of the coordiantes of all plants to display on the map and the specie name

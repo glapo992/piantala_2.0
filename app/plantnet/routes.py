@@ -1,5 +1,5 @@
 from app import db
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from app.models import Plant_mini, Family, Genus, Specie
 from app.plantnet import bp
 from app.plantnet.forms import ImageForm
@@ -36,15 +36,18 @@ def response(plant_id):
         fam = None
 
     # list with path for the stored images of the same specie
-    images_list = pl.search_specie()
+    page = request.args.get('page', 1, type=int)
+    plants_list = pl.search_specie(page)
+    next_url = url_for('plantnet.response', plant_id = plant_id, page = plants_list.next_num) if plants_list.has_next else None
+    prev_url = url_for('plantnet.response', plant_id = plant_id, page = plants_list.prev_num) if plants_list.has_prev else None
     #print ('image list-> ', images_list)
 
     coo_dict = pl.locate_specie() # dict with coordinates of other plants
-    print('coo dict -> ', coo_dict)
+    # print('coo dict -> ', coo_dict)
     # cration of the map
     mapPlot(circleID(tagGPS=[pl.lat, pl.long], m=mappa(coo_dict),tooltip=sp.specie_name) )
 
-    return render_template ('response.html',title = 'Piantala - response', plant = pl , specie = sp, family = fam, genus = gen, images_list = images_list)
+    return render_template ('response.html',title = 'Piantala - response', plant = pl , specie = sp, family = fam, genus = gen, plants_list = plants_list.items, next_url= next_url, prev_url= prev_url)
 
 
 @bp.route('/circle_map')
@@ -54,7 +57,6 @@ def circle_map():
         return render_template('_circle_map.html')
     except:
         return redirect('/404')
-
 
 
 # display custom area on folium map   

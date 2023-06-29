@@ -6,5 +6,5 @@ templates/circle_map.html
 **/.DS_Store
 static/tmp
 app.db
-static/fileserver/*
+app/static/fileserver/*
 .env
