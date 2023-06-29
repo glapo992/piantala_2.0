@@ -14,7 +14,7 @@ def index():
     form = ImageForm()
     if form.validate_on_submit():
         plant = manage_plant_form(form=form)
-        print('routes - plant.id -> ', plant.id)
+        #print('routes - plant.id -> ', plant.id)
         flash('File caricati!')
         return redirect(url_for('plantnet.response', plant_id = plant.id))
     

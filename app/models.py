@@ -52,7 +52,6 @@ class Plant_mini(db.Model):
 
     def create_plant(self, img_path:str, organ:str, result:list[str], tagGPS:list[str]):
         """ Assigns value from the result of an observation on the database colums
-        result list content: 
 
         :param img_path: path of the image in the fileserver
         :type img_path: str
@@ -69,7 +68,7 @@ class Plant_mini(db.Model):
         self.long       = tagGPS[1]
 
         # check if the api returned full ans or partial only
-        print('result len:' , len(result))
+        #print('result len:' , len(result))
         if len(result) > 5:
             self.reliability = result[1]
             self.is_complete = True  # store the status of the response, if complete or not
@@ -122,7 +121,8 @@ class Specie(db.Model):
 
     @staticmethod
     def add_specie(specie_name:str, common_name :str = None, genus_name:str = None, family_name:str = None )-> int:
-        """ Check if the specie already exists, else it creates one. To do that must check on cascade also genus and family
+        """ Check if the specie already exists, else it creates one. To do that must check on cascade also genus and family.
+        if there is a partial identification and later a full of the same specie, the record is updated with other datas
 
         :param specie_name: scientific name of the specie
         :type specie_name: str
@@ -136,18 +136,34 @@ class Specie(db.Model):
         :rtype: int
         """
         s = Specie.query.filter_by(specie_name = specie_name).first()
-        if s:
+        print('specie -> s.common_name:',s.common_name) if s and s.common_name else print ('Specie not found')
+        if s and s.common_name and s.genus_id: #if the record is complete just pass the ID of the specie
+            print ('add_specie - if ->',s.common_name)
             return s.id
-        else:
-            if common_name: # if the api doest profide full identification there are no info to pass ahead
+        elif s and not (s.common_name and s.genus_id):  # if the specie altready exist but the record is not complete, tries to add other info to the db
+            s.common_name = common_name
+            s.genus_id    = Genus.add_genus(genus_name, family_name)
+            print ('add_specie - elif ->',s.common_name)
+            try:
+                #db.session.add(s)
+                db.session.commit()
+                return s.id
+            except Exception('impossible to write on the database'):
+                return s.id
+        else:               # if the specie is not on the database, creates a new record
+            if common_name: # if the api doest provide full identification there are no info to pass ahead
                 genus_id = Genus.add_genus(genus_name, family_name)
                 #print('models genus id:', genus_id)
                 s = Specie(specie_name = specie_name, common_name = common_name, genus_id = genus_id)
             else:
                 s = Specie(specie_name = specie_name)
-            db.session.add(s)
-            db.session.commit()
-            return s.id
+            try:
+                db.session.add(s)
+                db.session.commit()
+                print ('add_specie - else ->',s.id)
+                return s.id
+            except Exception('impossible to write on the database'):
+                return s.id
                 
 
 class Genus(db.Model):
@@ -174,9 +190,12 @@ class Genus(db.Model):
             family_id = Family.add_familiy(family_name = family_name)
             print('models family id:', family_id)
             g = Genus(genus_name = genus_name, family_id = family_id)
-            db.session.add(g)
-            db.session.commit()
-            return g.id
+            try:
+                db.session.add(g)
+                db.session.commit()
+                return g.id
+            except Exception('impossible to write on the database'):
+                return g.id
 
 class Family(db.Model):
     id      = db.Column(db.Integer, primary_key = True) 
@@ -199,11 +218,13 @@ class Family(db.Model):
             return f.id
         else:
             f = Family(family_name = family_name)
-            print('family class')
-            db.session.add(f)
-            db.session.commit()
             print('else not f -> f.id', f.id)
-            return f.id
+            try:
+                    db.session.add(f)
+                    db.session.commit()
+                    return f.id
+            except Exception('impossible to write on the database'):
+                    return f.id
             
 
 
