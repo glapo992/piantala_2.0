@@ -5,8 +5,8 @@
 
 
 <div id="title">
-      <h1>identificazione</h1>
-    </div>
+  <h1>identificazione</h1>
+</div>
     <div id=box_risposte>
       <p id="risposta">
         <h2>la pianta che vuoi identificare è:</h2>
@@ -26,20 +26,27 @@
       </p>
       <!-- Gallery -->
   <div class="row">
-    {% for image in images_list: %}
+    {% for plant in plants_list: %}
     <div class="column" style ="padding: 10px;">
       <img
-      src= "{{ url_for('static', filename=image) }}"
+      src= "{{ url_for('static', filename=plant.img_1) }}"
       class="w-100 shadow-1-strong rounded mb-4"
       alt={{specie.common_name}}
       style="width:128px;height:128px;"
     />
     </div>
-      {% endfor %}
-  </div>
-  <!-- Gallery -->
-  <div>
-    <iframe
+  {% endfor %}
+</div>
+<div>
+{% if prev_url %}
+<a href="{{ prev_url }}">Indietro</a>
+{% endif %}
+{% if next_url %}
+<a href="{{ next_url }}">Avanti</a>
+{% endif %}
+</div>
+<!-- Gallery -->
+<iframe
     src=" {{ url_for('plantnet.circle_map') }} "
     frameborder="0"
     style="width: 95%; height: 800px"

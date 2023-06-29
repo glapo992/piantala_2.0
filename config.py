@@ -19,6 +19,8 @@ class Config(object):
 
     CODEC = 'ISO-8859-1'  # or latin-1, serve a decodificare i tag exif
 
+    IMG_PER_PAGE = 10
+
     try:
         PASSWORD = os.environ.get('DB_PASSWORD') 
         USERNAME = os.environ.get('DB_USERNAME') 
