@@ -1,15 +1,22 @@
 import os
-basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     # flask general vars
+    BASEDIR     = os.path.abspath(os.path.dirname(__file__))
     FLASK_ENV   = os.environ.get('FLASK_ENV')
     FLASK_DEBUG = os.environ.get('FLASK_DEBUG')
     SECRET_KEY  = os.environ.get('SECRET_KEY')
 
-    UPLOAD_FOLDER    = os.path.join(basedir, os.environ.get('UPLOAD_FOLDER'))
-    CONVERTED_FOLDER = os.path.join(basedir, os.environ.get('CONVERTED_FOLDER'))
-    JSON_FOLDER      = os.path.join(basedir, os.environ.get('JSON_FOLDER'))
+    try:
+        UPLOAD_FOLDER    = os.path.join(BASEDIR, os.environ.get('UPLOAD_FOLDER') )
+        CONVERTED_FOLDER = os.path.join(BASEDIR, os.environ.get('CONVERTED_FOLDER'))
+        JSON_FOLDER      = os.path.join(BASEDIR, os.environ.get('JSON_FOLDER'))
+    except:
+        UPLOAD_FOLDER    = '.'
+        CONVERTED_FOLDER = '.'
+        JSON_FOLDER      = '.'
+
+
 
     PROJECT = os.environ.get('PROJECT')
     PLANTNET_API_KEY = os.environ.get('PLANTNET_API_KEY') 
@@ -33,5 +40,5 @@ class Config(object):
             raise KeyError('Some necessary environment variable(s) are not defined')
         SQLALCHEMY_DATABASE_URI = db_url
     except:  
-        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///'+ os.path.join(basedir, 'app.db') # reading config. if no path to db, it creates one in the basedir
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///'+ os.path.join(BASEDIR, 'app.db') # reading config. if no path to db, it creates one in the BASEDIR
         SQLALCHEMY_TRACK_MODIFICATIONS = False

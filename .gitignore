@@ -3,7 +3,7 @@
 migrations/__pycache__/
  migrations/versions/__pycache__/
 venv/
-templates/circle_map.html
+app/plantnet/templates/_circle_map.html
 */.DS_Store
 **/.DS_Store
 static/tmp
