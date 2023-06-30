@@ -4,7 +4,7 @@ from wtforms import  SubmitField, SelectField
 from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
 from utils.utils import allowed_file
-from config import Config, basedir
+from config import Config
 from datetime import datetime
 import shutil
 import os
@@ -26,11 +26,11 @@ class ImageForm(FlaskForm):
             self.photo.data.save(os.path.join(up_folder, filename))
             return filename
 
-    def store_pics(self): # TODO refactor somewhere else
+    def store_pics(): # TODO refactor somewhere else
         """ Move all the content of the temp folder to a definitive one in fileserver
         for the moment in app/static/fileserver --> to move in an external source (apache webserver?)
         by now every picture has a folder --> for when more than one picture are accepted in the form"""
-        root = os.path.join(basedir, 'app/static/fileserver') # the root of the fileserver
+        root = os.path.join(Config.BASEDIR, 'app/static/fileserver') # the root of the fileserver
         upload_folder = Config.UPLOAD_FOLDER
         # build folder name
         folder_counter = 0

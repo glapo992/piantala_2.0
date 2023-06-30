@@ -19,7 +19,7 @@ def manage_plant_form(form)-> Plant_mini:
     :return: identified plant object
     :rtype: Plant_mini
     """
-    filename=  form.upload(Config.UPLOAD_FOLDER)# save files in temp folder
+    filename = form.upload(Config.UPLOAD_FOLDER)# save files in temp folder
     # list of paths of images for the API
     files_list = [] 
     organs_list = []
@@ -80,12 +80,14 @@ def sendImg(files:list[str], organs)->list:
 def plant_json_to_list(json_result:json)-> list[str]:
     """ parse json result of api response in a usable list\n
     content of the list:\n
-    specie      = result[0]\n
-    reliability = result[1]\n
-    genus       = result[2]\n
-    family      = result[3]\n
-    commonName  = result[4]
+    specie             = result[0]\n
+    reliability        = result[1]\n
+    genus              = result[2]\n
+    family             = result[3]\n
+    common_name        = result[4]\n
+    remaining_requests = result[5]
 
+    
     :param json_result: json response form api
     :type json_result: json
     :return: list with used datas
@@ -94,33 +96,33 @@ def plant_json_to_list(json_result:json)-> list[str]:
     # tries to insert the value, else fills with null
     if json_result['results']:
         try:
-            specie = json_result['results'][0]['species']['scientificNameWithoutAuthor']
+            specie = json_result['results'][0]['species']['scientificNameWithoutAuthor'].strip()
         except:
             specie = None
         try:
-            affidabilità = json_result['results'][0]['score']
+            reilability = json_result['results'][0]['score']
         except:
-            affidabilità = None
+            reilability = None
         try:
             genus = json_result['results'][0]['species']['genus'][
-                'scientificNameWithoutAuthor']
+                'scientificNameWithoutAuthor'].strip()
         except:
             genus = None
         try:
             family = json_result['results'][0]['species']['family'][
-                'scientificNameWithoutAuthor']
+                'scientificNameWithoutAuthor'].strip()
         except:
             family = None
         try:
-            commonName = json_result['results'][0]['species']['commonNames'][0]
+            common_name = json_result['results'][0]['species']['commonNames'][0].strip()
         except:
-            commonName = None
+            common_name = None
         try:
             remaining_requests = json_result['remainingIdentificationRequests']
         except:
             remaining_requests = None
         # ritorna la lista con le informazioni
-        identificazione = [specie, affidabilità, genus, family, commonName, remaining_requests]
+        identificazione = [specie, reilability, genus, family, common_name, remaining_requests]
         return identificazione
     else:
         try:
