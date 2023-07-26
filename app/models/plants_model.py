@@ -1,6 +1,4 @@
-from app import db
-from datetime import datetime
-from config import Config
+from app.models import db, datetime, Config
 
 """ useful query:
 Plant_mini.query.delete()
