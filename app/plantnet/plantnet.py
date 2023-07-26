@@ -3,11 +3,13 @@ import requests
 import json
 from app.models import Plant_mini
 from config import Config
-from utils.utils import clearfolder, convertJpg, exif_reader, exif_to_tag, readImg
+from utils.utils import clearfolder, convertJpg, exif_reader, exif_to_tag, readImg, generate_temp_folders
 from app import db
 
 # for debug only -> send a static json so the api is not called every time
 from identification_sample import IDENT_FULL, IDENT_PART
+
+
 
 def manage_plant_form(form)-> Plant_mini:
     """ Manages the form result and writes on database
@@ -19,6 +21,7 @@ def manage_plant_form(form)-> Plant_mini:
     :return: identified plant object
     :rtype: Plant_mini
     """
+    generate_temp_folders()
     filename = form.upload(Config.UPLOAD_FOLDER)# save files in temp folder
     # list of paths of images for the API
     files_list = [] 

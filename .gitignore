@@ -10,3 +10,9 @@ static/tmp
 app.db
 app/static/fileserver/*
 .env
+app/errors/__pycache__/__init__.cpython-310.pyc
+app/errors/__pycache__/__init__.cpython-310.pyc
+app/errors/__pycache__/__init__.cpython-311.pyc
+app/errors/__pycache__/__init__.cpython-310.pyc
+migrations/versions/2294e6732564_.py
+migrations/versions/eb4f47122310_.py

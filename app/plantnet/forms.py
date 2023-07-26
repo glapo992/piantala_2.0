@@ -23,15 +23,22 @@ class ImageForm(FlaskForm):
         """
         if self.photo.data and allowed_file(self.photo.data.filename):
             filename = secure_filename(self.photo.data.filename)
+            if not os.path.exists(up_folder):
+                os.makedirs(up_folder)
             self.photo.data.save(os.path.join(up_folder, filename))
             return filename
 
-    def store_pics(): # TODO refactor somewhere else
+    def store_pics(self) -> str: # TODO refactor somewhere else
         """ Move all the content of the temp folder to a definitive one in fileserver
         for the moment in app/static/fileserver --> to move in an external source (apache webserver?)
-        by now every picture has a folder --> for when more than one picture are accepted in the form"""
+        by now every picture has a folder --> for when more than one picture are accepted in the form
+        
+        :return: path of the destinazion folder
+        :rtype:str
+        """
         root = os.path.join(Config.BASEDIR, 'app/static/fileserver') # the root of the fileserver
         upload_folder = Config.UPLOAD_FOLDER
+
         # build folder name
         folder_counter = 0
         folder_name = datetime.strftime(datetime.now(), '%Y_%m_%d')+'_'+ str(folder_counter)
