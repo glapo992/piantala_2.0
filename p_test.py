@@ -35,21 +35,21 @@ class PlantInsertionCase(unittest.TestCase):
 
     def test_result_list_full(self):
         result = plantnet.plant_json_to_list(json_result=IDENT_FULL)
-        self.assertEquals(result[0],  "Salvia officinalis" )
+        self.assertEqual(result[0],  "Salvia officinalis" )
         self.assertIsInstance(result[1], float)
-        self.assertEquals(result[1],  IDENT_FULL['results'][0]['score'])
+        self.assertEqual(result[1],  IDENT_FULL['results'][0]['score'])
         self.assertIsInstance(result[2], str)
-        self.assertEquals(result[2],  "Salvia" )
+        self.assertEqual(result[2],  "Salvia" )
         self.assertIsInstance(result[3], str)
-        self.assertEquals(result[3],  "Lamiaceae" )
+        self.assertEqual(result[3],  "Lamiaceae" )
         self.assertIsInstance(result[4], str)
-        self.assertEquals(result[4],  "Sage" )
+        self.assertEqual(result[4],  "Sage" )
         self.assertIsInstance(result[5], int)
 
     def test_result_list_part(self):
         result = plantnet.plant_json_to_list(json_result=IDENT_PART)
         self.assertIsInstance(result[0],str)
-        self.assertEquals(result[0],  IDENT_PART['bestMatch'].split('(')[0].strip() )
+        self.assertEqual(result[0],  IDENT_PART['bestMatch'].split('(')[0].strip() )
         self.assertIsInstance(result[1], int)
 
     def test_insert_plant_full(self):
@@ -130,13 +130,13 @@ class PlantInsertionCase(unittest.TestCase):
         db.session.add(i_compl)
         db.session.commit()
         self.assertTrue(i_compl.is_complete)
-        self.assertNotEquals(i_part.id, i_compl.id)
+        self.assertNotEqual(i_part.id, i_compl.id)
         s_compl = Specie.query.filter_by(specie_name = result_p[0]).first()
         self.assertTrue(s_compl.common_name)
         self.assertTrue(s_compl.genus_id)
         # ensure that the part identificaton is completed by full info
-        self.assertEquals(s_compl.id,s_part.id)
-        self.assertEquals(s_compl.specie_name,s_part.specie_name)
+        self.assertEqual(s_compl.id,s_part.id)
+        self.assertEqual(s_compl.specie_name,s_part.specie_name)
 
 if __name__ == '__main__':
     unittest.main(verbosity=3)
