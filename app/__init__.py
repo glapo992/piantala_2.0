@@ -1,16 +1,7 @@
 from flask import Flask
 from config import Config
-#from flask_uploads import configure_uploads, IMAGES, UploadSet
 
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-
-from flask_bootstrap import Bootstrap
-
-bootstrap = Bootstrap() 
-
-db = SQLAlchemy()    
-migrate = Migrate()
+from .extensions import db, bootstrap, migrate, login
 
 def create_app(config_class = Config):
     """creation of the app istance. Allows the use of custom configuration for each istance
@@ -20,13 +11,13 @@ def create_app(config_class = Config):
     """
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    # extensions inits
     db.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
-
-    
+    login.init_app(app)
     bootstrap.init_app(app)
 
-    
     #BLUEPRINT CONFIG------------------------------
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
@@ -34,4 +25,9 @@ def create_app(config_class = Config):
     from app.plantnet import bp as plantnet_bp
     app.register_blueprint(plantnet_bp)
 
+    from app.auth import bp as auth_bp
+    app.register_blueprint(auth_bp)
+
     return app
+
+from app import models
