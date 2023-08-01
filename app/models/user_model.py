@@ -1,6 +1,5 @@
 from app.models import db, datetime
 from app import login
-from .plants_model import Plant_mini
 # login stuff
 from flask_login import UserMixin # generic login implementations suitable for most user model classes
 
@@ -15,7 +14,7 @@ class Users(UserMixin ,db.Model): # added UserMixin at the user class
     username  = db.Column      (db.String(64), index = True, unique = True)
     email     = db.Column      (db.String(64), index = True, unique = True)
     pw_hash   = db.Column      (db.String(128))
-    #observ    = db.relationship('Plant_mini', backref = 'author', lazy = 'dynamic') # reference to the plant Model class(not table name!!), is not a db field but a view of the realtionship
+    observ    = db.relationship('Plant_mini', backref = 'author', lazy = 'dynamic') # reference to the plant Model class(not table name!!), is not a db field but a view of the realtionship
     about_me  = db.Column      (db.String(150))
     last_seen = db.Column      (db.DateTime, default = datetime.utcnow)
 

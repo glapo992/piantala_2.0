@@ -7,7 +7,7 @@ from app import create_app, db
 from app.plantnet import plantnet
 from app.models import Plant_mini, Family, Genus, Specie
 from config import Config
-from identification_sample import IDENT_FULL, IDENT_PART
+from app.static.src.identification_sample import IDENT_FULL, IDENT_PART
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 class TestConfig(Config):
