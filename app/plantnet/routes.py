@@ -1,10 +1,11 @@
 from app import db
 from flask import render_template, flash, redirect, url_for, request
-from app.models import Plant_mini, Family, Genus, Specie
+from app.models.plants_model import Plant_mini, Family, Genus, Specie
 from app.plantnet import bp
 from app.plantnet.forms import ImageForm
 from app.plantnet.plantnet import manage_plant_form
 from utils.dataviz import mapPlot, mappa, circleID
+from flask_login import current_user
 #https://uiverse.io/
 
 import os
@@ -13,7 +14,7 @@ import os
 def index():   
     form = ImageForm()
     if form.validate_on_submit():
-        plant = manage_plant_form(form=form)
+        plant = manage_plant_form(form=form, user_id=current_user.id)
         #print('routes - plant.id -> ', plant.id)
         flash('File caricati!')
         return redirect(url_for('plantnet.response', plant_id = plant.id))

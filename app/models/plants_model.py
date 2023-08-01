@@ -1,4 +1,6 @@
 from app.models import db, datetime, Config
+from .user_model import Users
+
 
 """ useful query:
 Plant_mini.query.delete()
@@ -47,8 +49,10 @@ class Plant_mini(db.Model):
     specie_id   = db.Column(db.Integer, db.ForeignKey('specie.id'))
     lat         = db.Column(db.Float())
     long        = db.Column(db.Float())
+    user_id     = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = True) 
 
-    def create_plant(self, img_path:str, organ:str, result:list[str], tagGPS:list[str]):
+
+    def create_plant(self, img_path:str, organ:str, result:list[str], tagGPS:list[str], user_id = user_id):
         """ Assigns value from the result of an observation on the database colums
 
         :param img_path: path of the image in the fileserver
@@ -64,6 +68,7 @@ class Plant_mini(db.Model):
         self.organ_1    = organ
         self.lat        = tagGPS[0]
         self.long       = tagGPS[1]
+        self.user_id    = user_id
 
         # check if the api returned full ans or partial only
         #print('result len:' , len(result))
@@ -224,8 +229,4 @@ class Family(db.Model):
             except Exception('impossible to write on the database'):
                     return f.id
             
-
-
-
-
 

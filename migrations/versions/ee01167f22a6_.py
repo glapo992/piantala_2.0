@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 2294e6732564
+Revision ID: ee01167f22a6
 Revises: 
-Create Date: 2023-06-28 16:13:18.924089
+Create Date: 2023-08-01 10:36:50.379046
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2294e6732564'
+revision = 'ee01167f22a6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -48,6 +48,19 @@ def upgrade():
     with op.batch_alter_table('plant', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_plant_timestamp'), ['timestamp'], unique=False)
 
+    op.create_table('users',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('username', sa.String(length=64), nullable=True),
+    sa.Column('email', sa.String(length=64), nullable=True),
+    sa.Column('pw_hash', sa.String(length=128), nullable=True),
+    sa.Column('about_me', sa.String(length=150), nullable=True),
+    sa.Column('last_seen', sa.DateTime(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    with op.batch_alter_table('users', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_users_email'), ['email'], unique=True)
+        batch_op.create_index(batch_op.f('ix_users_username'), ['username'], unique=True)
+
     op.create_table('genus',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('genus_name', sa.String(length=50), nullable=True),
@@ -73,7 +86,9 @@ def upgrade():
     sa.Column('specie_id', sa.Integer(), nullable=True),
     sa.Column('lat', sa.Float(), nullable=True),
     sa.Column('long', sa.Float(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['specie_id'], ['specie.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     with op.batch_alter_table('plant_mini', schema=None) as batch_op:
@@ -90,6 +105,11 @@ def downgrade():
     op.drop_table('plant_mini')
     op.drop_table('specie')
     op.drop_table('genus')
+    with op.batch_alter_table('users', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_users_username'))
+        batch_op.drop_index(batch_op.f('ix_users_email'))
+
+    op.drop_table('users')
     with op.batch_alter_table('plant', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_plant_timestamp'))
 

@@ -1,17 +1,17 @@
 import os
 import requests
 import json
-from app.models import Plant_mini
+from app.models.plants_model import Plant_mini
 from config import Config
 from utils.utils import clearfolder, convertJpg, exif_reader, exif_to_tag, readImg, generate_temp_folders
 from app import db
 
 # for debug only -> send a static json so the api is not called every time
-from identification_sample import IDENT_FULL, IDENT_PART
+from app.static.src.identification_sample import IDENT_FULL, IDENT_PART
 
 
 
-def manage_plant_form(form)-> Plant_mini:
+def manage_plant_form(form, user_id)-> Plant_mini:
     """ Manages the form result and writes on database
 
     :param form: form plant upload
@@ -48,7 +48,7 @@ def manage_plant_form(form)-> Plant_mini:
 
     # write on DB --> should have both files path and API response
     identfiy = Plant_mini()
-    identfiy.create_plant(os.path.join(source, filename), form.organ.data, result, tagGPS)
+    identfiy.create_plant(os.path.join(source, filename), form.organ.data, result, tagGPS, user_id)
     db.session.add(identfiy)
     db.session.commit()
 

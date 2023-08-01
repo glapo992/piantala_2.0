@@ -1,8 +1,8 @@
-from app.extensions import db
+from app import db
 from flask import render_template, flash, redirect, url_for, request, current_app
 from datetime import datetime
 from flask_login import login_required
-from app.models import Users
+from app.models.user_model import Users
 from app.user import bp
 
 
