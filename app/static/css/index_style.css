@@ -75,6 +75,14 @@
     height: auto;
     margin: 5%;
 }
+
+.login_form, .registration_form{
+    margin:auto;
+
+}
+.form_item{
+    text-align: center;
+}
 /*---------------------------------------------------submit button------------------------------------------------------------------*/
 button {
     margin: 20px auto 20px auto;
@@ -120,5 +128,4 @@ button:active {
         -ms-transform: scale(0.95);
             transform: scale(0.95);
   }
-  
   

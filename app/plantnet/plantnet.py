@@ -11,7 +11,7 @@ from app.static.src.identification_sample import IDENT_FULL, IDENT_PART
 
 
 
-def manage_plant_form(form, user_id)-> Plant_mini:
+def manage_plant_form(form, user_id=None)-> Plant_mini:
     """ Manages the form result and writes on database
 
     :param form: form plant upload
