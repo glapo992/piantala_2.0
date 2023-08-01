@@ -71,9 +71,9 @@ def sendImg(files:list[str], organs)->list:
     #! imported static json just for testing so the api is not called every time
     prepared = req.prepare()
     s = requests.Session()
-    #response = s.send(prepared)
-    #json_result = json.loads(response.text)
-    json_result= IDENT_FULL
+    response = s.send(prepared)
+    json_result = json.loads(response.text)
+    #json_result= IDENT_FULL
 
     #print('res compete:-->', json_result)
     list_result = plant_json_to_list(json_result)
